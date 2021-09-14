@@ -6,7 +6,7 @@
 #    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/14 11:16:44 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/09/14 14:00:56 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,13 @@ CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE)
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
-SRCS		=	
+SRCS		=	main.c
 OBJS		=	$(SRCS:%.c=%.o)
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS)
-			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L~/.brew/opt/readline/lib $(OBJS) -o $(NAME)
+$(NAME):	$(OBJS) $(LIBFT)
+			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib $(OBJS) -o $(NAME)
 			@echo "Linked into executable \033[0;32mminishell\033[0m."
 
 $(LIBFT):

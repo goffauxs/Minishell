@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/14 11:07:47 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:32:38 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,14 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+# include <limits.h>
 # include "libft.h"
+
+typedef struct	s_redirection
+{
+	char	*name;
+	int		flag;
+}				t_redirection;
 
 typedef struct	s_command
 {
@@ -31,10 +38,10 @@ typedef struct	s_command
 
 typedef struct	s_script
 {
-	t_command	*commands;
-	char		*outfile;
-	char		*infile;
-	char		*err;
+	t_command		*commands;
+	int				cmd_count;
+	t_redirection	out;
+	t_redirection	in;
 }				t_script;
 
 #endif
