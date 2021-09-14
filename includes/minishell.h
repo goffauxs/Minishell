@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/14 14:32:58 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:27:53 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct	s_script
 	char		*outfile;
 	char		*infile;
 	char		*err;
+	char		**envp;
 }				t_script;
 
 #endif
