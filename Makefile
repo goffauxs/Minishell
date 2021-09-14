@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
+#    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/14 11:16:44 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/09/14 14:39:05 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,11 @@ CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE)
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
-SRCS		=	
+SRCS		=	srcs/builtins.c		\
+				srcs/exec.c 		\
+				srcs/parsing.c 		\
+				test_main.c 		\
+
 OBJS		=	$(SRCS:%.c=%.o)
 
 all:		$(NAME)
