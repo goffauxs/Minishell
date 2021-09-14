@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/14 14:56:06 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/14 16:50:25 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <readline/history.h>
 # include <signal.h>
 # include "libft.h"
+# define MAX_PATH_LEN 4096
 
 typedef struct	s_command
 {
@@ -37,7 +38,10 @@ typedef struct	s_script
 	char		*err;
 }				t_script;
 
-int	echo_built_in(t_command *test);
-int	cd_built_in(t_command *test);
+int		builtin_echo(t_command *test);
+int		builtin_cd(t_command *test);
+void	builtin_exit();
+int		builtin_pwd();
+int		builtin_env(char **envp);
 
 #endif

@@ -22,17 +22,27 @@ int main(int argc, char **argv)
 	// 	free(rl_line_buffer);
 	// }
 	t_command *test;
+	char * buf;
 	int i;
 
-	i = 0;
+	i = 1;
 	test = testing_init(argc, argv);
-	i = cd_built_in(test);
-	printf("return_value = %d\n", i);
-	perror("error : ");
-	return(i);
+	if((ft_strncmp(test->argv[i], "echo", 4) == 0) && (ft_strlen(test->argv[i]) == 4))
+		builtin_echo(test);
+	else if((ft_strncmp(test->argv[i], "cd", 2) == 0) && (ft_strlen(test->argv[i]) == 2))
+	{
+		buf = malloc(1000);
+		buf = getcwd(buf, 1000);
+		printf("BEFORE|%s|\n", buf);
+		builtin_cd(test);
+		buf = getcwd(buf, 1000);
+		printf("AFTER|%s|\n", buf);
+		free(buf);
+	}
+	else if ((ft_strncmp(test->argv[i], "exit", 2) == 0) && (ft_strlen(test->argv[i]) == 4))
+		builtin_exit();
+	else if ((ft_strncmp(test->argv[i], "pwd", 2) == 0) && (ft_strlen(test->argv[i]) == 3))
+		builtin_pwd();
+	free(test);
+	return(0);
 }
-
-// char * buf;
-// buf = malloc(1000);
-// buf = getcwd(buf, 1000);
-// printf("IN MAIN VERIFICATION GETCWD |%s|\n", buf);
