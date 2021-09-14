@@ -61,14 +61,14 @@ int	builtin_export(t_script *script)
 	return (0);
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_script	script;
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_script	script;
 
-	(void)argc;
-	(void)argv;
-	script.envp = envp;
-	builtin_export(&script);
-	builtin_env(script.envp);
-	return (0);
-}
+// 	(void)argc;
+// 	(void)argv;
+// 	script.envp = envp;
+// 	builtin_export(&script);
+// 	builtin_env(script.envp);
+// 	return (0);
+// }
