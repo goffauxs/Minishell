@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/14 16:50:25 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/14 17:54:51 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,7 @@ int		builtin_cd(t_command *test);
 void	builtin_exit();
 int		builtin_pwd();
 int		builtin_env(char **envp);
+
+void	sig_handler(int signum);
 
 #endif

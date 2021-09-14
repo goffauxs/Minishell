@@ -24,7 +24,8 @@ int main(int argc, char **argv)
 	t_command *test;
 	char * buf;
 	int i;
-
+	if(argc == 1)
+		exit(EXIT_SUCCESS);
 	i = 1;
 	test = testing_init(argc, argv);
 	if((ft_strncmp(test->argv[i], "echo", 4) == 0) && (ft_strlen(test->argv[i]) == 4))
@@ -44,5 +45,10 @@ int main(int argc, char **argv)
 	else if ((ft_strncmp(test->argv[i], "pwd", 2) == 0) && (ft_strlen(test->argv[i]) == 3))
 		builtin_pwd();
 	free(test);
+
+	//
+	signal(SIGINT, sig_handler); // ctrl c : new prompt / if running exit and new prompt
+	signal(SIGQUIT, sig_handler); // ctrl backslash
+	//
 	return(0);
 }

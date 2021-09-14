@@ -6,7 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/14 14:54:09 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/14 17:33:43 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ RM			=	rm -f
 SRCS		=	srcs/builtins.c		\
 				srcs/exec.c 		\
 				srcs/parsing.c 		\
+				srcs/signals.c		\
 				test_main.c 		\
 
 OBJS		=	$(SRCS:%.c=%.o)
