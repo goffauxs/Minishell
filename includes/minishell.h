@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/14 14:53:22 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/14 14:56:06 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct	s_script
 	char		*err;
 }				t_script;
 
-int echo_built_in(t_command *test);
+int	echo_built_in(t_command *test);
+int	cd_built_in(t_command *test);
 
 #endif

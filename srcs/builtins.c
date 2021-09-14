@@ -39,3 +39,20 @@ int echo_built_in(t_command *test)
 	}
 	return(-1);
 }
+
+int cd_built_in(t_command *test)
+{
+	int i;
+	char *home;
+
+	i = 1;
+	home = getenv("HOME");
+	if((ft_strncmp(test->argv[i], "cd", 2) == 0) && (ft_strlen(test->argv[i]) == 2))
+	{
+		if (!test->argv[i + 1])
+			return(chdir(home));
+		i++;
+		return(chdir(test->argv[i]));
+	}
+	return(-1);
+}

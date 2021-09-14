@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_command *testingecho_init(int argc, char **argv)
+t_command *testing_init(int argc, char **argv)
 {
 	t_command *test;
 	test = malloc(sizeof(t_command));
@@ -25,8 +25,14 @@ int main(int argc, char **argv)
 	int i;
 
 	i = 0;
-	test = testingecho_init(argc, argv);
-	i = echo_built_in(test);
-	//printf("return_value = %d", i);
+	test = testing_init(argc, argv);
+	i = cd_built_in(test);
+	printf("return_value = %d\n", i);
+	perror("error : ");
 	return(i);
 }
+
+// char * buf;
+// buf = malloc(1000);
+// buf = getcwd(buf, 1000);
+// printf("IN MAIN VERIFICATION GETCWD |%s|\n", buf);
