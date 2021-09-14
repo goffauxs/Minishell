@@ -1,14 +1,12 @@
 #include "minishell.h"
 
-t_script *testingecho_init(t_script * test, int argc, char **argv)
+t_command *testingecho_init(int argc, char **argv)
 {
-	test->commands = malloc(sizeof(t_command));
-	test->commands->cmd = NULL;
-	test->commands->argc = argc;
-	test->commands->argv = argv;
-	test->outfile = NULL;
-	test->infile = NULL;
-	test->err = NULL;
+	t_command *test;
+	test = malloc(sizeof(t_command));
+	test->cmd = NULL;
+	test->argc = argc;
+	test->argv = argv;
 	return(test);
 }
 
@@ -23,12 +21,11 @@ int main(int argc, char **argv)
 	// 	add_history(rl_line_buffer);
 	// 	free(rl_line_buffer);
 	// }
-	t_script *test;
+	t_command *test;
 	int i;
 
 	i = 0;
-	test = malloc(sizeof(t_script));
-	test = testingecho_init(test, argc, argv);
+	test = testingecho_init(argc, argv);
 	i = echo_built_in(test);
 	//printf("return_value = %d", i);
 	return(i);

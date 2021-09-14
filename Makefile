@@ -6,7 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/14 14:39:05 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/14 14:54:09 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ OBJS		=	$(SRCS:%.c=%.o)
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS)
+$(NAME):	$(OBJS) $(LIBFT)
 			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L~/.brew/opt/readline/lib $(OBJS) -o $(NAME)
 			@echo "Linked into executable \033[0;32mminishell\033[0m."
 
