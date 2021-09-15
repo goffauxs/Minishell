@@ -80,13 +80,40 @@ t_command	parse_command(char *line_buf )
 	return (cmd);
 }
 
+char *get_prompt()
+{
+	char *prompt;
+	char **split_path;
+	char cwd[PATH_MAX];
+
+	getcwd(cwd, PATH_MAX);
+	split_path = ft_split(cwd, '/');
+	int i = 0;
+	while (split_path[i + 1])
+		i++;
+	prompt = ft_strjoin(split_path[i], " > ");
+	return(prompt);
+}
+
 void	sig_handler(int signum)
 {
 	(void)signum;
+	char * prompt;
+	size_t i = 0;
+
+	prompt = get_prompt();
+	while(i < ft_strlen(prompt) + 2)
+	{
+		write(1, " \b", 2);
+		if (i < ft_strlen(prompt))
+			write(1, &prompt[i], 1);
+		else if (i == ft_strlen(prompt))
+			write(1, " ", 1);
+		i++;
+	}
 	write(1, "\n",1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	write(1, prompt, ft_strlen(prompt));
+	signal(SIGINT, sig_handler);
 }
 
 char *new_prompt(char *line_buf, char *prompt)
@@ -101,8 +128,6 @@ int main()
 	t_script script;
 	int	err;
 	char *line_buf;
-	char cwd[PATH_MAX];
-	char **split_path;
 	char *prompt;
 	char **split_buf;
 
@@ -111,16 +136,14 @@ int main()
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, sig_handler);
 		err = 0;
-		getcwd(cwd, PATH_MAX);
-		split_path = ft_split(cwd, '/');
-		int i = 0;
-		while (split_path[i + 1])
-			i++;
-		prompt = ft_strjoin(split_path[i], " > ");
+		prompt = get_prompt();
 		line_buf = readline(prompt);
 		//
 		if(line_buf == NULL)
+		{
+			write(1, "exit", 4);
 			break;
+		}
 		//
 		add_history(line_buf);
 		script.cmd_count = get_cmd_count(line_buf);
