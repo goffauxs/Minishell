@@ -116,6 +116,8 @@ void	sig_handler(int signum)
 	signal(SIGINT, sig_handler);
 }
 
+
+
 char *new_prompt(char *line_buf, char *prompt)
 {
 	rl_on_new_line ();
@@ -141,7 +143,8 @@ int main()
 		//
 		if(line_buf == NULL)
 		{
-			write(1, "exit", 4);
+			rl_on_new_line ();
+			write(1, ft_strjoin(prompt, "exit\n"), ft_strlen(ft_strjoin(prompt, "exit\n")));
 			break;
 		}
 		//
