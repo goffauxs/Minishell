@@ -1,60 +1,61 @@
 #include "minishell.h"
 #include "libft.h"
 
-int builtin_echo(t_command *test)
+int	builtin_echo(t_command command)
 {
-	int i;
-	size_t flag;
+	int		i;
+	size_t	flag;
 
-	i = 1;
+	i = 0;
 	flag = 0;
-	if (!test->argv[i + 1])
+	if (!command.argv[0])
 	{
 		printf("\n");
-		return(0);
+		return (0);
 	}
 	i++;
-	if(test->argv[i][flag] == '-')
+	if (command.argv[i][flag] == '-')
 	{
 		flag++;
-		while(test->argv[i][flag] == 'n' || test->argv[i][flag] == 'e' || test->argv[i][flag] == 'E')
+		while (command.argv[i][flag] == 'n' || command.argv[i][flag] == 'e' || command.argv[i][flag] == 'E')
 			flag++;
-		if (flag == ft_strlen(test->argv[i]))
+		if (flag == ft_strlen(command.argv[i]))
 			i++;
 		else
 			flag = 0;
 	}
-	while(test->argv[i])
+	while (command.argv[i])
 	{
-		printf("%s", test->argv[i]);
-		if(test->argv[i + 1])
+		printf("%s", command.argv[i]);
+		if (command.argv[i + 1])
 			printf(" ");
 		i++;
 	}
-	if(flag == 0)
+	if (flag == 0)
 		printf("\n");
+	return (0);
 	return(0);
 }
 
-int	builtin_cd(t_command *test)
+int	builtin_cd(t_command test)
 {
-	int i;
-	char *home;
+	int		i;
+	char	*home;
 
-	i = 1;
+	i = 0;
 	home = getenv("HOME");
-	if (!test->argv[i + 1])
-		return(chdir(home));
+	if (!test.argv[0])
+		return (chdir(home));
 	i++;
-	return(chdir(test->argv[i]));
+	return (chdir(test.argv[i]));
 }
 
-void builtin_exit()
+void	builtin_exit(void)
 {
 	exit(EXIT_SUCCESS);
 }
 
-int builtin_pwd()
+int	builtin_pwd(void)
 {
 	char	*buff;
 
@@ -66,18 +67,6 @@ int builtin_pwd()
 		return (1);
 	printf("%s\n", buff);
 	free(buff);
-	return (0);
-}
-
-int	builtin_env(char **envp) //a besoin de **envp du main
-{
-	int	i;
-
-	if (!envp)
-		return (1);
-	i = 0;
-	while (envp[i])
-		printf("%s\n", envp[i++]);
 	return (0);
 }
 
@@ -112,5 +101,17 @@ int	builtin_export(t_script *script)
 	script->envp[i++] = NULL; //replace with exported var
 	script->envp[i] = NULL;
 	// printf("%s\n", script->envp[i]);
+	return (0);
+}
+
+int	builtin_env(char **envp)
+{
+	int	i;
+
+	if (!envp)
+		return (1);
+	i = 0;
+	while (envp[i])
+		printf("%s\n", envp[i++]);
 	return (0);
 }

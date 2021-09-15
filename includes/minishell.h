@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/15 15:47:05 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/15 21:06:27 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,61 @@ typedef struct	s_redirection
 
 typedef struct	s_command
 {
-	char	*cmd;
-	int		argc;
-	char	**argv;
+	char			*cmd;
+	int				argc;
+	char			**argv;
 	t_redirection	out;
 	t_redirection	in;
 }				t_command;
 
 typedef struct	s_script
 {
-	t_command		*commands;
-	int				cmd_count;
-	char			**envp;
+	t_command	*commands;
+	int			cmd_count;
+	char		**envp;
 }				t_script;
 
-int		builtin_echo(t_command *test);
-int		builtin_cd(t_command *test);
-void	builtin_exit();
-int		builtin_pwd();
-int		builtin_env(char **envp);
-int		builtin_export(t_script *script);
+/*
+** main.c
+*/
+char		*get_prompt();
 
-void	sig_handler(int signum);
-void	rl_replace_line (const char *text, int clear_undo);
+/*
+** parsing.c
+*/
+int			get_cmd_count(char *line_buf);
+int			set_redir_flag(char c, char chevron);
+int			get_inoutfile(char *line_buf, char chevron, t_redirection *redir, int start);
+char		*trim_infile(char *str);
+char		*trim_outfile(char *str);
+t_command	parse_command(char *split_buf);
+
+/*
+** exec.c
+*/
+//static char	*add_forw_slash(char *str);
+//static int	check_path_line(char **env);
+//static void	init_vars(int *i, int *j);
+//static char	**split_paths(char **env);
+//static void	exec_cmd( char **path, char **cmd, char **env);
+void		child(char **path_env, t_script script, int i);
+void		handle_cmd(t_script script, int i);
+int			check_builtin(char *cmd);
+void		handle_builtin(int ret, t_command command, t_script script, int i);
+
+/*
+** signal.c
+*/
+void		sig_handler(int signum);
+
+/*
+** builtins.c
+*/
+int			builtin_echo(t_command command);
+int			builtin_cd(t_command command);
+void		builtin_exit(void);
+int			builtin_pwd(void);
+int			builtin_export(t_script *script);
+int			builtin_env(char **envp);
 
 #endif
