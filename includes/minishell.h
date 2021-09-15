@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/14 15:32:38 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/15 10:35:58 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct	s_redirection
 {
 	char	*name;
 	int		flag;
+	int		fd;
 }				t_redirection;
 
 typedef struct	s_command

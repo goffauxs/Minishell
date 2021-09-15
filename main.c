@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/14 16:17:54 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/15 11:26:24 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,37 +27,51 @@ int	get_cmd_count(char *line_buf)
 	return (count);
 }
 
-int	set_redir_flag(char c)
+int	return_error(const char *msg)
 {
-	if (c == '>')
-		return (O_CREAT | O_APPEND | O_RDWR);
-	else if (c == '<')
-		return (0);
-	return (O_CREAT | O_TRUNC | O_RDWR);
+	write(2, msg, ft_strlen(msg));
+	return (1);
 }
 
-char	*get_inoutfile(char *line_buf, char chevron, t_redirection *redir)
+int	set_redir_flag(char c, char chevron)
 {
-	char	*ret;
-	int		start;
-	int		end;
+	if (chevron == '>' && c == '>')
+		return (O_CREAT | O_APPEND | O_RDWR);
+	else if (chevron == '>' && (c != '>' && c != '<'))
+		return (O_CREAT | O_TRUNC | O_RDWR);
+	else if (chevron == '<' && c == '<')
+		return (0);
+	else if (chevron == '<' && (c != '<' && c != '>'))
+		return (O_RDWR);
+	return (-1);
+}
 
-	start = 0;
-	while (line_buf[start] != chevron)
+int	get_outfile(char *line_buf, char chevron, t_redirection *redir)
+{
+	char		*ret;
+	static int	start = 0;
+	int			end;
+	
+	while (line_buf[start] && line_buf[start] != chevron)
 		start++;
 	if (line_buf[start])
 	{
-		redir->flag = set_redir_flag(line_buf[start + 1]);
+		redir->flag = set_redir_flag(line_buf[start + 1], chevron);
+		if (redir->flag == -1)
+			return (1);
 		while (line_buf[start] == chevron || ft_isspace(line_buf[start]))
 			start++;
 		end = start;
-		while (!ft_isspace(line_buf[end]))
+		while (line_buf[end] && !ft_isspace(line_buf[end]))
 			end++;
 		ret = ft_substr(line_buf, start, (end - start));
+		redir->name = ret;
+		redir->fd = open(ret, redir->flag, 0666);
+		close(redir->fd);
 	}
-	else
-		return (NULL);
-	return (ret);
+	if (line_buf[start] != '\0' && line_buf[end] != '\0')
+		return (get_outfile(line_buf, chevron, redir));
+	return (0);
 }
 
 t_command	parse_command(char *line_buf)
@@ -68,7 +82,6 @@ t_command	parse_command(char *line_buf)
 
 	count = 0;
 	tmp = ft_strtrim(line_buf, " \t");
-	
 	cmd.argv = ft_split(tmp, ' ');
 	cmd.cmd = cmd.argv[0];
 	while (cmd.argv[count])
@@ -81,6 +94,7 @@ t_command	parse_command(char *line_buf)
 int main()
 {
 	t_script script;
+	int	err;
 	char *line_buf;
 	char cwd[PATH_MAX];
 	char **split_path;
@@ -89,6 +103,7 @@ int main()
 
 	while (1)
 	{
+		err = 0;
 		getcwd(cwd, PATH_MAX);
 		split_path = ft_split(cwd, '/');
 		int i = 0;
@@ -97,8 +112,7 @@ int main()
 		prompt = ft_strjoin(split_path[i], " > ");
 		line_buf = readline(prompt);
 		add_history(line_buf);
-		script.out.name = get_inoutfile(line_buf, '>', &script.out);
-		script.in.name = get_inoutfile(line_buf, '<', &script.in);
+		get_outfile(line_buf, '>', &script.out);
 		script.cmd_count = get_cmd_count(line_buf);
 		script.commands = malloc(sizeof(t_command) * script.cmd_count);
 		split_buf = ft_split(line_buf, '|');
