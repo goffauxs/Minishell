@@ -80,3 +80,37 @@ int	builtin_env(char **envp) //a besoin de **envp du main
 		printf("%s\n", envp[i++]);
 	return (0);
 }
+
+int	builtin_export(t_script *script)
+{
+	char	**tmp;
+	int		i;
+	int		end;
+	int		cursor;
+
+	if (!script->envp)
+		return (1);
+	i = 0;
+	while (script->envp[i])
+		i++;
+	tmp = script->envp;
+	script->envp = (char **)malloc(sizeof(char *) * i + 2);
+	end = i;
+	i = 0;
+	while (tmp[i])
+	{
+		script->envp[i] = (char *)malloc(sizeof(char) * ft_strlen(tmp[i]) + 1);
+		cursor = 0;
+		while (tmp[i][cursor])
+		{
+			script->envp[i][cursor] = tmp[i][cursor];
+			cursor++;
+		}
+		script->envp[i][cursor] = '\0';
+		i++;
+	}
+	script->envp[i++] = NULL; //replace with exported var
+	script->envp[i] = NULL;
+	// printf("%s\n", script->envp[i]);
+	return (0);
+}
