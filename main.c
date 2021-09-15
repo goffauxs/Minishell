@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/15 13:26:52 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/15 14:14:00 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ static char	**split_paths(char **env)
 	return (path);
 }
 //
-
+//
 static void	exec_cmd( char **path, char **cmd, char **env)
 {
 	char	*tmp;
@@ -178,13 +178,14 @@ static void	exec_cmd( char **path, char **cmd, char **env)
 	}
 }
 
-void	child(char **path_env, t_script script)
+void	child(char **path_env, t_script script, int i)
 {
-	exec_cmd(path_env, script.commands[0].argv, script.envp);
+	exec_cmd(path_env, script.commands[i].argv, script.envp);
 	printf("cmd doesn't exist\n");
+	//free etc
 }
 
-void	handle_cmd(t_script script)
+void	handle_cmd(t_script script, int i)
 {
 	char	**path_env;
 	int		pid;
@@ -194,9 +195,9 @@ void	handle_cmd(t_script script)
 	if (pid == -1)
 		return ; //error
 	if (pid == 0)
-		child(path_env, script);
+		child(path_env, script, i);
 	wait(0);
-	
+	free(path_env);
 }
 
 int	check_builtin(char *cmd)
@@ -209,8 +210,31 @@ int	check_builtin(char *cmd)
 						if (ft_strncmp(cmd, "env", 3))
 							if (ft_strncmp(cmd, "exit", 4))
 								return (0);
-	return (1);
+							else
+								return (7);
+						else
+							return (6);
+					else
+						return (5);					
+				else
+					return (4);
+			else
+				return (3);
+		else
+			return (2);
+	else
+		return (1);
 }
+
+void	handle_builtin(int ret, t_script script, int i)
+{
+	(void)i;
+	if (ret == 3)
+		builtin_pwd();
+	if (ret == 6)
+		builtin_env(script.envp);
+}
+//
 
 int main(int argc, char **argv, char **envp)
 {
@@ -221,8 +245,9 @@ int main(int argc, char **argv, char **envp)
 	char **split_path;
 	char *prompt;
 	char **split_buf;
-
 	//
+	int	ret;
+
 	(void)argc;
 	(void)argv;
 	script.envp = envp;
@@ -249,10 +274,16 @@ int main(int argc, char **argv, char **envp)
 		}
 		printf("infile: '%s' (%x) | outfile: '%s' (%x)\n", script.in.name, script.in.flag, script.out.name, script.out.flag);
 		//
-		if (!check_builtin(script.commands[0].cmd))
-			handle_cmd(script);
-		else
-			printf("builtin\n");
+		i = 0;
+		while (i < script.cmd_count)
+		{
+			ret = check_builtin(script.commands[i].cmd);
+			if (ret == 0)
+				handle_cmd(script, i);
+			else
+				handle_builtin(ret, script, i);
+			i++;
+		}
 		//
 		if (!ft_strncmp(line_buf, "exit", 4))
 			break;
