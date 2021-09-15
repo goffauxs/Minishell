@@ -83,10 +83,10 @@ t_command	parse_command(char *line_buf )
 void	sig_handler(int signum)
 {
 	(void)signum;
-	rl_on_new_line ();
+	write(1, "\n",1);
+	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	printf("test in sighandler");
 }
 
 char *new_prompt(char *line_buf, char *prompt)
