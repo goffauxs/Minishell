@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/15 11:26:24 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/15 15:34:30 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,9 @@ int	set_redir_flag(char c, char chevron)
 	return (-1);
 }
 
-int	get_outfile(char *line_buf, char chevron, t_redirection *redir)
+int	get_inoutfile(char *line_buf, char chevron, t_redirection *redir, int start)
 {
 	char		*ret;
-	static int	start = 0;
 	int			end;
 	
 	while (line_buf[start] && line_buf[start] != chevron)
@@ -67,21 +66,67 @@ int	get_outfile(char *line_buf, char chevron, t_redirection *redir)
 		ret = ft_substr(line_buf, start, (end - start));
 		redir->name = ret;
 		redir->fd = open(ret, redir->flag, 0666);
+		if (redir->fd < 0)
+			return (1);
 		close(redir->fd);
 	}
 	if (line_buf[start] != '\0' && line_buf[end] != '\0')
-		return (get_outfile(line_buf, chevron, redir));
+		return (get_inoutfile(line_buf, chevron, redir, start));
 	return (0);
 }
 
-t_command	parse_command(char *line_buf)
+char	*trim_infile(char *str)
+{
+	int		i;
+	int		len;
+	char	*ret;
+
+	i = 0;
+	len = ft_strlen(str);
+	while (str[i] && str[i] != '<')
+		i++;
+	while (str[i] == '<' || ft_isspace(str[i]))
+		i++;
+	while (str[i] && !ft_isspace(str[i]))
+		i++;
+	while (str[i] && ft_isspace(str[i]))
+		i++;
+	ret = ft_substr(str, i, len - i);
+	return (ret);
+}
+
+char	*trim_outfile(char *str)
+{
+	int		i;
+	int		len;
+	char	*ret;
+
+	i = 0;
+	len = ft_strlen(str);
+	while (str[i] && str[i] != '>')
+		i++;
+	while (ft_isspace(str[i - 1]))
+		i--;
+	ret = ft_substr(str, 0, i);
+	return (ret);
+}
+
+t_command	parse_command(char *split_buf)
 {
 	t_command	cmd;
 	int			count;
 	char		*tmp;
 
+	cmd.in.name = NULL;
+	cmd.out.name = NULL;
 	count = 0;
-	tmp = ft_strtrim(line_buf, " \t");
+	get_inoutfile(split_buf, '>', &cmd.out, 0);
+	get_inoutfile(split_buf, '<', &cmd.in, 0);
+	tmp = split_buf;
+	if (cmd.in.name)
+		tmp = trim_infile(tmp);
+	if (cmd.out.name)
+		tmp = trim_outfile(tmp);
 	cmd.argv = ft_split(tmp, ' ');
 	cmd.cmd = cmd.argv[0];
 	while (cmd.argv[count])
@@ -112,16 +157,13 @@ int main()
 		prompt = ft_strjoin(split_path[i], " > ");
 		line_buf = readline(prompt);
 		add_history(line_buf);
-		get_outfile(line_buf, '>', &script.out);
 		script.cmd_count = get_cmd_count(line_buf);
 		script.commands = malloc(sizeof(t_command) * script.cmd_count);
 		split_buf = ft_split(line_buf, '|');
 		for (int i=0; i < script.cmd_count; i++)
 		{
 			script.commands[i] = parse_command(split_buf[i]);
-			printf("command: '%s' | # of args: %d\n", script.commands[i].cmd, script.commands[i].argc);
 		}
-		printf("infile: '%s' (%x) | outfile: '%s' (%x)\n", script.in.name, script.in.flag, script.out.name, script.out.flag);
 		if (!ft_strncmp(line_buf, "exit", 4))
 			break;
 	}
