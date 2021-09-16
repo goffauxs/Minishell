@@ -73,6 +73,9 @@ int main(int argc, char **argv, char **envp)
 		//
 		if(!ft_strncmp(line_buf, "exit", 4))
 			break;
+		printf("[0]=%s\n", script.commands[0].argv[0]);
+		printf("[0]=%s\n", script.commands[0].argv[1]);
+		printf("[1]=%s\n", script.commands[1].argv[0]);
 		printf("exit_status=%d\n", exit_status);
 	}
 }

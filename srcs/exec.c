@@ -90,7 +90,7 @@ int	child(char **path_env, t_script script, int i)
 {
 	exec_cmd(path_env, script.commands[i].argv, script.envp);
 	printf("cmd doesn't exist\n");
-	return (1);
+	return (127);
 	//free etc
 }
 
@@ -110,7 +110,10 @@ int	handle_cmd(t_script script, int i, int exit_status)
 		exit_status = child(path_env, script, i);
 	waitpid(0, &exit_status, 0);
 	free(path_env);
-	return (exit_status / 216);
+	if (exit_status == 256 || exit_status == 512)
+		return (exit_status / 256);
+	else
+		return (exit_status);
 }
 
 int	check_builtin(char *cmd)
