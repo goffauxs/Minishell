@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/16 14:12:00 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/16 17:12:45 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include "libft.h"
 # include <limits.h>
 # define MAX_PATH_LEN 4096
+
+int exit_status;
 
 typedef struct	s_redirection
 {
@@ -71,10 +73,10 @@ t_command	parse_command(char *split_buf);
 //static void	init_vars(int *i, int *j);
 //static char	**split_paths(char **env);
 //static void	exec_cmd( char **path, char **cmd, char **env);
-void		child(char **path_env, t_script script, int i);
-int		handle_cmd(t_script script, int i, int exit_status);
-int			check_builtin(char *cmd);
-int		handle_builtin(int ret, t_script script, int i, int exit_status);
+void	child(char **path_env, t_script script, int i);
+void		handle_cmd(t_script script, int i);
+int		check_builtin(char *cmd);
+void	handle_builtin(int ret, t_script script, int i);
 
 /*
 ** signal.c
@@ -86,7 +88,7 @@ void		sig_handler(int signum);
 */
 int			builtin_echo(t_command command);
 int			builtin_cd(t_command command);
-int			builtin_exit(void);
+int			builtin_exit(t_command command);
 int			builtin_pwd(void);
 int			builtin_export(t_script *script);
 int			builtin_env(char **envp);

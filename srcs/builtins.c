@@ -49,10 +49,28 @@ int	builtin_cd(t_command command)
 	return (chdir(command.argv[i]));
 }
 
-int	builtin_exit(void)
+int	builtin_exit(t_command command)
 {
-	exit(EXIT_SUCCESS);
-	return(0);
+	int i;
+	i = 0;
+	if(command.argv[1])
+	{
+		while(command.argv[1][i])
+		{
+			if(!ft_isdigit(command.argv[1][i]))
+			{
+				printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
+				return(255);
+			}
+			i++;
+		}
+		exit_status = ft_atoi(command.argv[1]); // max = 255 atoi base 255 en gros 
+	}
+	else
+		exit_status = 0;
+	rl_on_new_line();
+	write(1, "exit\n", 5);
+	return(exit_status);
 }
 
 int	builtin_pwd(void)

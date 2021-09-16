@@ -88,12 +88,14 @@ static void	exec_cmd( char **path, char **cmd, char **env)
 
 void	child(char **path_env, t_script script, int i)
 {
+	char *backup;
+	backup = ft_strdup(script.commands[i].cmd);
 	exec_cmd(path_env, script.commands[i].argv, script.envp);
-	printf("cmd doesn't exist\n");
+	printf("%s: command not found\n", backup);
 	//free etc
 }
 
-int	handle_cmd(t_script script, int i, int exit_status)
+void	handle_cmd(t_script script, int i)
 {
 	char	**path_env;
 	int		pid;
@@ -102,14 +104,15 @@ int	handle_cmd(t_script script, int i, int exit_status)
 	pid = fork();
 	if (pid == -1)
 	{
-		exit_status = 1;
-		return (exit_status); //error
+		exit_status = 1 ;
+		return; //error
 	}
 	if (pid == 0)
 		child(path_env, script, i);
-	wait(0);
+	waitpid(0, &exit_status, 0);
 	free(path_env);
-	return (exit_status);
+	if (exit_status == 256 || exit_status == 512)
+		exit_status /= 256;
 }
 
 int	check_builtin(char *cmd)
@@ -138,7 +141,7 @@ int	check_builtin(char *cmd)
 		return (1);
 }
 
-int	handle_builtin(int ret, t_script script, int i, int exit_status)
+void	handle_builtin(int ret, t_script script, int i)
 {
 	if (ret == 1)
 		exit_status = builtin_echo(script.commands[i]); // ok
@@ -151,6 +154,5 @@ int	handle_builtin(int ret, t_script script, int i, int exit_status)
 	if (ret == 6)
 		exit_status = builtin_env(script.envp); // ok
 	if(ret == 7)
-		exit_status = builtin_exit(); // ok
-	return (exit_status);
+		exit_status = builtin_exit(script.commands[i]); // ok
 }

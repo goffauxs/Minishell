@@ -5,19 +5,28 @@ void	sig_handler(int signum)
 	char	*prompt;
 	size_t	i;
 
-	i = 0;
-	(void)signum;
-	prompt = get_prompt();
-	while (i < ft_strlen(prompt) + 2)
+	if(signum == SIGINT)
 	{
-		write(1, " \b", 2);
-		if (i < ft_strlen(prompt))
-			write(1, &prompt[i], 1);
-		else if (i == ft_strlen(prompt))
-			write(1, " ", 1);
-		i++;
+		i = 0;
+		prompt = get_prompt();
+		// CONDITION SI PROCESS QUI TOURNE PAS
+		// while (i < ft_strlen(prompt) + 2)
+		// {
+		// 	write(1, " \b", 2);
+		// 	if (i < ft_strlen(prompt))
+		// 		write(1, &prompt[i], 1);
+		// 	else if (i == ft_strlen(prompt))
+		// 		write(1, " ", 1);
+		// 	i++;
+		// }
+		write(1, "\n", 1);
+		// SI PROCESS QUI TOURNE PAS 
+		//write(1, prompt, ft_strlen(prompt));
+		signal(SIGINT, sig_handler);
 	}
-	write(1, "\n", 1);
-	write(1, prompt, ft_strlen(prompt));
-	signal(SIGINT, sig_handler);
+	// else if (signum == SIGQUIT)
+	// {
+	// 	tourne pas : rien // signal(SIGINT, SIG_IGN);
+	// 	tourne : quit 3;
+	// }
 }

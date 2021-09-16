@@ -24,8 +24,8 @@ int main(int argc, char **argv, char **envp)
 	char *prompt;
 	char **split_buf;
 	// EXECUTION
+	exit_status = 0;
 	int	ret;
-	static int exit_status;
 	(void)argc;
 	(void)argv;
 	script.envp = envp;
@@ -33,7 +33,7 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		// SIGNAUX
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGQUIT, sig_handler);
 		signal(SIGINT, sig_handler);
 		//
 		err = 0;
@@ -55,8 +55,8 @@ int main(int argc, char **argv, char **envp)
 		while (i < script.cmd_count)
 		{
 			script.commands[i] = parse_command(split_buf[i]);
-			printf("command: '%s' | # of args: %d\n", script.commands[i].cmd, script.commands[i].argc);
-			printf("outfile: '%s' (%x)\n", script.commands[i].out.name, script.commands[i].out.flag);
+			//printf("command: '%s' | # of args: %d\n", script.commands[i].cmd, script.commands[i].argc);
+			//printf("outfile: '%s' (%x)\n", script.commands[i].out.name, script.commands[i].out.flag);
 			i++;
 		}
 		// EXECUTION
@@ -65,13 +65,26 @@ int main(int argc, char **argv, char **envp)
 		{
 			ret = check_builtin(script.commands[i].cmd);
 			if (ret == 0)
-				exit_status = handle_cmd(script, i, exit_status);
+				handle_cmd(script, i);
 			else
-				exit_status = handle_builtin(ret, script, i, exit_status);
+			{
+				handle_builtin(ret, script, i);
+				if(ret == 7)
+					break;
+			}
 			i++;
 		}
-		//
-		if(!ft_strncmp(line_buf, "exit", 4))
+		printf("test exit_status %d\n\n", exit_status);
+		if(ret == 7)
 			break;
+		//
+		// if(!ft_strncmp(line_buf, "exit", 4))
+		// {
+		// 	rl_on_new_line();
+		// 	write(1, "exit\n", 5);
+
+		// 	break;
+		// }
+		// exit needs to take args 
 	}
 }
