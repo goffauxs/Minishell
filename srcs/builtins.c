@@ -1,6 +1,60 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-int builtin_pwd()
+int	builtin_echo(t_command command)
+{
+	int		i;
+	size_t	flag;
+
+	i = 0;
+	flag = 0;
+	if (!command.argv[0])
+	{
+		printf("\n");
+		return (0);
+	}
+	i++;
+	if (command.argv[i][flag] == '-')
+	{
+		flag++;
+		while (command.argv[i][flag] == 'n' || command.argv[i][flag] == 'e' || command.argv[i][flag] == 'E')
+			flag++;
+		if (flag == ft_strlen(command.argv[i]))
+			i++;
+		else
+			flag = 0;
+	}
+	while (command.argv[i])
+	{
+		printf("%s", command.argv[i]);
+		if (command.argv[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (flag == 0)
+		printf("\n");
+	return (0);
+}
+
+int	builtin_cd(t_command command)
+{
+	int		i;
+	char	*home;
+
+	i = 0;
+	home = getenv("HOME");
+	if (!command.argv[0])
+		return (chdir(home));
+	i++;
+	return (chdir(command.argv[i]));
+}
+
+int	builtin_exit(void)
+{
+	exit(EXIT_SUCCESS);
+	return(0);
+}
+
+int	builtin_pwd(void)
 {
 	char	*buff;
 
@@ -15,19 +69,7 @@ int builtin_pwd()
 	return (0);
 }
 
-int	builtin_env(char **envp)
-{
-	int	i;
-
-	if (!envp)
-		return (1);
-	i = 0;
-	while (envp[i])
-		printf("%s\n", envp[i++]);
-	return (0);
-}
-
-int	builtin_export(t_script *script)
+int	builtin_export(t_script *script) //SEGFAULT
 {
 	char	**tmp;
 	int		i;
@@ -61,14 +103,14 @@ int	builtin_export(t_script *script)
 	return (0);
 }
 
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	t_script	script;
+int	builtin_env(char **envp)
+{
+	int	i;
 
-// 	(void)argc;
-// 	(void)argv;
-// 	script.envp = envp;
-// 	builtin_export(&script);
-// 	builtin_env(script.envp);
-// 	return (0);
-// }
+	if (!envp)
+		return (1);
+	i = 0;
+	while (envp[i])
+		printf("%s\n", envp[i++]);
+	return (0);
+}
