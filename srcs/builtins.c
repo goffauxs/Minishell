@@ -34,25 +34,25 @@ int	builtin_echo(t_command command)
 	if (flag == 0)
 		printf("\n");
 	return (0);
-	return(0);
 }
 
-int	builtin_cd(t_command test)
+int	builtin_cd(t_command command)
 {
 	int		i;
 	char	*home;
 
 	i = 0;
 	home = getenv("HOME");
-	if (!test.argv[0])
+	if (!command.argv[0])
 		return (chdir(home));
 	i++;
-	return (chdir(test.argv[i]));
+	return (chdir(command.argv[i]));
 }
 
-void	builtin_exit(void)
+int	builtin_exit(void)
 {
 	exit(EXIT_SUCCESS);
+	return(0);
 }
 
 int	builtin_pwd(void)
@@ -70,7 +70,7 @@ int	builtin_pwd(void)
 	return (0);
 }
 
-int	builtin_export(t_script *script)
+int	builtin_export(t_script *script) //SEGFAULT
 {
 	char	**tmp;
 	int		i;

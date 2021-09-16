@@ -93,7 +93,7 @@ void	child(char **path_env, t_script script, int i)
 	//free etc
 }
 
-void	handle_cmd(t_script script, int i)
+int	handle_cmd(t_script script, int i, int exit_status)
 {
 	char	**path_env;
 	int		pid;
@@ -101,11 +101,15 @@ void	handle_cmd(t_script script, int i)
 	path_env = split_paths(script.envp);
 	pid = fork();
 	if (pid == -1)
-		return ; //error
+	{
+		exit_status = 1;
+		return (exit_status); //error
+	}
 	if (pid == 0)
 		child(path_env, script, i);
 	wait(0);
 	free(path_env);
+	return (exit_status);
 }
 
 int	check_builtin(char *cmd)
@@ -123,7 +127,7 @@ int	check_builtin(char *cmd)
 						else
 							return (6);
 					else
-						return (5);					
+						return (5);
 				else
 					return (4);
 			else
@@ -134,19 +138,19 @@ int	check_builtin(char *cmd)
 		return (1);
 }
 
-void	handle_builtin(int ret, t_command command, t_script script, int i)
+int	handle_builtin(int ret, t_script script, int i, int exit_status)
 {
-	(void)i;
 	if (ret == 1)
-		builtin_echo(command); // ok
+		exit_status = builtin_echo(script.commands[i]); // ok
 	if (ret == 2)
-		builtin_cd(command); // ok
+		exit_status = builtin_cd(script.commands[i]); // ok
 	if (ret == 3)
-		builtin_pwd(); // ok
+		exit_status = builtin_pwd(); // ok
 	if(ret == 4)
-		builtin_export(&script); // segfault
+		exit_status = builtin_export(&script); // segfault
 	if (ret == 6)
-		builtin_env(script.envp); // ok
+		exit_status = builtin_env(script.envp); // ok
 	if(ret == 7)
-		builtin_exit(); // ok
+		exit_status = builtin_exit(); // ok
+	return (exit_status);
 }

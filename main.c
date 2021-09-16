@@ -25,6 +25,7 @@ int main(int argc, char **argv, char **envp)
 	char **split_buf;
 	// EXECUTION
 	int	ret;
+	static int exit_status;
 	(void)argc;
 	(void)argv;
 	script.envp = envp;
@@ -64,9 +65,9 @@ int main(int argc, char **argv, char **envp)
 		{
 			ret = check_builtin(script.commands[i].cmd);
 			if (ret == 0)
-				handle_cmd(script, i);
+				exit_status = handle_cmd(script, i, exit_status);
 			else
-				handle_builtin(ret, script.commands[i], script, i);
+				exit_status = handle_builtin(ret, script, i, exit_status);
 			i++;
 		}
 		//
