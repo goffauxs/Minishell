@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/15 14:07:58 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/16 10:29:17 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@
 # include <errno.h>
 # include "libft.h"
 
-typedef struct	s_redirection
+typedef struct s_redirection
 {
 	char	*name;
 	int		flag;
 	int		fd;
 }				t_redirection;
 
-typedef struct	s_command
+typedef struct s_command
 {
 	char			*cmd;
 	int				argc;
@@ -40,7 +40,7 @@ typedef struct	s_command
 	t_redirection	in;
 }				t_command;
 
-typedef struct	s_script
+typedef struct s_script
 {
 	t_command	*commands;
 	int			cmd_count;

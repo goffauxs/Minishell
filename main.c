@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/15 15:34:30 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/16 10:31:12 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	get_inoutfile(char *line_buf, char chevron, t_redirection *redir, int start)
 {
 	char		*ret;
 	int			end;
-	
+
 	while (line_buf[start] && line_buf[start] != chevron)
 		start++;
 	if (line_buf[start])
@@ -136,35 +136,24 @@ t_command	parse_command(char *split_buf)
 	return (cmd);
 }
 
-int main()
+int	main(void)
 {
-	t_script script;
-	int	err;
-	char *line_buf;
-	char cwd[PATH_MAX];
-	char **split_path;
-	char *prompt;
-	char **split_buf;
+	t_script	script;
+	int			i;
+	char		*line_buf;
+	char		**split_buf;
 
 	while (1)
 	{
-		err = 0;
-		getcwd(cwd, PATH_MAX);
-		split_path = ft_split(cwd, '/');
-		int i = 0;
-		while (split_path[i + 1])
-			i++;
-		prompt = ft_strjoin(split_path[i], " > ");
-		line_buf = readline(prompt);
+		line_buf = readline("Minishell > ");
 		add_history(line_buf);
 		script.cmd_count = get_cmd_count(line_buf);
 		script.commands = malloc(sizeof(t_command) * script.cmd_count);
 		split_buf = ft_split(line_buf, '|');
-		for (int i=0; i < script.cmd_count; i++)
-		{
+		i = -1;
+		while (++i < script.cmd_count)
 			script.commands[i] = parse_command(split_buf[i]);
-		}
 		if (!ft_strncmp(line_buf, "exit", 4))
-			break;
+			break ;
 	}
 }
