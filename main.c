@@ -74,7 +74,7 @@ int main(int argc, char **argv, char **envp)
 			}
 			i++;
 		}
-		printf("test exit_status %d\n\n", exit_status);
+		printf("test exit_status %d\n", exit_status);
 		if(ret == 7)
 			break;
 		//

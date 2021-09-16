@@ -64,7 +64,8 @@ int	builtin_exit(t_command command)
 			}
 			i++;
 		}
-		exit_status = ft_atoi(command.argv[1]); // max = 255 atoi base 255 en gros 
+		exit_status = ft_atoi(command.argv[1]) % 256;
+
 	}
 	else
 		exit_status = 0;
