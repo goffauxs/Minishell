@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/16 10:31:12 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/16 16:16:45 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,114 @@ char	*trim_outfile(char *str)
 	return (ret);
 }
 
+t_token	*create_token(char *string, t_token_state state)
+{
+	t_token	*token;
+
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->string = string;
+	token->state = state;
+	token->next = NULL;
+	return (token);
+}
+
+t_token	*last_token(t_token *head)
+{
+	t_token *tmp;
+
+	if (!head)
+		return (NULL);
+	tmp = head;
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp);
+}
+
+void	add_token_back(t_token *head, t_token *new_token)
+{
+	t_token	*tmp;
+
+	if (new_token)
+	{
+		if (head == NULL)
+			head = new_token;
+		else
+		{
+			tmp = last_token(head);
+			tmp->next = new_token;
+		}
+	}
+}
+
+t_token	*tokenizer(char *line_buf)
+{
+	char			*p;
+	char			*token_string;
+	t_token			*head;
+	t_token_state	token_state;
+	t_pointer_state	state;
+
+	p = line_buf;
+	state = START;
+	head = NULL;
+	token_state = DEFAULT;
+	while (*p != '\0')
+	{
+		if (state == START)
+		{
+			while (ft_isspace(*p))
+				p++;
+			if (*p == '\'' || *p == '\"')
+			{
+				state = IN_STRING;
+				token_string = p + 1;
+				if (*p == '\'')
+					token_state = QUOTES;
+				else
+					token_state = DQUOTES;
+			}
+			// else if (*p == '|')
+			// {
+				
+			// }
+			else
+			{
+				state = IN_WORD;
+				token_string = p;
+			}
+		}
+		else if (state == IN_STRING)
+		{
+			if ((token_state == QUOTES && *p == '\'') || (token_state == DQUOTES && *p == '\"'))
+			{
+				*p = '\0';
+				if (!head)
+					head = create_token(token_string, token_state);
+				else
+					add_token_back(head, create_token(token_string, token_state));
+				state = START;
+				token_state = DEFAULT;
+			}
+		}
+		else if (state == IN_WORD)
+		{
+			if (ft_isspace(*p) || *p == '|')
+			{
+				*p = '\0';
+				if (!head)
+					head = create_token(token_string, token_state);
+				else
+				add_token_back(head, create_token(token_string, DEFAULT));
+				state = START;
+			}
+		}
+		p++;
+	}
+	return (head);
+}
+
 t_command	parse_command(char *split_buf)
 {
 	t_command	cmd;
@@ -127,6 +235,7 @@ t_command	parse_command(char *split_buf)
 		tmp = trim_infile(tmp);
 	if (cmd.out.name)
 		tmp = trim_outfile(tmp);
+	
 	cmd.argv = ft_split(tmp, ' ');
 	cmd.cmd = cmd.argv[0];
 	while (cmd.argv[count])
@@ -139,6 +248,7 @@ t_command	parse_command(char *split_buf)
 int	main(void)
 {
 	t_script	script;
+	t_token		*head;
 	int			i;
 	char		*line_buf;
 	char		**split_buf;
@@ -147,6 +257,13 @@ int	main(void)
 	{
 		line_buf = readline("Minishell > ");
 		add_history(line_buf);
+		head = tokenizer(line_buf);
+		while (head)
+		{
+			printf("['%s', %s]", head->string, (head->state) ? (head->state == 1) ? "QUOTES" : "DQUOTES" : "DEFAULT");
+			head = head->next;
+		}
+		printf("\n");
 		script.cmd_count = get_cmd_count(line_buf);
 		script.commands = malloc(sizeof(t_command) * script.cmd_count);
 		split_buf = ft_split(line_buf, '|');

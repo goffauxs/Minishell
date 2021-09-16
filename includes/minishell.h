@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/16 10:29:17 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/16 15:32:51 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,27 @@
 # include <limits.h>
 # include <errno.h>
 # include "libft.h"
+
+typedef enum e_token_state
+{
+	DEFAULT,
+	QUOTES,
+	DQUOTES
+}			t_token_state;
+
+typedef enum e_pointer_state
+{
+	START,
+	IN_WORD,
+	IN_STRING
+}			t_pointer_state;
+
+typedef struct s_token
+{
+	char			*string;
+	t_token_state	state;
+	struct s_token	*next;
+}				t_token;
 
 typedef struct s_redirection
 {
