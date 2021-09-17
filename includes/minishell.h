@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/16 15:32:51 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/17 15:45:39 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,43 @@
 # include <errno.h>
 # include "libft.h"
 
-typedef enum e_token_state
+typedef enum e_token_type
 {
-	DEFAULT,
-	QUOTES,
-	DQUOTES
-}			t_token_state;
+	TOKEN_EAT,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_NAME
+}			t_token_type;
 
-typedef enum e_pointer_state
+typedef struct s_operations
 {
-	START,
-	IN_WORD,
-	IN_STRING
-}			t_pointer_state;
+	const char		*op;
+	int				size;
+	t_token_type	type;
+}				t_operations;
+
+static const t_operations	ops[] = 
+{
+	{">>", 2, TOKEN_REDIR_OUT},
+	{"<<", 2, TOKEN_REDIR_IN},
+	{"|", 1, TOKEN_PIPE},
+    {">", 1, TOKEN_REDIR_OUT},
+    {"<", 1, TOKEN_REDIR_IN},
+    {" ", 1, TOKEN_EAT},
+    {"\n", 1, TOKEN_EAT},
+    {"\v", 1, TOKEN_EAT},
+    {"\t", 1, TOKEN_EAT},
+    {"\r", 1, TOKEN_EAT},
+    {"\f", 1, TOKEN_EAT},
+    {NULL, 1, 0}
+};
 
 typedef struct s_token
 {
-	char			*string;
-	t_token_state	state;
+	char			*content;
+	int				size;
+	t_token_type	type;
 	struct s_token	*next;
 }				t_token;
 

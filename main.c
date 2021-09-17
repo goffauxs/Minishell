@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/16 16:16:45 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/17 16:52:03 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 int	get_cmd_count(char *line_buf)
 {
+	int		i;
 	int		count;
-	char	*tmp;
 	char	**split_str;
 
 	count = 0;
-	tmp = ft_strtrim(line_buf, " \t");
-	split_str = ft_split(tmp, '|');
+	split_str = ft_split(line_buf, '|');
 	while (split_str[count])
 		count++;
-	free(tmp);
+	i = count;
+	while (i-- > 0)
+		free(split_str[i]);
+	free(split_str);
 	return (count);
 }
 
@@ -46,80 +48,16 @@ int	set_redir_flag(char c, char chevron)
 	return (-1);
 }
 
-int	get_inoutfile(char *line_buf, char chevron, t_redirection *redir, int start)
-{
-	char		*ret;
-	int			end;
-
-	while (line_buf[start] && line_buf[start] != chevron)
-		start++;
-	if (line_buf[start])
-	{
-		redir->flag = set_redir_flag(line_buf[start + 1], chevron);
-		if (redir->flag == -1)
-			return (1);
-		while (line_buf[start] == chevron || ft_isspace(line_buf[start]))
-			start++;
-		end = start;
-		while (line_buf[end] && !ft_isspace(line_buf[end]))
-			end++;
-		ret = ft_substr(line_buf, start, (end - start));
-		redir->name = ret;
-		redir->fd = open(ret, redir->flag, 0666);
-		if (redir->fd < 0)
-			return (1);
-		close(redir->fd);
-	}
-	if (line_buf[start] != '\0' && line_buf[end] != '\0')
-		return (get_inoutfile(line_buf, chevron, redir, start));
-	return (0);
-}
-
-char	*trim_infile(char *str)
-{
-	int		i;
-	int		len;
-	char	*ret;
-
-	i = 0;
-	len = ft_strlen(str);
-	while (str[i] && str[i] != '<')
-		i++;
-	while (str[i] == '<' || ft_isspace(str[i]))
-		i++;
-	while (str[i] && !ft_isspace(str[i]))
-		i++;
-	while (str[i] && ft_isspace(str[i]))
-		i++;
-	ret = ft_substr(str, i, len - i);
-	return (ret);
-}
-
-char	*trim_outfile(char *str)
-{
-	int		i;
-	int		len;
-	char	*ret;
-
-	i = 0;
-	len = ft_strlen(str);
-	while (str[i] && str[i] != '>')
-		i++;
-	while (ft_isspace(str[i - 1]))
-		i--;
-	ret = ft_substr(str, 0, i);
-	return (ret);
-}
-
-t_token	*create_token(char *string, t_token_state state)
+t_token	*create_token(const char *string, int size, t_token_type type)
 {
 	t_token	*token;
 
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->string = string;
-	token->state = state;
+	token->content = ft_substr(string, 0, size);
+	token->size = size;
+	token->type = type;
 	token->next = NULL;
 	return (token);
 }
@@ -136,141 +74,140 @@ t_token	*last_token(t_token *head)
 	return (tmp);
 }
 
-void	add_token_back(t_token *head, t_token *new_token)
+void	add_token_back(t_token **head, t_token *new_token)
 {
 	t_token	*tmp;
 
 	if (new_token)
 	{
-		if (head == NULL)
-			head = new_token;
+		if (*head == NULL)
+			*head = new_token;
 		else
 		{
-			tmp = last_token(head);
+			tmp = last_token(*head);
 			tmp->next = new_token;
 		}
 	}
 }
 
-t_token	*tokenizer(char *line_buf)
+t_operations	search_token_type(const char *s)
 {
-	char			*p;
-	char			*token_string;
-	t_token			*head;
-	t_token_state	token_state;
-	t_pointer_state	state;
+	const t_operations	*ex_ops = ops;
+	t_operations		blank;
 
-	p = line_buf;
-	state = START;
-	head = NULL;
-	token_state = DEFAULT;
-	while (*p != '\0')
+	blank.op = 0;
+	blank.size = 0;
+	blank.type = 0;
+	while (ex_ops && ex_ops->op)
 	{
-		if (state == START)
-		{
-			while (ft_isspace(*p))
-				p++;
-			if (*p == '\'' || *p == '\"')
-			{
-				state = IN_STRING;
-				token_string = p + 1;
-				if (*p == '\'')
-					token_state = QUOTES;
-				else
-					token_state = DQUOTES;
-			}
-			// else if (*p == '|')
-			// {
-				
-			// }
-			else
-			{
-				state = IN_WORD;
-				token_string = p;
-			}
-		}
-		else if (state == IN_STRING)
-		{
-			if ((token_state == QUOTES && *p == '\'') || (token_state == DQUOTES && *p == '\"'))
-			{
-				*p = '\0';
-				if (!head)
-					head = create_token(token_string, token_state);
-				else
-					add_token_back(head, create_token(token_string, token_state));
-				state = START;
-				token_state = DEFAULT;
-			}
-		}
-		else if (state == IN_WORD)
-		{
-			if (ft_isspace(*p) || *p == '|')
-			{
-				*p = '\0';
-				if (!head)
-					head = create_token(token_string, token_state);
-				else
-				add_token_back(head, create_token(token_string, DEFAULT));
-				state = START;
-			}
-		}
-		p++;
+		if (!ft_strncmp(s, ex_ops->op, ex_ops->size))
+			return (*ex_ops);
+		ex_ops++;
 	}
-	return (head);
+	return (blank);
 }
 
-t_command	parse_command(char *split_buf)
+int	tokenizer(char *str, t_token **head)
 {
-	t_command	cmd;
-	int			count;
-	char		*tmp;
+	t_operations	curr;
+	char			*prev;
 
-	cmd.in.name = NULL;
-	cmd.out.name = NULL;
-	count = 0;
-	get_inoutfile(split_buf, '>', &cmd.out, 0);
-	get_inoutfile(split_buf, '<', &cmd.in, 0);
-	tmp = split_buf;
-	if (cmd.in.name)
-		tmp = trim_infile(tmp);
-	if (cmd.out.name)
-		tmp = trim_outfile(tmp);
-	
-	cmd.argv = ft_split(tmp, ' ');
-	cmd.cmd = cmd.argv[0];
-	while (cmd.argv[count])
-		count++;
-	cmd.argc = count;
-	free(tmp);
-	return (cmd);
+	prev = str;
+	while (str && *str)
+	{
+		curr = search_token_type(str);
+		if ((curr.op != 0 || *str == '\"' || *str == '\'') && prev != str)
+			add_token_back(head, create_token(prev, str - prev, TOKEN_NAME));
+		if (curr.op != 0)
+		{
+			str += curr.size;
+			if (curr.type != TOKEN_EAT)
+				add_token_back(head, create_token(curr.op, curr.size, curr.type));
+			prev = str;
+		}
+		else if (*str == '\"' || *str == '\'')
+		{
+			++str;
+			while (*str && *str != '\'' && *str != '\"')
+				++str;
+			if (!*str || (*str != '\'' && *str != '\"'))
+				return (0);
+			++str;
+		}
+		else
+			++str;
+	}
+	if (prev != str)
+		add_token_back(head, create_token(prev, str - prev, TOKEN_NAME));
+	return (1);
 }
+
+// void	parse_commands(t_token *head, t_script *script)
+// {
+// 	t_token		*tmp;
+// 	int			i;
+
+// 	while (head)
+// 	{
+// 		tmp = head;
+// 		script->commands->argc = 0;
+// 		i = 0;
+// 		while (tmp && tmp->type != TOKEN_PIPE)
+// 		{
+// 			script->commands->argc++;
+// 			tmp = tmp->next;
+// 		}
+// 		script->commands->argv = malloc(sizeof(char *) * script->commands->argc);
+// 		while (head->type != TOKEN_PIPE)
+// 		{
+// 			if (head->type == TOKEN_NAME)
+// 				script->commands->argv[i++] = head->content;
+// 			if (head->type == TOKEN_REDIR_OUT || head->type == TOKEN_REDIR_IN)
+// 			{
+// 				if (head->type == TOKEN_REDIR_IN)
+// 					script->commands->out.name = head->next->content;
+// 				else
+// 					script->commands->in.name = head->next->content;
+// 				head = head->next;
+// 			}
+// 			head = head->next;
+// 		}
+// 		head = head->next;
+// 		script->commands++;
+// 	}
+// }
 
 int	main(void)
 {
 	t_script	script;
 	t_token		*head;
-	int			i;
 	char		*line_buf;
-	char		**split_buf;
 
+	head = NULL;
 	while (1)
 	{
 		line_buf = readline("Minishell > ");
 		add_history(line_buf);
-		head = tokenizer(line_buf);
-		while (head)
+		if (!tokenizer(line_buf, &head))
 		{
-			printf("['%s', %s]", head->string, (head->state) ? (head->state == 1) ? "QUOTES" : "DQUOTES" : "DEFAULT");
-			head = head->next;
+			return_error("Syntax error\n");
+			continue ;
 		}
-		printf("\n");
 		script.cmd_count = get_cmd_count(line_buf);
 		script.commands = malloc(sizeof(t_command) * script.cmd_count);
-		split_buf = ft_split(line_buf, '|');
-		i = -1;
-		while (++i < script.cmd_count)
-			script.commands[i] = parse_command(split_buf[i]);
+		// parse_commands(head, &script);
+		// for (int i = 0; i < script.cmd_count; i++)
+		// {
+		// 	printf("%s\n", script.commands[i].argv[0]);
+		// 	for (int j = 1; j < script.commands[i].argc; j++)
+		// 		printf("\t%s\n", script.commands[i].argv[j]);
+		// }
 		if (!ft_strncmp(line_buf, "exit", 4))
+		{
+			free(line_buf);
 			break ;
+		}
+		free(line_buf);
 	}
+	system("leaks minishell");
 }
