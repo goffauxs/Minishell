@@ -42,7 +42,6 @@ void	sig_handler(int signum)
 			// glo.exit_status = 1;
 			// rl_on_new_line();
 			// rl_redisplay();
-
 		}
 		else if (signum == SIGQUIT)
 		{

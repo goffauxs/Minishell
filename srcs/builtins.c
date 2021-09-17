@@ -8,11 +8,8 @@ int	builtin_echo(t_command command)
 
 	i = 0;
 	flag = 0;
-	if (!command.argv[0])
-	{
-		printf("\n");
+	if (!command.argv[1])
 		return (0);
-	}
 	i++;
 	if (command.argv[i][flag] == '-')
 	{
