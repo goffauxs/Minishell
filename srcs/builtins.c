@@ -74,6 +74,7 @@ int builtin_exit(t_command command)
 	{
 		write(1, "exit\n", 5);
 		printf("%s: too many arguments\n", command.cmd);
+		exit_status = 1;
 		rl_on_new_line();
 		return(1);
 	}
@@ -81,11 +82,20 @@ int builtin_exit(t_command command)
 	{
 		if(command.argv[1])
 		{
-			exit_status = ft_atoi(command.argv[1]) % 256;
-			if(exit_status < 0)
-				exit_status = exit_status * -1;
+			if(ft_strncmp(command.argv[1], "9223372036854775807", 19) != 0)
+			{
+				if(ft_atoi(command.argv[1]) == -1 && ft_strlen(command.argv[1]) > 18) // attention atoi buggé
+				{
+					write(1, "exit\n", 5);
+					printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
+					rl_on_new_line();
+					exit_status = 255;
+					return(0);
+				}
+			}
+			exit_status = ft_atoi(command.argv[1]) & 0xFF;
 		}
-		else	
+		else
 			exit_status = 0;
 		rl_on_new_line();
 		write(1, "exit\n", 5);

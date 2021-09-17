@@ -81,6 +81,7 @@ int main(int argc, char **argv, char **envp)
 			}
 			i++;
 		}
+		printf("\nEXIT STATUS %d\n", exit_status);
 		if(ret == 8)
 			break;
 	}
