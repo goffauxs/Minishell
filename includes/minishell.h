@@ -73,6 +73,11 @@ int		check_builtin(char *cmd);
 int		handle_builtin(int ret, t_script script, int i);
 
 /*
+** exec_pipes.c
+*/
+int		pipex(t_script script, char **path_env);
+
+/*
 ** signal.c
 */
 void		sig_handler(int signum);

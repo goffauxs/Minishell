@@ -51,7 +51,7 @@ void	handle_cmd(t_script script, int i)
 	}
 	else
 	{
-		pipex();
+		pipex(script, path_env);
 	}
 	free(path_env);
 }
