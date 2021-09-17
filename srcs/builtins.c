@@ -64,7 +64,7 @@ int builtin_exit(t_command command)
 				write(1, "exit\n", 5);
 				printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
 				rl_on_new_line();
-				exit_status = 255;
+				glo.exit_status = 255;
 				return(0);
 			}
 			j++;
@@ -74,7 +74,7 @@ int builtin_exit(t_command command)
 	{
 		write(1, "exit\n", 5);
 		printf("%s: too many arguments\n", command.cmd);
-		exit_status = 1;
+		glo.exit_status = 1;
 		rl_on_new_line();
 		return(1);
 	}
@@ -89,14 +89,14 @@ int builtin_exit(t_command command)
 					write(1, "exit\n", 5);
 					printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
 					rl_on_new_line();
-					exit_status = 255;
+					glo.exit_status = 255;
 					return(0);
 				}
 			}
-			exit_status = ft_atoi(command.argv[1]) & 0xFF;
+			glo.exit_status = ft_atoi(command.argv[1]) & 0xFF;
 		}
 		else
-			exit_status = 0;
+			glo.exit_status = 0;
 		rl_on_new_line();
 		write(1, "exit\n", 5);
 	}

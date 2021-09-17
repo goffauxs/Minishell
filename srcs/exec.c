@@ -102,17 +102,18 @@ void	handle_cmd(t_script script, int i)
 
 	path_env = split_paths(script.envp);
 	pid = fork();
+	glo.running_pid = pid;
 	if (pid == -1)
 	{
-		exit_status = 1 ;
+		glo.exit_status = 1 ;
 		return; //error
 	}
 	if (pid == 0)
 		child(path_env, script, i);
-	waitpid(0, &exit_status, 0);
+	waitpid(0, &glo.exit_status, 0);
 	free(path_env);
-	if (exit_status == 256 || exit_status == 512)
-		exit_status /= 256;
+	if (glo.exit_status == 256 || glo.exit_status == 512)
+		glo.exit_status /= 256;
 }
 
 int	check_builtin(char *cmd)
@@ -144,15 +145,15 @@ int	check_builtin(char *cmd)
 int	handle_builtin(int ret, t_script script, int i)
 {
 	if (ret == 1)
-		exit_status = builtin_echo(script.commands[i]); // ok
+		glo.exit_status = builtin_echo(script.commands[i]); // ok
 	if (ret == 2)
-		exit_status = builtin_cd(script.commands[i]); // ok
+		glo.exit_status = builtin_cd(script.commands[i]); // ok
 	if (ret == 3)
-		exit_status = builtin_pwd(); // ok
+		glo.exit_status = builtin_pwd(); // ok
 	if(ret == 4)
-		exit_status = builtin_export(&script); // segfault
+		glo.exit_status = builtin_export(&script); // segfault
 	if (ret == 6)
-		exit_status = builtin_env(script.envp); // ok
+		glo.exit_status = builtin_env(script.envp); // ok
 	if(ret == 7)
 		return(builtin_exit(script.commands[i])); // ok
 	return(0);

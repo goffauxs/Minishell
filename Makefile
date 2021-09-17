@@ -6,7 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/16 13:45:01 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/17 15:36:15 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFT		=	$(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
 CC			=	gcc
 INCLUDE		=	includes
-CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -fsanitize=address -g
+CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
@@ -33,7 +33,7 @@ OBJS		=	$(SRCS:%.c=%.o)
 all:		$(NAME)
 
 $(NAME):	$(OBJS) $(LIBFT)
-			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib $(OBJS) -I/Users/$(USER)/.brew/opt/readline/include -o $(NAME)
+			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib  $(OBJS) -o $(NAME)
 			@echo "Linked into executable \033[0;32mminishell\033[0m."
 
 $(LIBFT):

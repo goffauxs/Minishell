@@ -24,7 +24,7 @@ int main(int argc, char **argv, char **envp)
 	char *prompt;
 	char **split_buf;
 	// EXECUTION
-	exit_status = 0;
+	glo.exit_status = 0;
 	int	ret;
 	(void)argc;
 	(void)argv;
@@ -43,8 +43,8 @@ int main(int argc, char **argv, char **envp)
 		// SIGNAUX
 		if (line_buf == NULL)
 		{
-			rl_on_new_line ();
-			write(1, ft_strjoin(prompt, "exit\n"), ft_strlen(ft_strjoin(prompt, "exit\n")));
+			//rl_on_new_line ();
+			//write(1, ft_strjoin(prompt, "exit\n"), ft_strlen(ft_strjoin(prompt, "exit\n")));
 			break;
 		}
 		//
@@ -81,7 +81,6 @@ int main(int argc, char **argv, char **envp)
 			}
 			i++;
 		}
-		printf("\nEXIT STATUS %d\n", exit_status);
 		if(ret == 8)
 			break;
 	}

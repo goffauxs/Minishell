@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/17 11:27:00 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/17 16:23:26 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@
 # include <limits.h>
 # define MAX_PATH_LEN 4096
 
-// typedef struct	s_gloable
-// {
-// 	int	exit_status;
-// 	int	pid;
-// }	s_globale;
+typedef struct	s_globale
+{
+	int	exit_status;
+	int	running_pid;
+}	s_globale;
 
 typedef struct	s_redirection
 {
@@ -54,7 +54,7 @@ typedef struct	s_script
 	char		**envp;
 }				t_script;
 
-int exit_status;
+s_globale glo;
 
 /*
 ** main.c
