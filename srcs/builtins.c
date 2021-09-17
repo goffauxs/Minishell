@@ -48,9 +48,47 @@ int	builtin_cd(t_command command)
 	return (chdir(command.argv[i]));
 }
 
-int	builtin_exit(void)
+int builtin_exit(t_command command)
 {
-	exit(EXIT_SUCCESS);
+	int j;
+	if(command.argv[1])
+	{
+		j = 0;
+		while(command.argv[1][j])
+		{
+			if(command.argv[1][j] == '-')
+				j++;
+			if(!ft_isdigit(command.argv[1][j]))
+			{
+				write(1, "exit\n", 5);
+				printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
+				rl_on_new_line();
+				exit_status = 255;
+				return(0);
+			}
+			j++;
+		}
+	}
+	if(command.argc > 2)
+	{
+		write(1, "exit\n", 5);
+		printf("%s: too many arguments\n", command.cmd);
+		rl_on_new_line();
+		return(1);
+	}
+	else
+	{
+		if(command.argv[1])
+		{
+			exit_status = ft_atoi(command.argv[1]) % 256;
+			if(exit_status < 0)
+				exit_status = exit_status * -1;
+		}
+		else	
+			exit_status = 0;
+		rl_on_new_line();
+		write(1, "exit\n", 5);
+	}
 	return(0);
 }
 

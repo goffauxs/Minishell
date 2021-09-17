@@ -10,11 +10,13 @@ CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -fsanitize=address -g
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
-SRCS		=	srcs/builtins.c		\
-				srcs/exec.c 		\
-				srcs/parsing.c 		\
-				srcs/signal.c		\
-				main.c 				\
+SRCS		=	srcs/builtins.c			\
+				srcs/exec.c 			\
+				srcs/parsing.c 			\
+				srcs/signal.c			\
+				srcs/path_handling.c	\
+				srcs/exec_pipes.c		\
+				main.c 					\
 
 OBJS		=	$(SRCS:%.c=%.o)
 

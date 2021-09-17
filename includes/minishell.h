@@ -8,9 +8,16 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
-# include "libft.h"
 # include <limits.h>
+# include "libft.h"
+
 # define MAX_PATH_LEN 4096
+
+// typedef struct	s_gloable
+// {
+// 	int	exit_status;
+// 	int	pid;
+// }	s_globale;
 
 typedef struct	s_redirection
 {
@@ -36,6 +43,8 @@ typedef struct	s_script
 	char		**envp;
 }				t_script;
 
+int exit_status;
+
 /*
 ** main.c
 */
@@ -57,12 +66,11 @@ t_command	parse_command(char *split_buf);
 //static char	*add_forw_slash(char *str);
 //static int	check_path_line(char **env);
 //static void	init_vars(int *i, int *j);
-//static char	**split_paths(char **env);
-//static void	exec_cmd( char **path, char **cmd, char **env);
-int		child(char **path_env, t_script script, int i);
-int		handle_cmd(t_script script, int i, int exit_status);
-int			check_builtin(char *cmd);
-int		handle_builtin(int ret, t_script script, int i, int exit_status);
+void	exec_cmd( char **path, char **cmd, char **env);
+// void	child(char **path_env, t_script script, int i);
+void	handle_cmd(t_script script, int i);
+int		check_builtin(char *cmd);
+int		handle_builtin(int ret, t_script script, int i);
 
 /*
 ** signal.c
@@ -74,9 +82,14 @@ void		sig_handler(int signum);
 */
 int			builtin_echo(t_command command);
 int			builtin_cd(t_command command);
-int			builtin_exit(void);
+int			builtin_exit(t_command command);
 int			builtin_pwd(void);
 int			builtin_export(t_script *script);
 int			builtin_env(char **envp);
+
+/*
+** path_handling.c
+*/
+char	**split_paths(char **env);
 
 #endif
