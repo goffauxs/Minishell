@@ -68,23 +68,20 @@ int main(int argc, char **argv, char **envp)
 				handle_cmd(script, i);
 			else
 			{
-				handle_builtin(ret, script, i);
 				if(ret == 7)
-					break;
+				{
+					if (!handle_builtin(ret, script, i))
+					{
+						ret ++;
+						break;
+					}
+				}
+				else
+					handle_builtin(ret, script, i);
 			}
 			i++;
 		}
-		printf("test exit_status %d\n", exit_status);
-		if(ret == 7)
+		if(ret == 8)
 			break;
-		//
-		// if(!ft_strncmp(line_buf, "exit", 4))
-		// {
-		// 	rl_on_new_line();
-		// 	write(1, "exit\n", 5);
-
-		// 	break;
-		// }
-		// exit needs to take args 
 	}
 }

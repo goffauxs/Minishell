@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/16 17:12:45 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/17 11:27:00 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@
 # include <limits.h>
 # define MAX_PATH_LEN 4096
 
-int exit_status;
+// typedef struct	s_gloable
+// {
+// 	int	exit_status;
+// 	int	pid;
+// }	s_globale;
 
 typedef struct	s_redirection
 {
@@ -50,6 +54,8 @@ typedef struct	s_script
 	char		**envp;
 }				t_script;
 
+int exit_status;
+
 /*
 ** main.c
 */
@@ -74,9 +80,9 @@ t_command	parse_command(char *split_buf);
 //static char	**split_paths(char **env);
 //static void	exec_cmd( char **path, char **cmd, char **env);
 void	child(char **path_env, t_script script, int i);
-void		handle_cmd(t_script script, int i);
+void	handle_cmd(t_script script, int i);
 int		check_builtin(char *cmd);
-void	handle_builtin(int ret, t_script script, int i);
+int		handle_builtin(int ret, t_script script, int i);
 
 /*
 ** signal.c

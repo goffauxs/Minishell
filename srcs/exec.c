@@ -141,7 +141,7 @@ int	check_builtin(char *cmd)
 		return (1);
 }
 
-void	handle_builtin(int ret, t_script script, int i)
+int	handle_builtin(int ret, t_script script, int i)
 {
 	if (ret == 1)
 		exit_status = builtin_echo(script.commands[i]); // ok
@@ -154,5 +154,6 @@ void	handle_builtin(int ret, t_script script, int i)
 	if (ret == 6)
 		exit_status = builtin_env(script.envp); // ok
 	if(ret == 7)
-		exit_status = builtin_exit(script.commands[i]); // ok
+		return(builtin_exit(script.commands[i])); // ok
+	return(0);
 }

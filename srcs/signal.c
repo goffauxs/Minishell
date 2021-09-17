@@ -30,3 +30,20 @@ void	sig_handler(int signum)
 	// 	tourne : quit 3;
 	// }
 }
+
+//int kill(pid_t pid, int sig);
+// If sig is 0, then no signal is sent, but existence and permission
+//        checks are still performed; this can be used to check for the
+//        existence of a process ID or process group ID that the caller is
+//        permitted to signal.
+
+// RETURN VALUE         top
+
+//        On success (at least one signal was sent), zero is returned.  On
+//        error, -1 is returned, and errno is set to indicate the error.
+
+//  ESRCH  The target process or process group does not exist.  Note
+//               that an existing process might be a zombie, a process that
+//               has terminated execution, but has not yet been wait(2)ed
+//               for.
+
