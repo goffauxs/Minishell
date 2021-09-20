@@ -7,12 +7,20 @@ char *get_prompt()
 	char cwd[PATH_MAX];
 
 	getcwd(cwd, PATH_MAX);
-	split_path = ft_split(cwd, '/');
-	int i = 0;
-	while (split_path[i + 1])
-		i++;
-	prompt = ft_strjoin(split_path[i], " > ");
-	return(prompt);
+	if(cwd[1] == '\0')
+	{
+		prompt = ft_strjoin("/", " > ");
+		return(prompt);
+	}
+	else
+	{
+		split_path = ft_split(cwd, '/');
+		int i = 0;
+		while (split_path[i + 1])
+			i++;
+		prompt = ft_strjoin(split_path[i], " > ");
+		return(prompt);
+	}
 }
 
 int main(int argc, char **argv, char **envp)

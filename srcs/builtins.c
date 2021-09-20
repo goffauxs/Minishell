@@ -35,15 +35,12 @@ int	builtin_echo(t_command command)
 
 int	builtin_cd(t_command command)
 {
-	int		i;
 	char	*home;
 
-	i = 0;
 	home = getenv("HOME");
-	if (!command.argv[0])
+	if (!command.argv[1])
 		return (chdir(home));
-	i++;
-	return (chdir(command.argv[i]));
+	return (chdir(command.argv[1]));
 }
 
 int builtin_exit(t_command command)
@@ -110,7 +107,9 @@ int	builtin_pwd(void)
 	buff = getcwd(buff, MAX_PATH_LEN);
 	if (!buff)
 		return (1);
-	printf("%s\n", buff);
+	write(1, buff, ft_strlen(buff));
+	write(1, "\n", 1);
+	//printf("%s\n", buff);
 	free(buff);
 	return (0);
 }
@@ -157,6 +156,11 @@ int	builtin_env(char **envp)
 		return (1);
 	i = 0;
 	while (envp[i])
-		printf("%s\n", envp[i++]);
+	{
+		write(1, envp[i], ft_strlen(envp[i]));
+		write(1, "\n", 1);
+		i++;
+	}
+	//printf("%s\n", envp[i++]);
 	return (0);
 }
