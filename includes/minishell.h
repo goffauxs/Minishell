@@ -68,7 +68,7 @@ t_command	parse_command(char *split_buf);
 //static void	init_vars(int *i, int *j);
 void	exec_cmd( char **path, char **cmd, char **env);
 // void	child(char **path_env, t_script script, int i);
-void	handle_cmd(t_script script, int i);
+void	handle_cmd(t_script script);
 int		check_builtin(char *cmd);
 int		handle_builtin(int ret, t_script script, int i);
 

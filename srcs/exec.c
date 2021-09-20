@@ -20,16 +20,16 @@ void	exec_cmd( char **path, char **cmd, char **env)
 	}
 }
 
-static void	child(char **path_env, t_script script, int i)
+static void	child(char **path_env, t_script script)
 {
 	char *backup;
-	backup = ft_strdup(script.commands[i].cmd);
-	exec_cmd(path_env, script.commands[i].argv, script.envp);
+	backup = ft_strdup(script.commands[0].cmd);
+	exec_cmd(path_env, script.commands[0].argv, script.envp);
 	printf("%s: command not found\n", backup);
 	//free etc
 }
 
-void	handle_cmd(t_script script, int i)
+void	handle_cmd(t_script script)
 {
 	char	**path_env;
 	int		pid;
@@ -44,7 +44,7 @@ void	handle_cmd(t_script script, int i)
 			return; //error
 		}
 		if (pid == 0)
-			child(path_env, script, i);
+			child(path_env, script);
 		waitpid(0, &exit_status, 0);
 		if (exit_status == 256 || exit_status == 512)
 			exit_status /= 256;

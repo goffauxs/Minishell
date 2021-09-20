@@ -12,7 +12,8 @@ char *get_prompt()
 	int i = 0;
 	while (split_path[i + 1])
 		i++;
-	prompt = ft_strjoin(split_path[i], " > ");
+	// prompt = ft_strjoin(split_path[i], " > ");
+	prompt = "Kedulov > ";
 	return(prompt);
 }
 
@@ -26,7 +27,7 @@ int main(int argc, char **argv, char **envp)
 	char **split_buf;
 	// EXECUTION
 	exit_status = 0;
-	int	ret;
+	// int	ret;
 	(void)argc;
 	(void)argv;
 	script.envp = envp;
@@ -61,28 +62,29 @@ int main(int argc, char **argv, char **envp)
 			i++;
 		}
 		// EXECUTION
-		i = 0;
-		while (i < script.cmd_count)
-		{
-			ret = check_builtin(script.commands[i].cmd);
-			if (ret == 0)
-				handle_cmd(script, i);
-			else
-			{
-				if(ret == 7)
-				{
-					if (!handle_builtin(ret, script, i))
-					{
-						ret ++;
-						break;
-					}
-				}
-				else
-					handle_builtin(ret, script, i);
-			}
-			i++;
-		}
-		if(ret == 8)
-			break;
+		handle_cmd(script);
+		// i = 0;
+		// while (i < script.cmd_count)
+		// {
+		// 	ret = check_builtin(script.commands[i].cmd);
+		// 	if (ret == 0)
+		// 		handle_cmd(script, i);
+		// 	else
+		// 	{
+		// 		if(ret == 7)
+		// 		{
+		// 			if (!handle_builtin(ret, script, i))
+		// 			{
+		// 				ret ++;
+		// 				break;
+		// 			}
+		// 		}
+		// 		else
+		// 			handle_builtin(ret, script, i);
+		// 	}
+		// 	i++;
+		// }
+		// if(ret == 8)
+		// 	break;
 	}
 }
