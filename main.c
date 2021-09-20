@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/17 16:52:03 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/20 11:51:59 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,40 +142,62 @@ int	tokenizer(char *str, t_token **head)
 	return (1);
 }
 
-// void	parse_commands(t_token *head, t_script *script)
-// {
-// 	t_token		*tmp;
-// 	int			i;
+void	parse_commands(t_token *head, t_script *script)
+{
+	t_token		*tmp;
+	t_token		*prev;
+	int			i;
+	int			j;
 
-// 	while (head)
-// 	{
-// 		tmp = head;
-// 		script->commands->argc = 0;
-// 		i = 0;
-// 		while (tmp && tmp->type != TOKEN_PIPE)
-// 		{
-// 			script->commands->argc++;
-// 			tmp = tmp->next;
-// 		}
-// 		script->commands->argv = malloc(sizeof(char *) * script->commands->argc);
-// 		while (head->type != TOKEN_PIPE)
-// 		{
-// 			if (head->type == TOKEN_NAME)
-// 				script->commands->argv[i++] = head->content;
-// 			if (head->type == TOKEN_REDIR_OUT || head->type == TOKEN_REDIR_IN)
-// 			{
-// 				if (head->type == TOKEN_REDIR_IN)
-// 					script->commands->out.name = head->next->content;
-// 				else
-// 					script->commands->in.name = head->next->content;
-// 				head = head->next;
-// 			}
-// 			head = head->next;
-// 		}
-// 		head = head->next;
-// 		script->commands++;
-// 	}
-// }
+	i = 0;
+	while (head)
+	{
+		tmp = head;
+		prev = tmp;
+		script->commands[i].argc = 0;
+		while (tmp && tmp->type == TOKEN_NAME && (prev->type != TOKEN_REDIR_IN && prev->type != TOKEN_REDIR_OUT))
+		{
+			printf("%d ", tmp->type);
+			prev = tmp;
+			script->commands[i].argc++;
+			tmp = tmp->next;
+		}
+		printf("command %d: %d\n", i, script->commands[i].argc);
+		script->commands[i].argv = malloc(sizeof(char *) * script->commands[i].argc);
+		j = 0;
+		while (head && head->type != TOKEN_PIPE)
+		{
+			if (head->type == TOKEN_NAME)
+				script->commands[i].argv[j++] = ft_strdup(head->content);
+			if (head->type == TOKEN_REDIR_OUT || head->type == TOKEN_REDIR_IN)
+			{
+				if (head->type == TOKEN_REDIR_IN)
+					script->commands[i].out.name = ft_strdup(head->next->content);
+				else
+					script->commands[i].in.name = ft_strdup(head->next->content);
+				head = head->next;
+			}
+			head = head->next;
+		}
+		if (!head)
+			break ;
+		head = head->next;
+		i++;
+	}
+}
+
+void	free_tokens(t_token *head)
+{
+	t_token	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		free(head->content);
+		free(head);
+		head = tmp;
+	}
+}
 
 int	main(void)
 {
@@ -195,13 +217,26 @@ int	main(void)
 		}
 		script.cmd_count = get_cmd_count(line_buf);
 		script.commands = malloc(sizeof(t_command) * script.cmd_count);
-		// parse_commands(head, &script);
-		// for (int i = 0; i < script.cmd_count; i++)
-		// {
-		// 	printf("%s\n", script.commands[i].argv[0]);
-		// 	for (int j = 1; j < script.commands[i].argc; j++)
-		// 		printf("\t%s\n", script.commands[i].argv[j]);
-		// }
+		parse_commands(head, &script);
+		for (int i = 0; i < script.cmd_count; i++)
+		{
+			printf("%s\n", script.commands[i].argv[0]);
+			for (int j = 1; j < script.commands[i].argc; j++)
+				printf("\t%s\n", script.commands[i].argv[j]);
+		}
+		for (int i = 0; i < script.cmd_count; i++)
+		{
+			for (int j = 0; j < script.commands[i].argc; j++)
+				free(script.commands[i].argv[j]);
+			if (script.commands[i].in.name)
+				free(script.commands[i].in.name);
+			if (script.commands[i].out.name)
+				free(script.commands[i].out.name);
+			free(script.commands[i].argv);
+		}
+		free(script.commands);
+		free_tokens(head);
+		head = NULL;
 		if (!ft_strncmp(line_buf, "exit", 4))
 		{
 			free(line_buf);
