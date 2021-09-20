@@ -51,7 +51,6 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 		//free tout ce qu'il faut + exec_status = 1 ou 126
 		exit(1);
 	}
-	write(2, "ok1\n", 4);
 	close(pipein[1]);
 	close(pipeout[0]);
 	exec_cmd(path_env, script.commands[i].argv, script.envp);
@@ -99,7 +98,6 @@ static int	middle_loop(t_script script, char **path_env, int *pipe1, int *pipe2)
 		wait(0);
 		i++;
 	}
-	write(2, "ok2\n", 4);
 	// char	buff[80];
 	// read(pipe2[0], buff, 80);
 	// write(2, &buff, 80);

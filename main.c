@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 char *get_prompt()
@@ -63,28 +62,5 @@ int main(int argc, char **argv, char **envp)
 		}
 		// EXECUTION
 		handle_cmd(script);
-		// i = 0;
-		// while (i < script.cmd_count)
-		// {
-		// 	ret = check_builtin(script.commands[i].cmd);
-		// 	if (ret == 0)
-		// 		handle_cmd(script, i);
-		// 	else
-		// 	{
-		// 		if(ret == 7)
-		// 		{
-		// 			if (!handle_builtin(ret, script, i))
-		// 			{
-		// 				ret ++;
-		// 				break;
-		// 			}
-		// 		}
-		// 		else
-		// 			handle_builtin(ret, script, i);
-		// 	}
-		// 	i++;
-		// }
-		// if(ret == 8)
-		// 	break;
 	}
 }
