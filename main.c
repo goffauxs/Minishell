@@ -25,10 +25,11 @@ int main(int argc, char **argv, char **envp)
 	char **split_buf;
 	// EXECUTION
 	glo.exit_status = 0;
-	int	ret;
+	glo.running_pid = 0;
 	(void)argc;
 	(void)argv;
 	script.envp = envp;
+	int ret;
 	//
 	while (1)
 	{
@@ -43,8 +44,9 @@ int main(int argc, char **argv, char **envp)
 		// SIGNAUX
 		if (line_buf == NULL)
 		{
-			//rl_on_new_line ();
-			//write(1, ft_strjoin(prompt, "exit\n"), ft_strlen(ft_strjoin(prompt, "exit\n")));
+			// rl_redisplay();
+			// rl_on_new_line();
+			// write(1, "exit\n", 5);
 			break;
 		}
 		//
@@ -60,27 +62,8 @@ int main(int argc, char **argv, char **envp)
 			i++;
 		}
 		// EXECUTION
-		i = 0;
-		while (i < script.cmd_count)
-		{
-			ret = check_builtin(script.commands[i].cmd);
-			if (ret == 0)
-				handle_cmd(script, i);
-			else
-			{
-				if(ret == 7)
-				{
-					if (!handle_builtin(ret, script, i))
-					{
-						ret ++;
-						break;
-					}
-				}
-				else
-					handle_builtin(ret, script, i);
-			}
-			i++;
-		}
+		ret = 0;
+		ret = handle_cmd(script);
 		if(ret == 8)
 			break;
 	}

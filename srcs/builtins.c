@@ -23,13 +23,13 @@ int	builtin_echo(t_command command)
 	}
 	while (command.argv[i])
 	{
-		printf("%s", command.argv[i]);
-		if (command.argv[i + 1])
-			printf(" ");
+		write(1, command.argv[i], ft_strlen(command.argv[i]));
+		if (i != command.argc - 1)
+			write(1, " ", 1);
 		i++;
 	}
 	if (flag == 0)
-		printf("\n");
+		write(1, "\n", 1);
 	return (0);
 }
 
@@ -62,7 +62,7 @@ int builtin_exit(t_command command)
 				printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
 				rl_on_new_line();
 				glo.exit_status = 255;
-				return(0);
+				return(1);
 			}
 			j++;
 		}
@@ -73,7 +73,7 @@ int builtin_exit(t_command command)
 		printf("%s: too many arguments\n", command.cmd);
 		glo.exit_status = 1;
 		rl_on_new_line();
-		return(1);
+		return(0);
 	}
 	else
 	{
@@ -87,7 +87,7 @@ int builtin_exit(t_command command)
 					printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
 					rl_on_new_line();
 					glo.exit_status = 255;
-					return(0);
+					return(1);
 				}
 			}
 			glo.exit_status = ft_atoi(command.argv[1]) & 0xFF;
@@ -97,7 +97,7 @@ int builtin_exit(t_command command)
 		rl_on_new_line();
 		write(1, "exit\n", 5);
 	}
-	return(0);
+	return(1);
 }
 
 int	builtin_pwd(void)

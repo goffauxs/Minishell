@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/17 16:23:26 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/20 17:14:46 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,21 @@ t_command	parse_command(char *split_buf);
 //static int	check_path_line(char **env);
 //static void	init_vars(int *i, int *j);
 //static char	**split_paths(char **env);
-//static void	exec_cmd( char **path, char **cmd, char **env);
-void	child(char **path_env, t_script script, int i);
-void	handle_cmd(t_script script, int i);
+void	exec_cmd( char **path, char **cmd, char **env);
+//void	child(char **path_env, t_script script, int i);
+int	handle_cmd(t_script script);
 int		check_builtin(char *cmd);
 int		handle_builtin(int ret, t_script script, int i);
+
+/*
+** exec_pipes.c
+*/
+int		pipex(t_script script, char **path_env);
+
+/*
+** path_handling.c
+*/
+char	**split_paths(char **env);
 
 /*
 ** signal.c

@@ -1,72 +1,6 @@
 #include "minishell.h"
 
-static char	*add_forw_slash(char *str)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = ft_strdup(str);
-	free(str);
-	str = (char *)malloc(sizeof(char) * (ft_strlen(tmp) + 2));
-	while (tmp[i])
-	{
-		str[i] = tmp[i];
-		i++;
-	}
-	str[i++] = '/';
-	str[i] = '\0';
-	free(tmp);
-	return (str);
-}
-
-static int	check_path_line(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (ft_strncmp(env[i], "PATH=", 5))
-		i++;
-	return (i);
-}
-
-static void	init_vars(int *i, int *j)
-{
-	*i = 0;
-	*j = 5;
-}
-
-static char	**split_paths(char **env)
-{
-	char	**path;
-	char	*tmp;
-	int		i;
-	int		j;
-	int		p_line;
-
-	init_vars(&i, &j);
-	p_line = check_path_line(env);
-	path = ft_split(env[p_line], ':');
-	tmp = ft_strdup(path[0]);
-	free(path[0]);
-	path[0] = (char *)malloc(sizeof(char) * ((ft_strlen(tmp) - 5) + 1));
-	while (tmp[j])
-		path[0][i++] = tmp[j++];
-	path[0][i] = '\0';
-	free(tmp);
-	i = 0;
-	while (path[i])
-	{
-		tmp = ft_strdup(path[i]);
-		free(path[i]);
-		path[i] = add_forw_slash(tmp);
-		i++;
-	}
-	return (path);
-}
-//
-//
-static void	exec_cmd( char **path, char **cmd, char **env)
+void	exec_cmd( char **path, char **cmd, char **env)
 {
 	char	*tmp;
 	int		i;
@@ -86,34 +20,52 @@ static void	exec_cmd( char **path, char **cmd, char **env)
 	}
 }
 
-void	child(char **path_env, t_script script, int i)
+static void	child(char **path_env, t_script script)
 {
 	char *backup;
-	backup = ft_strdup(script.commands[i].cmd);
-	exec_cmd(path_env, script.commands[i].argv, script.envp);
+	backup = ft_strdup(script.commands[0].cmd);
+	exec_cmd(path_env, script.commands[0].argv, script.envp);
 	printf("%s: command not found\n", backup);
 	//free etc
 }
 
-void	handle_cmd(t_script script, int i)
+int	handle_cmd(t_script script)
 {
 	char	**path_env;
 	int		pid;
+	int		ret;
 
+	ret = 0;
 	path_env = split_paths(script.envp);
-	pid = fork();
-	glo.running_pid = pid;
-	if (pid == -1)
+	if (script.cmd_count == 1)
 	{
-		glo.exit_status = 1 ;
-		return; //error
+		ret = check_builtin(script.commands[0].cmd);
+		if(ret == 0)
+		{
+			pid = fork();
+			if (pid == -1)
+			{
+				glo.exit_status = 1 ;
+				return (0); //error
+			}
+			if (pid == 0)
+				child(path_env, script);
+			waitpid(0, &glo.exit_status, 0);
+			if (glo.exit_status == 256 || glo.exit_status == 512)
+				glo.exit_status /= 256;
+		}
+		else
+		{
+			if (handle_builtin(ret, script, 0))
+				ret ++; // condition for the exit : return 1 only if exit is needed
+		}
 	}
-	if (pid == 0)
-		child(path_env, script, i);
-	waitpid(0, &glo.exit_status, 0);
+	else
+	{
+		pipex(script, path_env);
+	}
 	free(path_env);
-	if (glo.exit_status == 256 || glo.exit_status == 512)
-		glo.exit_status /= 256;
+	return(ret);
 }
 
 int	check_builtin(char *cmd)

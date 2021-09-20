@@ -6,7 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/17 15:36:15 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/20 11:13:46 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ SRCS		=	srcs/builtins.c		\
 				srcs/exec.c 		\
 				srcs/parsing.c 		\
 				srcs/signal.c		\
+				srcs/path_handling.c \
+				srcs/exec_pipes.c	\
 				main.c 				\
 
 OBJS		=	$(SRCS:%.c=%.o)
