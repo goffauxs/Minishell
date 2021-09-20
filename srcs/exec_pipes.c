@@ -2,6 +2,7 @@
 
 static void	first_child(t_script script, char **path_env, int *pipe1)
 {
+	int ret;
 	//if (!script.commands.in)
 	// |
 	// v
@@ -11,8 +12,17 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 		exit(1);
 	}
 	close(pipe1[0]);
-	exec_cmd(path_env, script.commands[0].argv, script.envp);
-	write(2, "command not found\n", 18);
+	ret = check_builtin(script.commands[0].cmd);
+	if(!ret)
+	{
+		exec_cmd(path_env, script.commands[0].argv, script.envp);
+		write(2, "command not found\n", 18);
+	}
+	else
+	{
+		handle_builtin(ret, script, 0);
+		return;
+	}
 	//free etc
 }
 
@@ -20,6 +30,7 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 {
 	int	fdin;
 	int	fdout;
+	int ret;
 
 	if (script.commands[i].in.name)
 	{
@@ -57,8 +68,17 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 	}
 	close(pipein[1]);
 	close(pipeout[0]);
-	exec_cmd(path_env, script.commands[i].argv, script.envp);
-	write(2, "command not found\n", 18);
+	ret = check_builtin(script.commands[i].cmd);
+	if(!ret)
+	{
+		exec_cmd(path_env, script.commands[i].argv, script.envp);
+		write(2, "command not found\n", 18);
+	}
+	else
+	{
+		handle_builtin(ret, script, i);
+		return;
+	}	
 	//free etc
 }
 
@@ -109,6 +129,7 @@ static int	middle_loop(t_script script, char **path_env, int *pipe1, int *pipe2)
 
 static void	last_child(t_script script, char **path_env, int *pipein, int i)
 {
+	int ret;
 	//if (!script.commands[i].out)
 	//	|
 	//	v
@@ -121,8 +142,17 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 	}
 	close(pipein[0]);
 	close(pipein[1]);
-	exec_cmd(path_env, script.commands[i].argv, script.envp);
-	write(2, "command not found\n", 18);
+	ret = check_builtin(script.commands[i].cmd);
+	if(!ret)
+	{
+		exec_cmd(path_env, script.commands[i].argv, script.envp);
+		write(2, "command not found\n", 18);
+	}
+	else
+	{
+		handle_builtin(ret, script,i);
+		return;
+	}
 	//free etc
 }
 
