@@ -51,6 +51,7 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 		//free tout ce qu'il faut + exec_status = 1 ou 126
 		exit(1);
 	}
+	write(2, "ok1\n", 4);
 	close(pipein[1]);
 	close(pipeout[0]);
 	exec_cmd(path_env, script.commands[i].argv, script.envp);
@@ -67,12 +68,8 @@ static int	middle_cmds(t_script script, char **path_env, int *pipein, int *pipeo
 		return (1); //error
 	if (pid == 0)
 		middle_child(script, path_env, pipein, pipeout, i);
-	wait(0);
-	char	buff[80];
-	read(pipeout[0], buff, 80);
-	write(2, &buff, 80);
 	close(pipein[0]);
-	close(pipein[1]);
+	close(pipeout[1]);
 	return (0);
 }
 
@@ -99,9 +96,14 @@ static int	middle_loop(t_script script, char **path_env, int *pipe1, int *pipe2)
 			middle_cmds(script, path_env, pipe2, pipe1, i);
 			check = 0;
 		}
+		wait(0);
 		i++;
 	}
-	return (0);
+	write(2, "ok2\n", 4);
+	// char	buff[80];
+	// read(pipe2[0], buff, 80);
+	// write(2, &buff, 80);
+	return (check);
 }
 
 static void	first_child(t_script script, char **path_env, int *pipe1)
@@ -127,6 +129,7 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 	//	v
 	if (dup2(pipein[0], STDIN_FILENO) == -1)
 	{
+		write(2, "dup2 error\n", 11);
 		//free tout ce qu'il faut + exec_status = 1 ou 126
 		exit(1);
 	}
