@@ -6,7 +6,7 @@
 #    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/20 11:41:00 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/09/20 13:53:51 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFT		=	$(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
 CC			=	gcc
 INCLUDE		=	includes
-CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include -fsanitize=address -g
+CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
