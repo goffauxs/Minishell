@@ -68,7 +68,6 @@ typedef struct	s_redirection
 
 typedef struct	s_command
 {
-	char			*cmd;
 	int				argc;
 	char			**argv;
 	t_redirection	out;
@@ -93,12 +92,14 @@ char		*get_prompt();
 /*
 ** parsing.c
 */
-int			get_cmd_count(char *line_buf);
-int			set_redir_flag(char c, char chevron);
-int			get_inoutfile(char *line_buf, char chevron, t_redirection *redir, int start);
-char		*trim_infile(char *str);
-char		*trim_outfile(char *str);
-t_command	parse_command(char *split_buf);
+// int			get_cmd_count(char *line_buf);
+// int			set_redir_flag(char c, char chevron);
+// int			get_inoutfile(char *line_buf, char chevron, t_redirection *redir, int start);
+// char		*trim_infile(char *str);
+// char		*trim_outfile(char *str);
+// t_command	parse_command(char *split_buf);
+int			parse(t_script *script);
+void		free_commands(t_script *script);
 
 /*
 ** exec.c

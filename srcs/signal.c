@@ -1,23 +1,38 @@
-#include "minishell.h"
+// #include "minishell.h"
 
-void	sig_handler(int signum)
-{
-	char	*prompt;
-	size_t	i;
+// void	sig_handler(int signum)
+// {
+// 	char	*prompt;
 
-	i = 0;
-	(void)signum;
-	prompt = get_prompt();
-	while (i < ft_strlen(prompt) + 2)
-	{
-		write(1, " \b", 2);
-		if (i < ft_strlen(prompt))
-			write(1, &prompt[i], 1);
-		else if (i == ft_strlen(prompt))
-			write(1, " ", 1);
-		i++;
-	}
-	write(1, "\n", 1);
-	write(1, prompt, ft_strlen(prompt));
-	signal(SIGINT, sig_handler);
-}
+// 	prompt = get_prompt();
+// 	if((signum == SIGINT || signum == SIGQUIT) && glo.running_pid != 0)
+// 	{
+// 		if(!kill(glo.running_pid, 0))
+// 		{
+// 			if(signum == SIGINT) // ctrl c OK
+// 			{
+// 				write(1, "\n", 1);
+// 				glo.exit_status = 131;
+// 			}
+// 			if(signum == SIGQUIT) // ctrl backslash 
+// 			{
+// 				write(1,"Quit: 3\n",8);
+// 				glo.exit_status = 130;
+// 			}
+// 		}
+// 	}
+// 	else if (glo.running_pid == 0)
+// 	{
+// 		if(signum == SIGINT) // ctrl c
+// 		{
+// 			glo.exit_status = 1;
+// 			write(1,"\n",1);
+// 			rl_on_new_line();
+// 			rl_redisplay();
+// 		}
+// 		else if (signum == SIGQUIT) // ctrl backslash
+// 		{
+// 			signal(SIGQUIT, SIG_IGN);
+// 		}
+// 	}
+// }

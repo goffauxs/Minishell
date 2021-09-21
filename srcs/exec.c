@@ -39,7 +39,7 @@ void	handle_cmd(t_script script)
 	path_env = split_paths(script.envp);
 	if (script.cmd_count == 1)
 	{
-		ret = check_builtin(script.commands[0].cmd);
+		ret = check_builtin(script.commands[0].argv[0]);
 		if(ret == 0)
 		{
 			pid = fork();

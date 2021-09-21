@@ -7,11 +7,8 @@ int	builtin_echo(t_command command)
 
 	i = 0;
 	flag = 0;
-	if (!command.argv[0])
-	{
-		printf("\n");
+	if (!command.argv[1])
 		return (0);
-	}
 	i++;
 	if (command.argv[i][flag] == '-')
 	{
@@ -25,27 +22,24 @@ int	builtin_echo(t_command command)
 	}
 	while (command.argv[i])
 	{
-		printf("%s", command.argv[i]);
-		if (command.argv[i + 1])
-			printf(" ");
+		write(1, command.argv[i], ft_strlen(command.argv[i]));
+		if (i != command.argc - 1)
+			write(1, " ", 1);
 		i++;
 	}
 	if (flag == 0)
-		printf("\n");
+		write(1, "\n", 1);
 	return (0);
 }
 
 int	builtin_cd(t_command command)
 {
-	int		i;
 	char	*home;
 
-	i = 0;
 	home = getenv("HOME");
-	if (!command.argv[0])
+	if (!command.argv[1])
 		return (chdir(home));
-	i++;
-	return (chdir(command.argv[i]));
+	return (chdir(command.argv[1]));
 }
 
 int builtin_exit(t_command command)
@@ -64,7 +58,7 @@ int builtin_exit(t_command command)
 				printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
 				rl_on_new_line();
 				exit_status = 255;
-				return(0);
+				return(1);
 			}
 			j++;
 		}
@@ -73,23 +67,33 @@ int builtin_exit(t_command command)
 	{
 		write(1, "exit\n", 5);
 		printf("%s: too many arguments\n", command.cmd);
+		exit_status = 1;
 		rl_on_new_line();
-		return(1);
+		return(0);
 	}
 	else
 	{
 		if(command.argv[1])
 		{
-			exit_status = ft_atoi(command.argv[1]) % 256;
-			if(exit_status < 0)
-				exit_status = exit_status * -1;
+			if(ft_strncmp(command.argv[1], "9223372036854775807", 19) != 0)
+			{
+				if(ft_atoi(command.argv[1]) == -1 && ft_strlen(command.argv[1]) > 18) // attention atoi buggé
+				{
+					write(1, "exit\n", 5);
+					printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
+					rl_on_new_line();
+					exit_status = 255;
+					return(1);
+				}
+			}
+			exit_status = ft_atoi(command.argv[1]) & 0xFF;
 		}
-		else	
+		else
 			exit_status = 0;
 		rl_on_new_line();
 		write(1, "exit\n", 5);
 	}
-	return(0);
+	return(1);
 }
 
 int	builtin_pwd(void)
@@ -102,7 +106,9 @@ int	builtin_pwd(void)
 	buff = getcwd(buff, MAX_PATH_LEN);
 	if (!buff)
 		return (1);
-	printf("%s\n", buff);
+	write(1, buff, ft_strlen(buff));
+	write(1, "\n", 1);
+	//printf("%s\n", buff);
 	free(buff);
 	return (0);
 }
@@ -149,6 +155,11 @@ int	builtin_env(char **envp)
 		return (1);
 	i = 0;
 	while (envp[i])
-		printf("%s\n", envp[i++]);
+	{
+		write(1, envp[i], ft_strlen(envp[i]));
+		write(1, "\n", 1);
+		i++;
+	}
+	//printf("%s\n", envp[i++]);
 	return (0);
 }
