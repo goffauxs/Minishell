@@ -112,18 +112,21 @@ static int	middle_cmds(t_script script, char **path_env, int *pipein, int *pipeo
 {
 	int	pid;
 	int ret;
+	int	check;
 
+	check = 0;
 	ret = check_builtin(script.commands[i].cmd);
 	pid = fork();
 	if (pid == -1)
 		return (1); //error
-	if (pid == 0 && !ret)
+	if (pid == 0 && !ret && check++)
 		middle_child(script, path_env, pipein, pipeout, i);
 	else if(pid && ret)
 		middle_builtin(script, pipein, pipeout, i, ret);
 	close(pipein[0]);
 	close(pipeout[1]);
-	wait(0);
+	if(check)
+		wait(0);
 	return (0);
 }
 
@@ -180,10 +183,12 @@ static void	last_cmd(t_script script, char **path_env, int *pipein, int pid2)
 {
 	int	i;
 	int ret;
+	int check;
 
+	check = 0;
 	i = script.cmd_count - 1;
 	ret = check_builtin(script.commands[i].cmd);
-	if (pid2 == 0 && !ret)
+	if (pid2 == 0 && !ret && check++)
 		last_child(script, path_env, pipein, i);
 	else if (pid2 && ret)
 	{
@@ -191,7 +196,8 @@ static void	last_cmd(t_script script, char **path_env, int *pipein, int pid2)
 		close(pipein[0]);
 		close(pipein[1]);
 	}
-	wait(0);
+	if(check)
+		wait(0);
 	//end of function free everything etc
 	//free(path_env);
 }
@@ -201,11 +207,13 @@ int	pipex(t_script script, char **path_env)
 	int	pipe1[2];
 	int	pipe2[2];
 	int	check;
+	int wait_ind;
 	int	pid1;
 	int	pid2;
 	int ret;
 
 	check = 0;
+	wait_ind = 0;
 	if (pipe(pipe1) == -1)
 		return (1); //error
 
@@ -213,7 +221,7 @@ int	pipex(t_script script, char **path_env)
 	if (pid1 == -1)
 		return (1); //error
 	ret = check_builtin(script.commands[0].cmd);
-	if (pid1 == 0 && !ret)
+	if (pid1 == 0 && !ret && wait_ind++)
 		first_child(script, path_env, pipe1);
 	else if (pid1 && ret)
 	{
@@ -222,7 +230,8 @@ int	pipex(t_script script, char **path_env)
 		handle_builtin(ret, script, 0);
 		close(pipe1[0]);
 	}
-	wait(0);
+	if(wait_ind)
+		wait(0);
 	close(pipe1[1]);
 
 	check = middle_loop(script, path_env, pipe1, pipe2);
@@ -236,6 +245,5 @@ int	pipex(t_script script, char **path_env)
 		last_cmd(script, path_env, pipe2, pid2);
 	else if (check == 0)
 		last_cmd(script, path_env, pipe1, pid2);
-	wait(0);
 	return (0);
 }
