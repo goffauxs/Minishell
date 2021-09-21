@@ -259,13 +259,14 @@ int main(int argc, char **argv, char **envp)
 			script.commands[i].out.name = NULL;
 		}
 		parse_commands(head, script.commands);
-		// for (int i = 0; i < script.cmd_count; i++)
-		// {
-		// 	printf("%s", script.commands[i].argv[0]);
-		// 	// printf("\t(in: '%s', out: '%s')\n", (script.commands[i].in.name) ? script.commands[i].in.name : "none", (script.commands[i].out.name) ? script.commands[i].out.name : "none");
-		// 	// for (int j = 1; j < script.commands[i].argc; j++)
-		// 	// 	printf("\t%s\n", script.commands[i].argv[j]);
-		// }
+		for (int i = 0; i < script.cmd_count; i++)
+		{
+			script.commands[i].cmd = script.commands[i].argv[0];
+			// printf("%s", script.commands[i].argv[0]);
+			// printf("\t(in: '%s', out: '%s')\n", (script.commands[i].in.name) ? script.commands[i].in.name : "none", (script.commands[i].out.name) ? script.commands[i].out.name : "none");
+			// for (int j = 1; j < script.commands[i].argc; j++)
+			// 	printf("\t%s\n", script.commands[i].argv[j]);
+		}
 		// EXECUTION
 		handle_cmd(script);
 		for (int i = 0; i < script.cmd_count; i++)

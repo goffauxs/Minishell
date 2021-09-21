@@ -33,21 +33,32 @@ void	handle_cmd(t_script script)
 {
 	char	**path_env;
 	int		pid;
+	int		ret;
 
+	ret = 0;
 	path_env = split_paths(script.envp);
 	if (script.cmd_count == 1)
 	{
-		pid = fork();
-		if (pid == -1)
+		ret = check_builtin(script.commands[0].cmd);
+		if(ret == 0)
 		{
-			exit_status = 1 ;
-			return; //error
+			pid = fork();
+			if (pid == -1)
+			{
+				exit_status = 1 ;
+				return ; //error
+			}
+			if (pid == 0)
+				child(path_env, script);
+			waitpid(0, &exit_status, 0);
+			if (exit_status == 256 || exit_status == 512)
+				exit_status /= 256;
 		}
-		if (pid == 0)
-			child(path_env, script);
-		waitpid(0, &exit_status, 0);
-		if (exit_status == 256 || exit_status == 512)
-			exit_status /= 256;
+		else
+		{
+			if (handle_builtin(ret, script, 0))
+				ret ++; // condition for the exit : return 1 only if exit is needed
+		}
 	}
 	else
 	{

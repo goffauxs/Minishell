@@ -61,14 +61,30 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 static int	middle_cmds(t_script script, char **path_env, int *pipein, int *pipeout, int i)
 {
 	int	pid;
+	int	ret;
 
-	pid = fork();
-	if (pid == -1)
-		return (1); //error
-	if (pid == 0)
-		middle_child(script, path_env, pipein, pipeout, i);
-	close(pipein[0]);
-	close(pipeout[1]);
+	ret = check_builtin(script.commands[i].cmd);
+	if (!ret)
+	{
+		pid = fork();
+		if (pid == -1)
+			return (1); //error
+		if (pid == 0)
+			middle_child(script, path_env, pipein, pipeout, i);
+		close(pipein[0]);
+		close(pipeout[1]);
+		wait(0);
+	}
+	else
+	{
+		if (dup2(pipein[0], STDIN_FILENO) == -1)
+			exit(1); //error
+		if (dup2(pipeout[1], STDOUT_FILENO) == -1)
+			exit(1); //error
+		handle_builtin(ret, script, i);
+		close(pipein[0]);
+		close(pipeout[1]);
+	}
 	return (0);
 }
 
@@ -95,7 +111,6 @@ static int	middle_loop(t_script script, char **path_env, int *pipe1, int *pipe2)
 			middle_cmds(script, path_env, pipe2, pipe1, i);
 			check = 0;
 		}
-		wait(0);
 		i++;
 	}
 	// char	buff[80];
@@ -156,30 +171,60 @@ int	pipex(t_script script, char **path_env)
 	int	check;
 	int	pid1;
 	int	pid2;
+	int	ret;
 
 	check = 0;
 	if (pipe(pipe1) == -1)
 		return (1); //error
-	pid1 = fork();
-	if (pid1 == -1)
-		return (1); //error
-	if (pid1 == 0)
-		first_child(script, path_env, pipe1);
-	close(pipe1[1]);
-	wait(0);
+	ret = check_builtin(script.commands[0].cmd);
+	if (!ret)
+	{
+		pid1 = fork();
+		if (pid1 == -1)
+			return (1); //error
+		if (pid1 == 0)
+			first_child(script, path_env, pipe1);
+		close(pipe1[1]);
+		wait(0);
+	}
+	else
+	{
+		if (dup2(pipe1[1], STDOUT_FILENO) == -1)
+			exit(1); //error
+		handle_builtin(ret, script, 0);
+		close(pipe1[1]);
+	}
 	check = middle_loop(script, path_env, pipe1, pipe2);
-	// char	buff[800];
-	// read(pipe2[0], buff, 800);
-	// write(2, &buff, 800);
+	// // char	buff[800];
+	// // read(pipe2[0], buff, 800);
+	// // write(2, &buff, 800);
 	if (check == -1)
 		return (1); //error
-	pid2 = fork();
-	if (pid2 == -1)
-		return (1); //error
-	if (check == 1)
-		last_cmd(script, path_env, pipe2, pid2);
-	else if (check == 0 && !pid2)
-		last_cmd(script, path_env, pipe1, pid2);
-	wait(0);
+	ret = check_builtin(script.commands[script.cmd_count - 1].cmd);
+	if (!ret)
+	{
+		pid2 = fork();
+		if (pid2 == -1)
+			return (1); //error
+		if (check == 1)
+			last_cmd(script, path_env, pipe2, pid2);
+		else if (check == 0)
+			last_cmd(script, path_env, pipe1, pid2);
+		wait(0);
+	}
+	else
+	{
+		if (check == 1)
+		{
+			if (dup2(pipe2[0], STDIN_FILENO) == -1)
+				exit(1); //error
+		}
+		else if (check == 0)
+		{
+			if (dup2(pipe1[0], STDIN_FILENO) == -1)
+				exit(1); //error
+		}
+		handle_builtin(ret, script, 0);
+	}
 	return (0);
 }
