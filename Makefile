@@ -6,7 +6,7 @@
 #    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/20 13:53:51 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/09/21 14:48:39 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
-SRCS		=	main.c
+SRCS		=	main.c \
+				srcs/parsing.c
 OBJS		=	$(SRCS:%.c=%.o)
 
 all:		$(NAME)

@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/17 15:45:39 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/21 14:48:08 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,8 @@ typedef struct s_script
 	int			cmd_count;
 	char		**envp;
 }				t_script;
+
+int		parse(t_script *script);
+void	free_commands(t_script *script);
 
 #endif
