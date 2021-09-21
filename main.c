@@ -238,12 +238,20 @@ int main(int argc, char **argv, char **envp)
 		prompt = get_prompt();
 		line_buf = readline(prompt);
 		// SIGNAUX
+
 		if (line_buf == NULL)
 		{
-			rl_on_new_line ();
-			write(1, ft_strjoin(prompt, "exit\n"), ft_strlen(ft_strjoin(prompt, "exit\n")));
+			// rl_redisplay();
+			// rl_on_new_line();
+			// write(1, "exit\n", 5);
 			break;
 		}
+		// if (line_buf == NULL)
+		// {
+		// 	rl_on_new_line ();
+		// 	write(1, ft_strjoin(prompt, "exit\n"), ft_strlen(ft_strjoin(prompt, "exit\n")));
+		// 	break;
+		// }
 		//
 		add_history(line_buf);
 		if (!tokenizer(line_buf, &head))
@@ -267,6 +275,8 @@ int main(int argc, char **argv, char **envp)
 			// for (int j = 1; j < script.commands[i].argc; j++)
 			// 	printf("\t%s\n", script.commands[i].argv[j]);
 		}
+		if (!line_buf)
+			break;
 		// EXECUTION
 		handle_cmd(script);
 		for (int i = 0; i < script.cmd_count; i++)
