@@ -282,7 +282,7 @@ int main(int argc, char **argv, char **envp)
 		free(script.commands);
 		free_tokens(head);
 		head = NULL;
-		if (!ft_strncmp(line_buf, "exit", 4))
+		if (!ft_strncmp(line_buf, "exit", 4) && script.cmd_count == 1)
 		{
 			free(line_buf);
 			break ;

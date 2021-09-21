@@ -62,6 +62,8 @@ static int	middle_cmds(t_script script, char **path_env, int *pipein, int *pipeo
 {
 	int	pid;
 	int	ret;
+	int	saved_in;
+	int	saved_out;
 
 	ret = check_builtin(script.commands[i].cmd);
 	if (!ret)
@@ -77,13 +79,22 @@ static int	middle_cmds(t_script script, char **path_env, int *pipein, int *pipeo
 	}
 	else
 	{
-		if (dup2(pipein[0], STDIN_FILENO) == -1)
-			exit(1); //error
-		if (dup2(pipeout[1], STDOUT_FILENO) == -1)
-			exit(1); //error
-		handle_builtin(ret, script, i);
-		close(pipein[0]);
-		close(pipeout[1]);
+		if (ret != 7)
+		{
+			saved_in = dup(0);
+			saved_out = dup(1);
+			if (dup2(pipein[0], STDIN_FILENO) == -1)
+				exit(1); //error
+			if (dup2(pipeout[1], STDOUT_FILENO) == -1)
+				exit(1); //error
+			handle_builtin(ret, script, i);
+			close(pipein[0]);
+			close(pipeout[1]);
+			dup2(saved_in, STDIN_FILENO);
+			dup2(saved_out, STDOUT_FILENO);
+			close(saved_in);
+			close(saved_out);
+		}
 	}
 	return (0);
 }
@@ -140,6 +151,10 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 	//if (!script.commands[i].out)
 	//	|
 	//	v
+
+	// char	buff[80];
+	// read(pipein[0], buff, 80);
+	// write(2, &buff, 80);
 	if (dup2(pipein[0], STDIN_FILENO) == -1)
 	{
 		write(2, "dup2 error\n", 11);
@@ -160,6 +175,8 @@ static void	last_cmd(t_script script, char **path_env, int *pipein, int pid2)
 	i = script.cmd_count - 1;
 	if (pid2 == 0)
 		last_child(script, path_env, pipein, i);
+	// close(pipein[0]);
+	// close(pipein[1]);
 	//end of function free everything etc
 	// free(path_env);
 }
@@ -172,6 +189,7 @@ int	pipex(t_script script, char **path_env)
 	int	pid1;
 	int	pid2;
 	int	ret;
+	int	saved_stdout;
 
 	check = 0;
 	if (pipe(pipe1) == -1)
@@ -189,17 +207,23 @@ int	pipex(t_script script, char **path_env)
 	}
 	else
 	{
-		if (dup2(pipe1[1], STDOUT_FILENO) == -1)
-			exit(1); //error
-		handle_builtin(ret, script, 0);
-		close(pipe1[1]);
+		if (ret != 7)
+		{
+			saved_stdout = dup(1);
+			if (dup2(pipe1[1], STDOUT_FILENO) == -1)
+				exit(1); //error
+			handle_builtin(ret, script, 0);
+			close(pipe1[1]);
+			dup2(saved_stdout, STDOUT_FILENO);
+			close(saved_stdout);
+		}
 	}
 	check = middle_loop(script, path_env, pipe1, pipe2);
-	// // char	buff[800];
-	// // read(pipe2[0], buff, 800);
-	// // write(2, &buff, 800);
 	if (check == -1)
 		return (1); //error
+	// char	buff[80];
+	// read(pipe1[0], buff, 80);
+	// write(2, &buff, 80);
 	ret = check_builtin(script.commands[script.cmd_count - 1].cmd);
 	if (!ret)
 	{
@@ -214,17 +238,20 @@ int	pipex(t_script script, char **path_env)
 	}
 	else
 	{
-		if (check == 1)
+		if (ret != 7)
 		{
-			if (dup2(pipe2[0], STDIN_FILENO) == -1)
-				exit(1); //error
+			if (check == 1)
+			{
+				if (dup2(pipe2[0], STDIN_FILENO) == -1)
+					exit(1); //error
+			}
+			else if (check == 0)
+			{
+				if (dup2(pipe1[0], STDIN_FILENO) == -1)
+					exit(1); //error
+			}
+			handle_builtin(ret, script, 0);
 		}
-		else if (check == 0)
-		{
-			if (dup2(pipe1[0], STDIN_FILENO) == -1)
-				exit(1); //error
-		}
-		handle_builtin(ret, script, 0);
 	}
 	return (0);
 }
