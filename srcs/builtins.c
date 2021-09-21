@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "libft.h"
 
 int	builtin_echo(t_command command)
 {
@@ -56,9 +55,9 @@ int builtin_exit(t_command command)
 			if(!ft_isdigit(command.argv[1][j]))
 			{
 				write(1, "exit\n", 5);
-				printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
+				printf("%s: %s: numeric argument required\n",command.argv[0], command.argv[1]);
 				rl_on_new_line();
-				glo.exit_status = 255;
+				exit_status = 255;
 				return(1);
 			}
 			j++;
@@ -67,8 +66,8 @@ int builtin_exit(t_command command)
 	if(command.argc > 2)
 	{
 		write(1, "exit\n", 5);
-		printf("%s: too many arguments\n", command.cmd);
-		glo.exit_status = 1;
+		printf("%s: too many arguments\n", command.argv[0]);
+		exit_status = 1;
 		rl_on_new_line();
 		return(0);
 	}
@@ -81,16 +80,16 @@ int builtin_exit(t_command command)
 				if(ft_atoi(command.argv[1]) == -1 && ft_strlen(command.argv[1]) > 18) // attention atoi buggé
 				{
 					write(1, "exit\n", 5);
-					printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
+					printf("%s: %s: numeric argument required\n",command.argv[0], command.argv[1]);
 					rl_on_new_line();
-					glo.exit_status = 255;
+					exit_status = 255;
 					return(1);
 				}
 			}
-			glo.exit_status = ft_atoi(command.argv[1]) & 0xFF;
+			exit_status = ft_atoi(command.argv[1]) & 0xFF;
 		}
 		else
-			glo.exit_status = 0;
+			exit_status = 0;
 		rl_on_new_line();
 		write(1, "exit\n", 5);
 	}

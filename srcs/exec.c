@@ -23,13 +23,13 @@ void	exec_cmd( char **path, char **cmd, char **env)
 static void	child(char **path_env, t_script script)
 {
 	char *backup;
-	backup = ft_strdup(script.commands[0].cmd);
+	backup = ft_strdup(script.commands[0].argv[0]);
 	exec_cmd(path_env, script.commands[0].argv, script.envp);
 	printf("%s: command not found\n", backup);
 	//free etc
 }
 
-int	handle_cmd(t_script script)
+void	handle_cmd(t_script script)
 {
 	char	**path_env;
 	int		pid;
@@ -39,20 +39,20 @@ int	handle_cmd(t_script script)
 	path_env = split_paths(script.envp);
 	if (script.cmd_count == 1)
 	{
-		ret = check_builtin(script.commands[0].cmd);
+		ret = check_builtin(script.commands[0].argv[0]);
 		if(ret == 0)
 		{
 			pid = fork();
 			if (pid == -1)
 			{
-				glo.exit_status = 1 ;
-				return (0); //error
+				exit_status = 1 ;
+				return ; //error
 			}
 			if (pid == 0)
 				child(path_env, script);
-			waitpid(0, &glo.exit_status, 0);
-			if (glo.exit_status == 256 || glo.exit_status == 512)
-				glo.exit_status /= 256;
+			waitpid(0, &exit_status, 0);
+			if (exit_status == 256 || exit_status == 512)
+				exit_status /= 256;
 		}
 		else
 		{
@@ -65,7 +65,6 @@ int	handle_cmd(t_script script)
 		pipex(script, path_env);
 	}
 	free(path_env);
-	return(ret);
 }
 
 int	check_builtin(char *cmd)
@@ -97,15 +96,15 @@ int	check_builtin(char *cmd)
 int	handle_builtin(int ret, t_script script, int i)
 {
 	if (ret == 1)
-		glo.exit_status = builtin_echo(script.commands[i]); // ok
+		exit_status = builtin_echo(script.commands[i]); // ok
 	if (ret == 2)
-		glo.exit_status = builtin_cd(script.commands[i]); // ok
+		exit_status = builtin_cd(script.commands[i]); // ok
 	if (ret == 3)
-		glo.exit_status = builtin_pwd(); // ok
+		exit_status = builtin_pwd(); // ok
 	if(ret == 4)
-		glo.exit_status = builtin_export(&script); // segfault
+		exit_status = builtin_export(&script); // segfault
 	if (ret == 6)
-		glo.exit_status = builtin_env(script.envp); // ok
+		exit_status = builtin_env(script.envp); // ok
 	if(ret == 7)
 		return(builtin_exit(script.commands[i])); // ok
 	return(0);
