@@ -98,7 +98,7 @@ char		*get_prompt();
 // char		*trim_infile(char *str);
 // char		*trim_outfile(char *str);
 // t_command	parse_command(char *split_buf);
-int			parse(t_script *script);
+int			parse(t_script *script, char **line_buf);
 void		free_commands(t_script *script);
 
 /*

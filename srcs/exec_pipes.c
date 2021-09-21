@@ -65,7 +65,7 @@ static int	middle_cmds(t_script script, char **path_env, int *pipein, int *pipeo
 	int	saved_in;
 	int	saved_out;
 
-	ret = check_builtin(script.commands[i].cmd);
+	ret = check_builtin(script.commands[i].argv[0]);
 	if (!ret)
 	{
 		pid = fork();
@@ -194,7 +194,7 @@ int	pipex(t_script script, char **path_env)
 	check = 0;
 	if (pipe(pipe1) == -1)
 		return (1); //error
-	ret = check_builtin(script.commands[0].cmd);
+	ret = check_builtin(script.commands[0].argv[0]);
 	if (!ret)
 	{
 		pid1 = fork();
@@ -224,7 +224,7 @@ int	pipex(t_script script, char **path_env)
 	// char	buff[80];
 	// read(pipe1[0], buff, 80);
 	// write(2, &buff, 80);
-	ret = check_builtin(script.commands[script.cmd_count - 1].cmd);
+	ret = check_builtin(script.commands[script.cmd_count - 1].argv[0]);
 	if (!ret)
 	{
 		pid2 = fork();

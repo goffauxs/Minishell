@@ -286,23 +286,22 @@ void	replace_env_var(t_token *head, char **envp)
 	}
 }
 
-int	parse(t_script *script)
+int	parse(t_script *script, char **line_buf)
 {
 	t_token	*head;
-	char	*line_buf;
 
 	head = NULL;
-	line_buf = readline("Minishell > ");
-	add_history(line_buf);
-	if (!tokenizer(line_buf, &head))
+	*line_buf = readline("Minishell > ");
+	add_history(*line_buf);
+	if (!tokenizer(*line_buf, &head))
 	{
 		return_error("Syntax error\n");
-		free(line_buf);
+		free(*line_buf);
 		free_tokens(head);
 		return (1);
 	}
 	replace_env_var(head, script->envp);
-	script->cmd_count = get_cmd_count(line_buf);
+	script->cmd_count = get_cmd_count(*line_buf);
 	script->commands = malloc(sizeof(t_command) * script->cmd_count);
 	for (int i = 0; i < script->cmd_count; i++)
 	{
@@ -312,6 +311,5 @@ int	parse(t_script *script)
 	get_num_args(head, script);
 	parse_commands(head, script->commands);
 	free_tokens(head);
-	free(line_buf);
 	return (0);
 }

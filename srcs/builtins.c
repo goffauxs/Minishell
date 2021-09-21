@@ -55,7 +55,7 @@ int builtin_exit(t_command command)
 			if(!ft_isdigit(command.argv[1][j]))
 			{
 				write(1, "exit\n", 5);
-				printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
+				printf("%s: %s: numeric argument required\n",command.argv[0], command.argv[1]);
 				rl_on_new_line();
 				exit_status = 255;
 				return(1);
@@ -66,7 +66,7 @@ int builtin_exit(t_command command)
 	if(command.argc > 2)
 	{
 		write(1, "exit\n", 5);
-		printf("%s: too many arguments\n", command.cmd);
+		printf("%s: too many arguments\n", command.argv[0]);
 		exit_status = 1;
 		rl_on_new_line();
 		return(0);
@@ -80,7 +80,7 @@ int builtin_exit(t_command command)
 				if(ft_atoi(command.argv[1]) == -1 && ft_strlen(command.argv[1]) > 18) // attention atoi buggé
 				{
 					write(1, "exit\n", 5);
-					printf("%s: %s: numeric argument required\n",command.cmd, command.argv[1]);
+					printf("%s: %s: numeric argument required\n",command.argv[0], command.argv[1]);
 					rl_on_new_line();
 					exit_status = 255;
 					return(1);

@@ -3,17 +3,24 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_script	script;
+	char 		*line_buf;
 
 	(void)argc;
 	(void)argv;
 	script.envp = envp;
+	line_buf = NULL;
 	while (1)
-	{	
-		if (parse(&script))
+	{
+		if (parse(&script, &line_buf))
 			continue ;
 		if (script.cmd_count > 0)
 			handle_cmd(script);
 		free_commands(&script);
+		if (!ft_strncmp(line_buf, "exit", 4) && script.cmd_count == 1)
+		{
+			free(line_buf); //aussi pour control d
+			break ;
+		}
 	}
 	system("leaks minishell");
 }
