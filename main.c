@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/20 16:24:53 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/21 14:31:23 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	get_cmd_count(char *line_buf)
 	int		count;
 	char	**split_str;
 
+	if (!line_buf)
+		return (0);
 	count = 0;
 	split_str = ft_split(line_buf, '|');
 	while (split_str[count])
@@ -107,16 +109,23 @@ t_operations	search_token_type(const char *s)
 	return (blank);
 }
 
-static int	treat_quotes()
+static int	treat_quotes(char **str)
 {
-	// TODO
+	char	open_quote;
+
+	open_quote = **str;
+	++(*str);
+	while (**str && **str != open_quote)
+		++(*str);
+	if (!**str || (**str != open_quote))
+		return (0);
+	return (1);
 }
 
 int	tokenizer(char *str, t_token **head)
 {
 	t_operations	curr;
 	char			*prev;
-	// TODO: Add open_quote char to check that the same type of quotation mark closes the quotations
 
 	prev = str;
 	while (str && *str)
@@ -131,15 +140,8 @@ int	tokenizer(char *str, t_token **head)
 				add_token_back(head, create_token(curr.op, curr.size, curr.type));
 			prev = str;
 		}
-		else if (*str == '\"' || *str == '\'')
-		{
-			++str;
-			while (*str && *str != '\'' && *str != '\"')
-				++str;
-			if (!*str || (*str != '\'' && *str != '\"'))
-				return (0);
-			++str;
-		}
+		else if ((*str == '\"' || *str == '\'') && !treat_quotes(&str))
+			return (0);
 		else
 			++str;
 	}
@@ -147,21 +149,28 @@ int	tokenizer(char *str, t_token **head)
 		add_token_back(head, create_token(prev, str - prev, TOKEN_NAME));
 	return (1);
 }
-int	get_num_args(t_token *head)
-{
-	int		argc;
-	t_token	*tmp;
 
-	argc = 0;
-	tmp = head;
-	while (head && head->type != TOKEN_PIPE)
+static void	get_num_args(t_token *head, t_script *script)
+{
+	t_token	*tmp;
+	int		i;
+
+	i = 0;
+	while (i < script->cmd_count)
 	{
-		if (head->type == TOKEN_NAME && (tmp->type != TOKEN_REDIR_IN && tmp->type != TOKEN_REDIR_OUT))
-			argc++;
+		script->commands[i].argc = 0;
 		tmp = head;
-		head = head->next;
+		while (head && head->type != TOKEN_PIPE)
+		{
+			if (head->type == TOKEN_NAME && (tmp->type != TOKEN_REDIR_IN && tmp->type != TOKEN_REDIR_OUT))
+				script->commands[i].argc++;
+			tmp = head;
+			head = head->next;
+		}
+		if (head)
+			head = head->next;
+		i++;
 	}
-	return (argc);
 }
 
 void	parse_commands(t_token *head, t_command *commands)
@@ -172,8 +181,7 @@ void	parse_commands(t_token *head, t_command *commands)
 	i = 0;
 	while (head)
 	{
-		commands[i].argc = get_num_args(head);
-		commands[i].argv = malloc(sizeof(char *) * commands[i].argc);
+		commands[i].argv = malloc(sizeof(char *) * (commands[i].argc + 1));
 		j = 0;
 		while (head && head->type != TOKEN_PIPE)
 		{
@@ -189,8 +197,29 @@ void	parse_commands(t_token *head, t_command *commands)
 		}
 		if (head)
 			head = head->next;
+		commands[i].argv[j] = NULL;
 		i++;
 	}
+}
+
+void	free_commands(t_script *script)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < script->cmd_count)
+	{
+		j = -1;
+		while (++j < script->commands[i].argc)
+			free(script->commands[i].argv[j]);
+		if (script->commands[i].in.name)
+			free(script->commands[i].in.name);
+		if (script->commands[i].out.name)
+			free(script->commands[i].out.name);
+		free(script->commands[i].argv);
+	}
+	free(script->commands);
 }
 
 void	free_tokens(t_token *head)
@@ -206,12 +235,77 @@ void	free_tokens(t_token *head)
 	}
 }
 
-int	main(void)
+int	ft_isenvv(char c)
+{
+	return ((c >= 65 && c <= 90) || ft_isdigit(c) || c == '_');
+}
+
+char	*get_env_var(char *str, char **envp, int *i)
+{
+	char	c;
+	char	*tmp;
+	int		len;
+
+	*i = 0;
+	if (ft_isdigit(*str))
+		return ("");
+	while (str[*i] && ft_isenvv(str[*i]))
+		(*i)++;
+	c = str[*i];
+	str[*i] = 0;
+	tmp = ft_strjoin(str, "=");
+	str[*i] = c;
+	len = ft_strlen(tmp);
+	while (*envp)
+	{
+		if (!ft_strncmp(tmp, *envp, ft_strlen(tmp)))
+		{
+			free(tmp);
+			return (*envp + len);
+		}
+		envp++;
+	}
+	free(tmp);
+	return ("");
+}
+
+void	replace_env_var(t_token *head, char **envp)
+{
+	char	*tmp;
+	char	**tmp_split;
+	char	*before;
+	int		i;
+
+	while (head)
+	{
+		if (head->content[0] != '\'' && ft_strchr(head->content, '$'))
+		{
+			tmp_split = ft_split(head->content, '$');
+			before = tmp_split[0];
+			tmp_split++;
+			while (*tmp_split)
+			{
+				i = 0;
+				tmp = ft_strjoin(before, get_env_var(*tmp_split, envp, &i));
+				before = ft_strjoin(tmp, (*tmp_split + i));
+				free(tmp);
+				tmp_split++;
+			}
+			free(head->content);
+			head->content = before;
+		}
+		head = head->next;
+	}
+}
+
+int	main(int argc, char **argv, char **envp)
 {
 	t_script	script;
 	t_token		*head;
 	char		*line_buf;
 
+	(void)argc;
+	(void)argv;
 	head = NULL;
 	while (1)
 	{
@@ -220,8 +314,12 @@ int	main(void)
 		if (!tokenizer(line_buf, &head))
 		{
 			return_error("Syntax error\n");
+			free(line_buf);
+			free_tokens(head);
+			head = NULL;
 			continue ;
 		}
+		replace_env_var(head, envp);
 		script.cmd_count = get_cmd_count(line_buf);
 		script.commands = malloc(sizeof(t_command) * script.cmd_count);
 		for (int i = 0; i < script.cmd_count; i++)
@@ -229,6 +327,7 @@ int	main(void)
 			script.commands[i].in.name = NULL;
 			script.commands[i].out.name = NULL;
 		}
+		get_num_args(head, &script);
 		parse_commands(head, script.commands);
 		for (int i = 0; i < script.cmd_count; i++)
 		{
@@ -237,20 +336,10 @@ int	main(void)
 			for (int j = 1; j < script.commands[i].argc; j++)
 				printf("\t%s\n", script.commands[i].argv[j]);
 		}
-		for (int i = 0; i < script.cmd_count; i++)
-		{
-			for (int j = 0; j < script.commands[i].argc; j++)
-				free(script.commands[i].argv[j]);
-			if (script.commands[i].in.name)
-				free(script.commands[i].in.name);
-			if (script.commands[i].out.name)
-				free(script.commands[i].out.name);
-			free(script.commands[i].argv);
-		}
-		free(script.commands);
+		free_commands(&script);
 		free_tokens(head);
 		head = NULL;
-		if (!ft_strncmp(line_buf, "exit", 4))
+		if (!line_buf || !ft_strncmp(line_buf, "exit", 4))
 		{
 			free(line_buf);
 			break ;
