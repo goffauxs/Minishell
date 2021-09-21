@@ -23,7 +23,7 @@ void	exec_cmd( char **path, char **cmd, char **env)
 static void	child(char **path_env, t_script script)
 {
 	char *backup;
-	backup = ft_strdup(script.commands[0].cmd);
+	backup = ft_strdup(script.commands[0].argv[0]);
 	exec_cmd(path_env, script.commands[0].argv, script.envp);
 	printf("%s: command not found\n", backup);
 	//free etc

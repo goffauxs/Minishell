@@ -1,32 +1,32 @@
 #include "minishell.h"
 
-int	get_cmd_count(char *line_buf)
-{
-	int		count;
-	char	*tmp;
-	char	**split_str;
+// int	get_cmd_count(char *line_buf)
+// {
+// 	int		count;
+// 	char	*tmp;
+// 	char	**split_str;
 
-	count = 0;
-	tmp = ft_strtrim(line_buf, " \t");
-	split_str = ft_split(tmp, '|');
-	while (split_str[count])
-		count++;
-	free(tmp);
-	return (count);
-}
+// 	count = 0;
+// 	tmp = ft_strtrim(line_buf, " \t");
+// 	split_str = ft_split(tmp, '|');
+// 	while (split_str[count])
+// 		count++;
+// 	free(tmp);
+// 	return (count);
+// }
 
-int	set_redir_flag(char c, char chevron)
-{
-	if (chevron == '>' && c == '>')
-		return (O_CREAT | O_APPEND | O_RDWR);
-	else if (chevron == '>' && (c != '>' && c != '<'))
-		return (O_CREAT | O_TRUNC | O_RDWR);
-	else if (chevron == '<' && c == '<')
-		return (0);
-	else if (chevron == '<' && (c != '<' && c != '>'))
-		return (O_RDWR);
-	return (-1);
-}
+// int	set_redir_flag(char c, char chevron)
+// {
+// 	if (chevron == '>' && c == '>')
+// 		return (O_CREAT | O_APPEND | O_RDWR);
+// 	else if (chevron == '>' && (c != '>' && c != '<'))
+// 		return (O_CREAT | O_TRUNC | O_RDWR);
+// 	else if (chevron == '<' && c == '<')
+// 		return (0);
+// 	else if (chevron == '<' && (c != '<' && c != '>'))
+// 		return (O_RDWR);
+// 	return (-1);
+// }
 
 int	get_inoutfile(char *line_buf, char chevron, t_redirection *redir, int start)
 {
