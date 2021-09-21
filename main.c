@@ -21,6 +21,7 @@ int	main(int argc, char **argv, char **envp)
 			free(line_buf); //aussi pour control d
 			break ;
 		}
+		free(line_buf);
 	}
 	system("leaks minishell");
 }

@@ -29,6 +29,25 @@ static void	child(char **path_env, t_script script)
 	//free etc
 }
 
+void	single_cmd_redir(t_script script)
+{
+	int	fdin;
+	int	fdout;
+
+	if (script.commands[0].in.name)
+	{
+		fdin = open(script.commands[0].in.name, O_RDONLY);
+		if (dup2(fdin, STDIN_FILENO) == -1)
+			exit(1); //error
+	}
+	if (script.commands[0].out.name)
+	{
+		fdout = open(script.commands[0].out.name, O_RDWR | O_CREAT | O_TRUNC, 0622);
+		if (dup2(fdout, STDOUT_FILENO) == -1)
+			exit(1); //error
+	}
+}
+
 void	handle_cmd(t_script script)
 {
 	char	**path_env;
@@ -42,6 +61,7 @@ void	handle_cmd(t_script script)
 		ret = check_builtin(script.commands[0].argv[0]);
 		if(ret == 0)
 		{
+			single_cmd_redir(script);
 			pid = fork();
 			if (pid == -1)
 			{
