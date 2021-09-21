@@ -2,7 +2,7 @@
 
 static void	first_child(t_script script, char **path_env, int *pipe1)
 {
-	int ret;
+	//int ret;
 	//if (!script.commands.in)
 	// |
 	// v
@@ -11,18 +11,20 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 		//free tout ce qu'il faut + exec_status = 1 ou 126
 		exit(1);
 	}
+	//printf("script.commands[0].cmd %s", script.commands[0].cmd);
+	// ret = check_builtin(script.commands[0].cmd);
+	// if(!ret)
+	// {
+	 	exec_cmd(path_env, script.commands[0].argv, script.envp);
+	 	write(2, "command not found\n", 18);
+	// }
+	// else
+	// {
+	// 	handle_builtin(ret, script, 0);
+	// 	close(pipe1[1]);
+	// 	return;
+	// }
 	close(pipe1[0]);
-	ret = check_builtin(script.commands[0].cmd);
-	if(!ret)
-	{
-		exec_cmd(path_env, script.commands[0].argv, script.envp);
-		write(2, "command not found\n", 18);
-	}
-	else
-	{
-		handle_builtin(ret, script, 0);
-		return;
-	}
 	//free etc
 }
 
@@ -135,7 +137,7 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 	//	v
 	if (dup2(pipein[0], STDIN_FILENO) == -1)
 	{
-		perror(" WTF: ");
+		perror(" Last child: ");
 		write(2, "dup2 error\n", 11);
 		//free tout ce qu'il faut + exec_status = 1 ou 126
 		exit(1);
