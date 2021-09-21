@@ -6,7 +6,7 @@
 #    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/21 14:48:39 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/09/21 16:43:18 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,13 @@ CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
 SRCS		=	main.c \
-				srcs/parsing.c
+				srcs/parsing.c \
+				srcs/utils.c \
+				srcs/free.c \
+				srcs/replace_env.c \
+				srcs/tokenizer.c \
+				srcs/tokenizer_utils.c \
+
 OBJS		=	$(SRCS:%.c=%.o)
 
 all:		$(NAME)

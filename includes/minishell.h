@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/21 14:48:08 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/21 16:30:23 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,6 @@ typedef struct s_operations
 	t_token_type	type;
 }				t_operations;
 
-static const t_operations	ops[] = 
-{
-	{">>", 2, TOKEN_REDIR_OUT},
-	{"<<", 2, TOKEN_REDIR_IN},
-	{"|", 1, TOKEN_PIPE},
-    {">", 1, TOKEN_REDIR_OUT},
-    {"<", 1, TOKEN_REDIR_IN},
-    {" ", 1, TOKEN_EAT},
-    {"\n", 1, TOKEN_EAT},
-    {"\v", 1, TOKEN_EAT},
-    {"\t", 1, TOKEN_EAT},
-    {"\r", 1, TOKEN_EAT},
-    {"\f", 1, TOKEN_EAT},
-    {NULL, 1, 0}
-};
-
 typedef struct s_token
 {
 	char			*content;
@@ -87,7 +71,24 @@ typedef struct s_script
 	char		**envp;
 }				t_script;
 
-int		parse(t_script *script);
-void	free_commands(t_script *script);
+int				parse(t_script *script);
+int				tokenizer(char *str, t_token **head);
+void			replace_env_var(t_token *head, char **envp);
+
+// Tokenizer utils
+t_token			*create_token(const char *string, int size, t_token_type type);
+void			add_token(t_token **head, t_token *new_token);
+t_operations	search_token_type(const char *s);
+int				treat_quotes(char **str);
+
+// Free
+void			free_tokens(t_token *head);
+void			free_commands(t_script *script);
+
+// Utils
+char			*ft_trim_quotes(char *str);
+int				get_cmd_count(char *line_buf);
+int				return_error(const char *msg);
+void			get_num_args(t_token *head, t_script *script);
 
 #endif
