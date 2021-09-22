@@ -13,11 +13,13 @@
 
 # define MAX_PATH_LEN 4096
 
-// typedef struct	s_gloable
+// typedef struct	s_globale
 // {
 // 	int	exit_status;
 // 	int	pid;
 // }	s_globale;
+
+
 
 typedef enum e_token_type
 {
@@ -83,6 +85,7 @@ typedef struct	s_script
 }				t_script;
 
 int exit_status;
+//int g_exit_status;
 
 /*
 ** main.c

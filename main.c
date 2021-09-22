@@ -13,6 +13,13 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (parse(&script, &line_buf))
 			continue ;
+		// for (int i = 0; i < script.cmd_count; i++)
+ 		// {
+ 		// 	printf("%s", script.commands[i].argv[0]);
+ 		// 	printf("\t(in: '%s', out: '%s')\n", (script.commands[i].in.name) ? script.commands[i].in.name : "none", (script.commands[i].out.name) ? script.commands[i].out.name : "none");
+ 		// 	for (int j = 1; j < script.commands[i].argc; j++)
+ 		// 		printf("\t%s\n", script.commands[i].argv[j]);
+ 		// }
 		if (script.cmd_count > 0)
 			handle_cmd(script);
 		free_commands(&script);

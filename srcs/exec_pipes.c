@@ -7,7 +7,6 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 	int fdout;
 	ret = check_builtin(script.commands[i].argv[0]);
 
-
 	if (script.commands[i].in.name)
 	{
 		fdin = open(script.commands[i].in.name, O_RDONLY);
@@ -103,23 +102,32 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 	int ret;
 	int fdin;
 	int fdout;
+
 	ret = check_builtin(script.commands[0].argv[0]);
 	if (script.commands[0].in.name)
 	{
 		fdin = open(script.commands[0].in.name, O_RDONLY);
-		dup2(fdin, STDIN_FILENO);
-	}	
+		if(fdin != STDIN_FILENO)
+			dup2(fdin, STDIN_FILENO);
+		close(fdin);
+	}
 	if (script.commands[0].out.name)
 	{
-		fdout = open(script.commands[0].out.name, O_RDWR | O_CREAT | O_TRUNC, 0622);
-		dup2(fdout, STDOUT_FILENO);
-	}	
+		fdout = open(script.commands[0].out.name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		//fdout = open(script.commands[0].out.name,script.commands[0].out.flag, 0644 );
+		if(fdout != STDOUT_FILENO)
+			dup2(fdout, STDOUT_FILENO);
+		close(fdout);
+	}
 	else
 	{
-		if (dup2(pipe1[1], STDOUT_FILENO) == -1)
+		if(pipe1[1] != STDOUT_FILENO)
 		{
-			//free tout ce qu'il faut + exec_status = 1 ou 126
-			exit(1);
+			if (dup2(pipe1[1], STDOUT_FILENO) == -1)
+			{
+				//free tout ce qu'il faut + exec_status = 1 ou 126
+				exit(1);
+			}
 		}
 	}
 	close(pipe1[0]);
@@ -145,21 +153,26 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 	if (script.commands[i].in.name)
 	{
 		fdin = open(script.commands[i].in.name, O_RDONLY);
-		dup2(fdin, STDIN_FILENO);
+		if(fdin != STDIN_FILENO)
+			dup2(fdin, STDIN_FILENO);
 	}	
 
 	if (script.commands[i].out.name)
 	{
 		fdout = open(script.commands[i].out.name, O_RDWR | O_CREAT | O_TRUNC, 0622);
-		dup2(fdout, STDOUT_FILENO);
+		if(fdout != STDOUT_FILENO)
+			dup2(fdout, STDOUT_FILENO);
 	}	
 	else
 	{
-		if (dup2(pipein[0], STDIN_FILENO) == -1)
+		if(pipein[0] != STDIN_FILENO)
 		{
-			write(2, "dup2 error\n", 11);
-			//free tout ce qu'il faut + exec_status = 1 ou 126
-			exit(1);
+			if (dup2(pipein[0], STDIN_FILENO) == -1)
+			{
+				write(2, "dup2 error\n", 11);
+				//free tout ce qu'il faut + exec_status = 1 ou 126
+				exit(1);
+			}
 		}
 	}
 	close(pipein[1]);
@@ -183,7 +196,10 @@ static void	last_cmd(t_script script, char **path_env, int *pipein, int pid2)
 
 	i = script.cmd_count - 1;
 	if (pid2 == 0)
+	{
 		last_child(script, path_env, pipein, i);
+
+	}
 	// close(pipein[0]);
 	// close(pipein[1]);
 	//end of function free everything etc
@@ -197,6 +213,7 @@ int	pipex(t_script script, char **path_env)
 	int	check;
 	int	pid1;
 	int	pid2;
+	//int saved_stdin = 0;
 
 	check = 0;
 	if (pipe(pipe1) == -1)
