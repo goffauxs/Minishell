@@ -108,32 +108,36 @@ int	builtin_pwd(void)
 		return (1);
 	write(1, buff, ft_strlen(buff));
 	write(1, "\n", 1);
-	//printf("%s\n", buff);
 	free(buff);
 	return (0);
 }
 
 int	builtin_export(char ***envp, t_command command) //SEGFAULT
 {
-	char	**tmp;
-	int		i;
+	// char	**tmp;
+	// int		i;
 
-	if (!(*envp))
-		return (1);
-	i = 0;
-	while ((*envp)[i])
-		i++;
-	tmp = malloc(sizeof(char *) * (i + 2));
-	i = 0;
-	while((*envp)[i])
-	{
-		tmp[i] = ft_strdup((*envp)[i]);
-		i++;
-	}
-	tmp[i++] = ft_strdup(command.argv[1]);
-	tmp[i] = NULL;
-	*envp = tmp;
-	return(0);
+	// if (!(*envp))
+	// 	return (1);
+	// if(ft_isdigit(command.argv[1][0]))
+	// {
+	// 	printf("export: '%s': not a valid identifier\n", command.argv[1]);
+	// 	return(1);
+	// }
+	// i = 0;
+	// while ((*envp)[i])
+	// 	i++;
+	// tmp = malloc(sizeof(char *) * (i + 2));
+	// i = 0;
+	// while((*envp)[i])
+	// {
+	// 	tmp[i] = ft_strdup((*envp)[i]);
+	// 	i++;
+	// }
+	// tmp[i++] = ft_strdup(command.argv[1]);
+	// tmp[i] = NULL;
+	// *envp = tmp;
+	// return(0);
 }
 
 int	builtin_env(char **envp)
@@ -149,6 +153,5 @@ int	builtin_env(char **envp)
 		write(1, "\n", 1);
 		i++;
 	}
-	//printf("%s\n", envp[i++]);
 	return (0);
 }
