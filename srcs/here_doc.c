@@ -19,6 +19,6 @@ void	here_doc(t_script script, int i)
 	}
 	write(pipe_tmp[1], bis, ft_strlen(bis));
 	dup2(pipe_tmp[0], STDIN_FILENO);
-	close(pipe_tmp[1]);
 	close(pipe_tmp[0]);
+	close(pipe_tmp[1]);
 }

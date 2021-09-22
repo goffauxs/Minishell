@@ -36,3 +36,14 @@ void	pipe_out_redir(t_script script, int i)
 	}
 	close(fdout);
 }
+
+void	close_pipes(int *pipe1, int *pipe2)
+{
+	close(pipe1[0]);
+	close(pipe1[1]);
+	if (pipe2)
+	{
+		close(pipe2[0]);
+		close(pipe2[1]);
+	}
+}
