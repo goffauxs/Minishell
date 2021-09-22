@@ -37,7 +37,13 @@ static void	child(char **path_env, t_script script)
 		if (script.commands[0].in.flag >= 0)
 		{
 			fdin = open(script.commands[0].in.name,  script.commands[0].in.flag);
-			if(fdin != STDIN_FILENO)
+			if(fdin == -1)
+			{
+				printf("%s: No such file or directory\n", script.commands[0].in.name);
+				close(fdin);
+				exit(1);
+			}
+			else if(fdin != STDIN_FILENO)
 				dup2(fdin, STDIN_FILENO);
 			close(fdin);
 		}
@@ -51,7 +57,7 @@ static void	child(char **path_env, t_script script)
 			while(1)
 			{
 				tmp = readline("> ");
-				if(!ft_strncmp(tmp, script.commands[0].in.name, ft_strlen(tmp)))
+				if(!ft_strncmp(tmp, script.commands[0].in.name, ft_strlen(script.commands[0].in.name) + 1))
 					break ;
 				tmp = ft_strjoin(tmp, "\n");
 				bis = ft_strjoin(bis, tmp);
@@ -64,9 +70,7 @@ static void	child(char **path_env, t_script script)
 	}
 	if (script.commands[0].out.name)
 	{
-		printf("here\n");
 		fdout = open(script.commands[0].out.name, script.commands[0].out.flag, 0644);
-		//fdout = open(script.commands[0].out.name,script.commands[0].out.flag, 0644 );
 		if(fdout != STDOUT_FILENO)
 			dup2(fdout, STDOUT_FILENO);
 		close(fdout);
@@ -74,7 +78,6 @@ static void	child(char **path_env, t_script script)
 	if(!ret)
 	{
 		exec_cmd(path_env, script.commands[0].argv, script.envp);
-		//exec_cmd(path_env, script.commands[0].argv, script.envp);
 		write(2, "command not found\n", 18);
 	}
 	else

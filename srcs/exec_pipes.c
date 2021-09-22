@@ -5,21 +5,43 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 	int ret;
 	int fdin;
 	int fdout;
+	int pi[2];
 	ret = check_builtin(script.commands[i].argv[0]);
 
-	if (script.commands[i].in.flag >= 0)
+	if (script.commands[i].in.name)
 	{
-		fdin = open(script.commands[i].in.name, script.commands[i].in.flag);
-
-		if(fdin == -1)
+		if (script.commands[i].in.flag >= 0)
 		{
-			printf("%s: No such file or directory\n", script.commands[i].in.name);
-			close(fdin);
-			exit(1);
-		}
-		else if (fdin != STDIN_FILENO)
-			dup2(fdin, STDIN_FILENO);
+			fdin = open(script.commands[i].in.name, script.commands[i].in.flag);
 
+			if(fdin == -1)
+			{
+				printf("%s: No such file or directory\n", script.commands[i].in.name);
+				close(fdin);
+				exit(1);
+			}
+			else if (fdin != STDIN_FILENO)
+				dup2(fdin, STDIN_FILENO);
+		}
+		else
+		{
+			pipe(pi);
+			char *tmp;
+			char *bis;
+			bis = "";
+			while(1)
+			{
+				tmp = readline("> ");
+				if(!ft_strncmp(tmp, script.commands[i].in.name, ft_strlen(script.commands[0].in.name) + 1))
+					break ;
+				tmp = ft_strjoin(tmp, "\n");
+				bis = ft_strjoin(bis, tmp);
+			}
+			write(pi[1], bis, ft_strlen(bis));
+			dup2(pi[0], STDIN_FILENO);
+			close(pi[1]);
+			close(pi[0]);
+		}
 	}
 	else 
 	{
@@ -30,10 +52,8 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 			exit(1);
 		}
 	}
-
 	if (script.commands[i].out.name)
 	{
-		//printf("script.commands[i].out.flag %d\n", script.commands[i].out.flag);
 		fdout = open(script.commands[i].out.name, script.commands[i].out.flag, 0644);
 		dup2(fdout, STDOUT_FILENO);
 	}	
@@ -114,7 +134,6 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 	int fdout;
 
 	ret = check_builtin(script.commands[0].argv[0]);
-	printf("name=%s\n", script.commands[0].in.name);
 	if (script.commands[0].in.name)
 	{
 		if (script.commands[0].in.flag >= 0)
@@ -132,21 +151,22 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 		}
 		else
 		{
-			printf("here\n");
 			//here doc 
 			char *tmp;
 			char *bis;
+			bis = "";
 			while(1)
 			{
 				tmp = readline("> ");
-				if(!ft_strncmp(tmp, script.commands[0].in.name, ft_strlen(tmp)))
+				if(!ft_strncmp(tmp, script.commands[0].in.name, ft_strlen(script.commands[0].in.name) + 1))
 					break ;
 				tmp = ft_strjoin(tmp, "\n");
 				bis = ft_strjoin(bis, tmp);
 			}
-			write(pipe1[0], bis, ft_strlen(bis));
-			dup2(pipe1[1], STDIN_FILENO);
+			write(pipe1[1], bis, ft_strlen(bis));
+			dup2(pipe1[0], STDIN_FILENO);
 			close(pipe1[1]);
+			close(pipe1[0]);
 		}
 	}
 	if (script.commands[0].out.name)
@@ -169,6 +189,7 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 		}
 	}
 	close(pipe1[0]);
+	close(pipe1[1]);
 	if(!ret)
 	{
 		exec_cmd(path_env, script.commands[0].argv, script.envp);
@@ -187,6 +208,7 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 	int ret;
 	int fdin;
 	int fdout;
+	int pi[2];
 	ret = check_builtin(script.commands[i].argv[0]);
 	if (script.commands[i].in.name)
 	{
@@ -199,24 +221,30 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 				close(fdin);
 				exit(1);
 			}
-			if(fdin != STDIN_FILENO)
+			else if(fdin != STDIN_FILENO)
 				dup2(fdin, STDIN_FILENO);
+			close(fdin);
 		}
-		// else
-		// {
-		// 	//here doc 
-		// 	char *tmp;
-		// 	char *bis;
-		// 	while(1)
-		// 	{
-		// 		tmp = readline("> ");
-		// 		if(!ft_strncmp(tmp, script.commands[i].in.name, ft_strlen(tmp)))
-		// 			break ;
-		// 		tmp = ft_strjoin(tmp, "\n");
-		// 		bis = ft_strjoin(bis, tmp);
-		// 	}
-		// 	write()
-		// }
+		else
+		{
+			pipe(pi);
+			//here doc 
+			char *tmp;
+			char *bis;
+			bis = "";
+			while(1)
+			{
+				tmp = readline("> ");
+				if(!ft_strncmp(tmp, script.commands[i].in.name, ft_strlen(script.commands[0].in.name) + 1))
+					break ;
+				tmp = ft_strjoin(tmp, "\n");
+				bis = ft_strjoin(bis, tmp);
+			}
+			write(pi[1], bis, ft_strlen(bis));
+			dup2(pi[0], STDIN_FILENO);
+			close(pi[1]);
+			close(pi[0]);
+		}
 	}
 	else
 	{
@@ -238,6 +266,7 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 			dup2(fdout, STDOUT_FILENO);
 	}	
 	close(pipein[1]);
+	close(pipein[0]);
 	if(!ret)
 	{
 		exec_cmd(path_env, script.commands[i].argv, script.envp);
