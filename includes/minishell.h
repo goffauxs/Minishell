@@ -169,6 +169,7 @@ void	here_doc(t_script script, int i);
 void	pipe_in_redir(t_script script, int i);
 void	pipe_out_redir(t_script script, int i);
 void	close_pipes(int *pipe1, int *pipe2);
+void	pipe_dup(int *pipe, int mod, int std);
 
 /*
 ** exec_pipes_forks.c

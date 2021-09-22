@@ -47,3 +47,16 @@ void	close_pipes(int *pipe1, int *pipe2)
 		close(pipe2[1]);
 	}
 }
+
+void	pipe_dup(int *pipe, int mod, int std)
+{
+	if (pipe[mod] != std)
+	{
+		if (dup2(pipe[mod], std) == -1)
+		{
+			write(2, "Error: dup2 failed\n", 19);
+			//free tout ce qu'il faut + exec_status = 1 ou 126
+			exit(1);
+		}
+	}
+}
