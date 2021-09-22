@@ -8,10 +8,11 @@ void	here_doc(t_script script, int i)
 
 	bis = "";
 	pipe(pipe_tmp);
-	while(1)
+	while (1)
 	{
 		tmp = readline("> ");
-		if(!ft_strncmp(tmp, script.commands[i].in.name, ft_strlen(script.commands[i].in.name) + 1))
+		if (!ft_strncmp(tmp, script.commands[i].in.name,
+				ft_strlen(script.commands[i].in.name) + 1))
 			break ;
 		tmp = ft_strjoin(tmp, "\n");
 		bis = ft_strjoin(bis, tmp);

@@ -163,4 +163,9 @@ char	**split_paths(char **env);
 */
 void	here_doc(t_script script, int i);
 
+/*
+** exec_pipes_utils.c
+*/
+void	pipe_in_redir(t_script script, int i);
+
 #endif

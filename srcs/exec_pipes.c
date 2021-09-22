@@ -3,28 +3,11 @@
 static void	middle_child(t_script script, char **path_env, int *pipein, int *pipeout, int i)
 {
 	int ret;
-	int fdin;
 	int fdout;
 
 	ret = check_builtin(script.commands[i].argv[0]);
 	if (script.commands[i].in.name)
-	{
-		if (script.commands[i].in.flag >= 0)
-		{
-			fdin = open(script.commands[i].in.name, script.commands[i].in.flag);
-
-			if(fdin == -1)
-			{
-				printf("%s: No such file or directory\n", script.commands[i].in.name);
-				close(fdin);
-				exit(1);
-			}
-			else if (fdin != STDIN_FILENO)
-				dup2(fdin, STDIN_FILENO);
-		}
-		else
-			here_doc(script, i);
-	}
+		pipe_in_redir(script, i);
 	else 
 	{
 		if (dup2(pipein[0], STDIN_FILENO) == -1)
@@ -50,7 +33,7 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 	}
 	close(pipein[1]);
 	close(pipeout[0]);
-	if(!ret)
+	if (!ret)
 	{
 		exec_cmd(path_env, script.commands[i].argv, script.envp);
 		write(2, "command not found\n", 18);
@@ -109,28 +92,11 @@ static int	middle_loop(t_script script, char **path_env, int *pipe1, int *pipe2)
 static void	first_child(t_script script, char **path_env, int *pipe1)
 {
 	int ret;
-	int fdin;
 	int fdout;
 
 	ret = check_builtin(script.commands[0].argv[0]);
 	if (script.commands[0].in.name)
-	{
-		if (script.commands[0].in.flag >= 0)
-		{
-			fdin = open(script.commands[0].in.name, script.commands[0].in.flag);
-			if(fdin == -1)
-			{
-				printf("%s: No such file or directory\n", script.commands[0].in.name);
-				close(fdin);
-				exit(1);
-			}
-			else if(fdin != STDIN_FILENO)
-				dup2(fdin, STDIN_FILENO);
-			close(fdin);
-		}
-		else
-			here_doc(script, 0);
-	}
+		pipe_in_redir(script, 0);
 	if (script.commands[0].out.name)
 	{
 		fdout = open(script.commands[0].out.name, script.commands[0].out.flag, 0644);
@@ -140,7 +106,7 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 	}
 	else
 	{
-		if(pipe1[1] != STDOUT_FILENO)
+		if (pipe1[1] != STDOUT_FILENO)
 		{
 			if (dup2(pipe1[1], STDOUT_FILENO) == -1)
 			{
@@ -151,7 +117,7 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 	}
 	close(pipe1[0]);
 	close(pipe1[1]);
-	if(!ret)
+	if (!ret)
 	{
 		exec_cmd(path_env, script.commands[0].argv, script.envp);
 		write(2, "command not found\n", 18);
@@ -167,31 +133,14 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 static void	last_child(t_script script, char **path_env, int *pipein, int i)
 {
 	int ret;
-	int fdin;
 	int fdout;
 
 	ret = check_builtin(script.commands[i].argv[0]);
 	if (script.commands[i].in.name)
-	{
-		if(script.commands[i].in.flag >= 0)
-		{
-			fdin = open(script.commands[i].in.name, script.commands[i].in.flag);
-			if(fdin == -1)
-			{
-				printf("%s: No such file or directory\n", script.commands[i].in.name);
-				close(fdin);
-				exit(1);
-			}
-			else if(fdin != STDIN_FILENO)
-				dup2(fdin, STDIN_FILENO);
-			close(fdin);
-		}
-		else
-			here_doc(script, i);
-	}
+		pipe_in_redir(script, i);
 	else
 	{
-		if(pipein[0] != STDIN_FILENO)
+		if (pipein[0] != STDIN_FILENO)
 		{
 			if (dup2(pipein[0], STDIN_FILENO) == -1)
 			{
@@ -209,7 +158,7 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 	}	
 	close(pipein[1]);
 	close(pipein[0]);
-	if(!ret)
+	if (!ret)
 	{
 		exec_cmd(path_env, script.commands[i].argv, script.envp);
 		write(2, "command not found\n", 18);
@@ -229,10 +178,7 @@ static void	last_cmd(t_script script, char **path_env, int *pipein, int pid2)
 	i = script.cmd_count - 1;
 	if (pid2 == 0)
 		last_child(script, path_env, pipein, i);
-	// close(pipein[0]);
-	// close(pipein[1]);
 	//end of function free everything etc
-	// free(path_env);
 }
 
 int	pipex(t_script script, char **path_env)
@@ -242,7 +188,6 @@ int	pipex(t_script script, char **path_env)
 	int	check;
 	int	pid1;
 	int	pid2;
-	//int saved_stdin = 0;
 
 	check = 0;
 	if (pipe(pipe1) == -1)
@@ -254,11 +199,9 @@ int	pipex(t_script script, char **path_env)
 		first_child(script, path_env, pipe1);
 	close(pipe1[1]);
 	wait(0);
-
 	check = middle_loop(script, path_env, pipe1, pipe2);
 	if (check == -1)
 		return (1); //error
-
 	pid2 = fork();
 	if (pid2 == -1)
 		return (1); //error
