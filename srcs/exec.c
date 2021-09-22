@@ -29,18 +29,43 @@ static void	child(char **path_env, t_script script)
 	int ret;
 	int fdin;
 	int fdout;
+	int	pi[2];
 
 	ret = check_builtin(script.commands[0].argv[0]);
 	if (script.commands[0].in.name)
 	{
-		fdin = open(script.commands[0].in.name, O_RDONLY);
-		if(fdin != STDIN_FILENO)
-			dup2(fdin, STDIN_FILENO);
-		close(fdin);
+		if (script.commands[0].in.flag >= 0)
+		{
+			fdin = open(script.commands[0].in.name,  script.commands[0].in.flag);
+			if(fdin != STDIN_FILENO)
+				dup2(fdin, STDIN_FILENO);
+			close(fdin);
+		}
+		else
+		{
+			pipe(pi);
+			//here doc 
+			char *tmp;
+			char *bis;
+			bis = "";
+			while(1)
+			{
+				tmp = readline("> ");
+				if(!ft_strncmp(tmp, script.commands[0].in.name, ft_strlen(tmp)))
+					break ;
+				tmp = ft_strjoin(tmp, "\n");
+				bis = ft_strjoin(bis, tmp);
+			}
+			write(pi[1], bis, ft_strlen(bis));
+			dup2(pi[0], STDIN_FILENO);
+			close(pi[1]);
+			close(pi[0]);
+		}
 	}
 	if (script.commands[0].out.name)
 	{
-		fdout = open(script.commands[0].out.name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		printf("here\n");
+		fdout = open(script.commands[0].out.name, script.commands[0].out.flag, 0644);
 		//fdout = open(script.commands[0].out.name,script.commands[0].out.flag, 0644 );
 		if(fdout != STDOUT_FILENO)
 			dup2(fdout, STDOUT_FILENO);
