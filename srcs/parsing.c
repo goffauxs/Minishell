@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/22 12:01:36 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/22 13:08:55 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	open_redirs(t_token *head, t_redirection *redir)
 {
+	int	fd;
+
 	redir->name = ft_trim_quotes(head->next->content);
 	if (!ft_strncmp(head->content, ">>", 2))
 		redir->flag = (O_CREAT | O_APPEND | O_RDWR);
@@ -23,8 +25,8 @@ static void	open_redirs(t_token *head, t_redirection *redir)
 		redir->flag = O_RDONLY;
 	else if (!ft_strncmp(head->content, "<<", 2))
 		redir->flag = -1;
-	redir->fd = open(redir->name, redir->flag, 0644);
-	close(redir->fd);
+	fd = open(redir->name, redir->flag, 0644);
+	close(fd);
 }
 
 static void	parse_commands(t_token *head, t_command *commands)
