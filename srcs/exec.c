@@ -22,14 +22,9 @@ void	exec_cmd( char **path, char **cmd, char **env)
 
 static void	child(char **path_env, t_script script)
 {
-	// char *backup;
-	// backup = ft_strdup(script.commands[0].argv[0]);
-	// exec_cmd(path_env, script.commands[0].argv, script.envp);
-	// printf("%s: command not found\n", backup);
 	int ret;
 	int fdin;
 	int fdout;
-	int	pi[2];
 
 	ret = check_builtin(script.commands[0].argv[0]);
 	if (script.commands[0].in.name)
@@ -48,25 +43,7 @@ static void	child(char **path_env, t_script script)
 			close(fdin);
 		}
 		else
-		{
-			pipe(pi);
-			//here doc 
-			char *tmp;
-			char *bis;
-			bis = "";
-			while(1)
-			{
-				tmp = readline("> ");
-				if(!ft_strncmp(tmp, script.commands[0].in.name, ft_strlen(script.commands[0].in.name) + 1))
-					break ;
-				tmp = ft_strjoin(tmp, "\n");
-				bis = ft_strjoin(bis, tmp);
-			}
-			write(pi[1], bis, ft_strlen(bis));
-			dup2(pi[0], STDIN_FILENO);
-			close(pi[1]);
-			close(pi[0]);
-		}
+			here_doc(script, 0);
 	}
 	if (script.commands[0].out.name)
 	{

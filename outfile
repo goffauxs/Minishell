@@ -1,2 +1,14 @@
-bonjour$
-salut$
+total 248
+drwxr-xr-x  13 rvan-aud  2021_brussels     442 Sep 22 15:32 .
+drwxr-xr-x   5 rvan-aud  2021_brussels     170 Sep 15 13:21 ..
+drwxr-xr-x  14 rvan-aud  2021_brussels     476 Sep 22 15:24 .git
+-rw-r--r--   1 rvan-aud  2021_brussels    1301 Sep 22 15:31 Makefile
+drwxr-xr-x   4 rvan-aud  2021_brussels     136 Sep 15 13:26 includes
+-rw-------   1 rvan-aud  2021_brussels      14 Sep 21 16:49 infile
+drwxr-xr-x  88 rvan-aud  2021_brussels    2992 Sep 22 15:31 libft
+-rw-r--r--   1 rvan-aud  2021_brussels    3290 Sep 22 13:14 main.c
+-rw-r--r--   1 rvan-aud  2021_brussels    6092 Sep 22 15:31 main.o
+-rwxr-xr-x   1 rvan-aud  2021_brussels  102136 Sep 22 15:32 minishell
+-rw-r--r--   1 rvan-aud  2021_brussels       0 Sep 22 15:33 outfile
+drwxr-xr-x  26 rvan-aud  2021_brussels     884 Sep 22 15:32 srcs
+-rw-r--r--   1 rvan-aud  2021_brussels      14 Sep 16 14:58 test.txt

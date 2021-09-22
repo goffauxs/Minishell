@@ -21,6 +21,7 @@ SRCS		=	srcs/builtins.c		\
 				srcs/replace_env.c \
 				srcs/tokenizer.c \
 				srcs/tokenizer_utils.c \
+				srcs/here_doc.c	\
 				main.c 				\
 
 OBJS		=	$(SRCS:%.c=%.o)

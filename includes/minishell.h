@@ -158,4 +158,9 @@ int			builtin_env(char **envp);
 */
 char	**split_paths(char **env);
 
+/*
+** here_doc.c
+*/
+void	here_doc(t_script script, int i);
+
 #endif
