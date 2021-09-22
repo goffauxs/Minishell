@@ -155,14 +155,7 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 		fdin = open(script.commands[i].in.name, O_RDONLY);
 		if(fdin != STDIN_FILENO)
 			dup2(fdin, STDIN_FILENO);
-	}	
-
-	if (script.commands[i].out.name)
-	{
-		fdout = open(script.commands[i].out.name, O_RDWR | O_CREAT | O_TRUNC, 0622);
-		if(fdout != STDOUT_FILENO)
-			dup2(fdout, STDOUT_FILENO);
-	}	
+	}
 	else
 	{
 		if(pipein[0] != STDIN_FILENO)
@@ -175,6 +168,13 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 			}
 		}
 	}
+	if (script.commands[i].out.name)
+	{
+		fdout = open(script.commands[i].out.name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		if(fdout != STDOUT_FILENO)
+			dup2(fdout, STDOUT_FILENO);
+	}	
+	
 	close(pipein[1]);
 	//close(pipein[0]);
 	if(!ret)

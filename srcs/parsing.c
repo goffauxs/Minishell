@@ -32,7 +32,7 @@ static void	parse_commands(t_token *head, t_command *commands)
 			else if (head->type == TOKEN_REDIR_IN)
 				open_redirs(head, &commands[i].in);
 			else if (head->type == TOKEN_REDIR_OUT)
-				open_redirs(head, &commands[i].in);
+				open_redirs(head, &commands[i].out);
 			if (head->type == TOKEN_REDIR_IN || head->type == TOKEN_REDIR_OUT)
 				head = head->next;
 			head = head->next;
