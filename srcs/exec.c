@@ -22,30 +22,42 @@ void	exec_cmd( char **path, char **cmd, char **env)
 
 static void	child(char **path_env, t_script script)
 {
-	char *backup;
-	backup = ft_strdup(script.commands[0].argv[0]);
-	exec_cmd(path_env, script.commands[0].argv, script.envp);
-	printf("%s: command not found\n", backup);
-	//free etc
-}
+	// char *backup;
+	// backup = ft_strdup(script.commands[0].argv[0]);
+	// exec_cmd(path_env, script.commands[0].argv, script.envp);
+	// printf("%s: command not found\n", backup);
+	int ret;
+	int fdin;
+	int fdout;
 
-void	single_cmd_redir(t_script script)
-{
-	int	fdin;
-	int	fdout;
-
+	ret = check_builtin(script.commands[0].argv[0]);
 	if (script.commands[0].in.name)
 	{
 		fdin = open(script.commands[0].in.name, O_RDONLY);
-		if (dup2(fdin, STDIN_FILENO) == -1)
-			exit(1); //error
+		if(fdin != STDIN_FILENO)
+			dup2(fdin, STDIN_FILENO);
+		close(fdin);
 	}
 	if (script.commands[0].out.name)
 	{
-		fdout = open(script.commands[0].out.name, O_RDWR | O_CREAT | O_TRUNC, 0622);
-		if (dup2(fdout, STDOUT_FILENO) == -1)
-			exit(1); //error
+		fdout = open(script.commands[0].out.name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		//fdout = open(script.commands[0].out.name,script.commands[0].out.flag, 0644 );
+		if(fdout != STDOUT_FILENO)
+			dup2(fdout, STDOUT_FILENO);
+		close(fdout);
 	}
+	if(!ret)
+	{
+		exec_cmd(path_env, script.commands[0].argv, script.envp);
+		//exec_cmd(path_env, script.commands[0].argv, script.envp);
+		write(2, "command not found\n", 18);
+	}
+	else
+	{
+		handle_builtin(ret, script, 0);
+		exit(0);
+	}
+	//free etc
 }
 
 void	handle_cmd(t_script script)
@@ -61,7 +73,6 @@ void	handle_cmd(t_script script)
 		ret = check_builtin(script.commands[0].argv[0]);
 		if(ret == 0)
 		{
-			single_cmd_redir(script);
 			pid = fork();
 			if (pid == -1)
 			{
