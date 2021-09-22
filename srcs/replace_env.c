@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/21 16:29:59 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/22 11:18:37 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,24 @@ static char	*get_env_var(char *str, char **envp, int *i)
 {
 	char	c;
 	char	*tmp;
-	int		len;
 
 	*i = 0;
 	if (ft_isdigit(*str))
 		return ("");
+	if (*str == '?')
+		//return global exit code
 	while (str[*i] && ft_isenvv(str[*i]))
 		(*i)++;
 	c = str[*i];
 	str[*i] = 0;
 	tmp = ft_strjoin(str, "=");
 	str[*i] = c;
-	len = ft_strlen(tmp);
 	while (*envp)
 	{
 		if (!ft_strncmp(tmp, *envp, ft_strlen(tmp)))
 		{
 			free(tmp);
-			return (*envp + len);
+			return (*envp + ft_strlen(tmp));
 		}
 		envp++;
 	}
