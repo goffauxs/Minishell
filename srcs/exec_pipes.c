@@ -7,11 +7,20 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 	int fdout;
 	ret = check_builtin(script.commands[i].argv[0]);
 
-	if (script.commands[i].in.name)
+	if (script.commands[i].in.flag >= 0)
 	{
-		fdin = open(script.commands[i].in.name, O_RDONLY);
-		dup2(fdin, STDIN_FILENO);
-	}	
+		fdin = open(script.commands[i].in.name, script.commands[i].in.flag);
+
+		if(fdin == -1)
+		{
+			printf("%s: No such file or directory\n", script.commands[i].in.name);
+			close(fdin);
+			exit(1);
+		}
+		else if (fdin != STDIN_FILENO)
+			dup2(fdin, STDIN_FILENO);
+
+	}
 	else 
 	{
 		if (dup2(pipein[0], STDIN_FILENO) == -1)
@@ -24,7 +33,8 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 
 	if (script.commands[i].out.name)
 	{
-		fdout = open(script.commands[i].out.name, O_RDWR | O_CREAT | O_TRUNC, 0622);
+		//printf("script.commands[i].out.flag %d\n", script.commands[i].out.flag);
+		fdout = open(script.commands[i].out.name, script.commands[i].out.flag, 0644);
 		dup2(fdout, STDOUT_FILENO);
 	}	
 	else
@@ -104,16 +114,23 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 	int fdout;
 
 	ret = check_builtin(script.commands[0].argv[0]);
-	if (script.commands[0].in.name)
+	if (script.commands[0].in.flag >= 0)
 	{
-		fdin = open(script.commands[0].in.name, O_RDONLY);
-		if(fdin != STDIN_FILENO)
+		//printf("script.commands[0].in.flag %d\n", script.commands[0].in.flag);
+		fdin = open(script.commands[0].in.name, script.commands[0].in.flag);
+		if(fdin == -1)
+		{
+			printf("%s: No such file or directory\n", script.commands[0].in.name);
+			close(fdin);
+			exit(1);
+		}
+		else if(fdin != STDIN_FILENO)
 			dup2(fdin, STDIN_FILENO);
 		close(fdin);
 	}
 	if (script.commands[0].out.name)
 	{
-		fdout = open(script.commands[0].out.name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		fdout = open(script.commands[0].out.name, script.commands[0].out.flag, 0644);
 		//fdout = open(script.commands[0].out.name,script.commands[0].out.flag, 0644 );
 		if(fdout != STDOUT_FILENO)
 			dup2(fdout, STDOUT_FILENO);
@@ -152,17 +169,34 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 	ret = check_builtin(script.commands[i].argv[0]);
 	if (script.commands[i].in.name)
 	{
-		fdin = open(script.commands[i].in.name, O_RDONLY);
-		if(fdin != STDIN_FILENO)
-			dup2(fdin, STDIN_FILENO);
-	}	
-
-	if (script.commands[i].out.name)
-	{
-		fdout = open(script.commands[i].out.name, O_RDWR | O_CREAT | O_TRUNC, 0622);
-		if(fdout != STDOUT_FILENO)
-			dup2(fdout, STDOUT_FILENO);
-	}	
+		if(script.commands[i].in.flag >= 0)
+		{
+			fdin = open(script.commands[i].in.name, script.commands[i].in.flag);
+			if(fdin == -1)
+			{
+				printf("%s: No such file or directory\n", script.commands[i].in.name);
+				close(fdin);
+				exit(1);
+			}
+			if(fdin != STDIN_FILENO)
+				dup2(fdin, STDIN_FILENO);
+		}
+		else
+		{
+			//here doc 
+			char *tmp;
+			char *bis;
+			while(1)
+			{
+				tmp = readline("> ");
+				if(!ft_strncmp(tmp, script.commands[i].in.name, ft_strlen(tmp)))
+					break ;
+				tmp = ft_strjoin(tmp, "\n");
+				bis = ft_strjoin(bis, tmp);
+			}
+			write()
+		}
+	}
 	else
 	{
 		if(pipein[0] != STDIN_FILENO)
@@ -175,8 +209,14 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 			}
 		}
 	}
+
+	if (script.commands[i].out.name)
+	{
+		fdout = open(script.commands[i].out.name, script.commands[i].out.flag, 0644);
+		if(fdout != STDOUT_FILENO)
+			dup2(fdout, STDOUT_FILENO);
+	}	
 	close(pipein[1]);
-	//close(pipein[0]);
 	if(!ret)
 	{
 		exec_cmd(path_env, script.commands[i].argv, script.envp);
@@ -196,10 +236,7 @@ static void	last_cmd(t_script script, char **path_env, int *pipein, int pid2)
 
 	i = script.cmd_count - 1;
 	if (pid2 == 0)
-	{
 		last_child(script, path_env, pipein, i);
-
-	}
 	// close(pipein[0]);
 	// close(pipein[1]);
 	//end of function free everything etc

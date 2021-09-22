@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/22 13:01:27 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/22 14:03:41 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	parse_commands(t_token *head, t_command *commands)
 			else if (head->type == TOKEN_REDIR_IN)
 				open_redirs(head, &commands[i].in);
 			else if (head->type == TOKEN_REDIR_OUT)
-				open_redirs(head, &commands[i].in);
+				open_redirs(head, &commands[i].out);
 			if (head->type == TOKEN_REDIR_IN || head->type == TOKEN_REDIR_OUT)
 				head = head->next;
 			head = head->next;

@@ -33,14 +33,14 @@ static void	child(char **path_env, t_script script)
 	ret = check_builtin(script.commands[0].argv[0]);
 	if (script.commands[0].in.name)
 	{
-		fdin = open(script.commands[0].in.name, O_RDONLY);
+		fdin = open(script.commands[0].in.name,  script.commands[0].in.flag);
 		if(fdin != STDIN_FILENO)
 			dup2(fdin, STDIN_FILENO);
 		close(fdin);
 	}
 	if (script.commands[0].out.name)
 	{
-		fdout = open(script.commands[0].out.name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		fdout = open(script.commands[0].out.name, script.commands[0].out.flag, 0644);
 		//fdout = open(script.commands[0].out.name,script.commands[0].out.flag, 0644 );
 		if(fdout != STDOUT_FILENO)
 			dup2(fdout, STDOUT_FILENO);
