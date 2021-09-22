@@ -20,7 +20,7 @@ void	exec_cmd( char **path, char **cmd, char **env)
 	}
 }
 
-static void	child(char **path_env, t_script script)
+static void	child(char **path_env, t_script *script)
 {
 	// char *backup;
 	// backup = ft_strdup(script.commands[0].argv[0]);
@@ -31,15 +31,15 @@ static void	child(char **path_env, t_script script)
 	int fdout;
 	int	pi[2];
 
-	ret = check_builtin(script.commands[0].argv[0]);
-	if (script.commands[0].in.name)
+	ret = check_builtin(script->commands[0].argv[0]);
+	if (script->commands[0].in.name)
 	{
-		if (script.commands[0].in.flag >= 0)
+		if (script->commands[0].in.flag >= 0)
 		{
-			fdin = open(script.commands[0].in.name,  script.commands[0].in.flag);
+			fdin = open(script->commands[0].in.name,  script->commands[0].in.flag);
 			if(fdin == -1)
 			{
-				printf("%s: No such file or directory\n", script.commands[0].in.name);
+				printf("%s: No such file or directory\n", script->commands[0].in.name);
 				close(fdin);
 				exit(1);
 			}
@@ -57,7 +57,7 @@ static void	child(char **path_env, t_script script)
 			while(1)
 			{
 				tmp = readline("> ");
-				if(!ft_strncmp(tmp, script.commands[0].in.name, ft_strlen(tmp)))
+				if(!ft_strncmp(tmp, script->commands[0].in.name, ft_strlen(tmp)))
 					break ;
 				tmp = ft_strjoin(tmp, "\n");
 				bis = ft_strjoin(bis, tmp);
@@ -68,16 +68,16 @@ static void	child(char **path_env, t_script script)
 			close(pi[0]);
 		}
 	}
-	if (script.commands[0].out.name)
+	if (script->commands[0].out.name)
 	{
-		fdout = open(script.commands[0].out.name, script.commands[0].out.flag, 0644);
+		fdout = open(script->commands[0].out.name, script->commands[0].out.flag, 0644);
 		if(fdout != STDOUT_FILENO)
 			dup2(fdout, STDOUT_FILENO);
 		close(fdout);
 	}
 	if(!ret)
 	{
-		exec_cmd(path_env, script.commands[0].argv, script.envp);
+		exec_cmd(path_env, script->commands[0].argv, script->envp);
 		write(2, "command not found\n", 18);
 	}
 	else
@@ -88,17 +88,17 @@ static void	child(char **path_env, t_script script)
 	//free etc
 }
 
-void	handle_cmd(t_script script)
+void	handle_cmd(t_script *script)
 {
 	char	**path_env;
 	int		pid;
 	int		ret;
 
 	ret = 0;
-	path_env = split_paths(script.envp);
-	if (script.cmd_count == 1)
+	path_env = split_paths(script->envp);
+	if (script->cmd_count == 1)
 	{
-		ret = check_builtin(script.commands[0].argv[0]);
+		ret = check_builtin(script->commands[0].argv[0]);
 		if(ret == 0)
 		{
 			pid = fork();
@@ -152,19 +152,19 @@ int	check_builtin(char *cmd)
 		return (1);
 }
 
-int	handle_builtin(int ret, t_script script, int i)
+int	handle_builtin(int ret, t_script *script, int i)
 {
 	if (ret == 1)
-		exit_status = builtin_echo(script.commands[i]); // ok
+		exit_status = builtin_echo(script->commands[i]); // ok
 	if (ret == 2)
-		exit_status = builtin_cd(script.commands[i]); // ok
+		exit_status = builtin_cd(script->commands[i]); // ok
 	if (ret == 3)
 		exit_status = builtin_pwd(); // ok
 	if(ret == 4)
-		exit_status = builtin_export(&script); // segfault
+		exit_status = builtin_export(&script->envp, script->commands[i]); // segfault
 	if (ret == 6)
-		exit_status = builtin_env(script.envp); // ok
+		exit_status = builtin_env(script->envp); // ok
 	if(ret == 7)
-		return(builtin_exit(script.commands[i])); // ok
+		return(builtin_exit(script->commands[i])); // ok
 	return(0);
 }

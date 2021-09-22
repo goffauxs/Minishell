@@ -13,14 +13,6 @@
 
 # define MAX_PATH_LEN 4096
 
-// typedef struct	s_globale
-// {
-// 	int	exit_status;
-// 	int	pid;
-// }	s_globale;
-
-
-
 typedef enum e_token_type
 {
 	TOKEN_EAT,
@@ -129,14 +121,14 @@ void			get_num_args(t_token *head, t_script *script);
 //static void	init_vars(int *i, int *j);
 void	exec_cmd( char **path, char **cmd, char **env);
 // void	child(char **path_env, t_script script, int i);
-void	handle_cmd(t_script script);
+void	handle_cmd(t_script *script);
 int		check_builtin(char *cmd);
-int		handle_builtin(int ret, t_script script, int i);
+int		handle_builtin(int ret, t_script *script, int i);
 
 /*
 ** exec_pipes.c
 */
-int		pipex(t_script script, char **path_env);
+int		pipex(t_script *script, char **path_env);
 
 /*
 ** signal.c
@@ -150,7 +142,7 @@ int			builtin_echo(t_command command);
 int			builtin_cd(t_command command);
 int			builtin_exit(t_command command);
 int			builtin_pwd(void);
-int			builtin_export(t_script *script);
+int			builtin_export(char ***envp, t_command command);
 int			builtin_env(char **envp);
 
 /*
