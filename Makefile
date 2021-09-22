@@ -6,7 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/20 19:03:28 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/22 12:55:27 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,11 @@ SRCS		=	srcs/builtins.c		\
 				srcs/signal.c		\
 				srcs/path_handling.c \
 				srcs/exec_pipes.c	\
+				srcs/utils.c \
+				srcs/free.c \
+				srcs/replace_env.c \
+				srcs/tokenizer.c \
+				srcs/tokenizer_utils.c \
 				main.c 				\
 
 OBJS		=	$(SRCS:%.c=%.o)

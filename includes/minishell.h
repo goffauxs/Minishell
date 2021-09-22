@@ -101,8 +101,25 @@ char		*get_prompt();
 // char		*trim_infile(char *str);
 // char		*trim_outfile(char *str);
 // t_command	parse_command(char *split_buf);
-int			parse(t_script *script, char **line_buf);
-void		free_commands(t_script *script);
+int				parse(t_script *script, char **line_buf);
+int				tokenizer(char *str, t_token **head);
+void			replace_env_var(t_token *head, char **envp);
+
+// Tokenizer utils
+t_token			*create_token(const char *string, int size, t_token_type type);
+void			add_token(t_token **head, t_token *new_token);
+t_operations	search_token_type(const char *s);
+
+// Free
+void			free_tokens(t_token *head);
+void			free_commands(t_script *script);
+
+// Utils
+char			*ft_trim_quotes(char *str);
+int				get_cmd_count(char *line_buf);
+int				return_error(const char *msg);
+void			get_num_args(t_token *head, t_script *script);
+
 
 /*
 ** exec.c
