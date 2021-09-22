@@ -166,8 +166,8 @@ void	here_doc(t_script script, int i);
 /*
 ** exec_pipes_utils.c
 */
-void	pipe_in_redir(t_script script, int i);
-void	pipe_out_redir(t_script script, int i);
+void	in_redir(t_script script, int i);
+void	out_redir(t_script script, int i);
 void	close_pipes(int *pipe1, int *pipe2);
 void	pipe_dup(int *pipe, int mod, int std);
 
@@ -177,5 +177,10 @@ void	pipe_dup(int *pipe, int mod, int std);
 void	first_child(t_script script, char **path_env, int *pipe1);
 void	middle_child(t_script script, char **path_env, int *pipein, int *pipeout, int i);
 void	last_child(t_script script, char **path_env, int *pipein, int i);
+
+/*
+** exec_single.c
+*/
+void	single_cmd(t_script script, char **path_env);
 
 #endif

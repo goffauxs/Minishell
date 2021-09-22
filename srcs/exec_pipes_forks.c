@@ -6,9 +6,9 @@ void	first_child(t_script script, char **path_env, int *pipe1)
 
 	ret = check_builtin(script.commands[0].argv[0]);
 	if (script.commands[0].in.name)
-		pipe_in_redir(script, 0);
+		in_redir(script, 0);
 	if (script.commands[0].out.name)
-		pipe_out_redir(script, 0);
+		out_redir(script, 0);
 	else
 		pipe_dup(pipe1, 1, STDOUT_FILENO);
 	close_pipes(pipe1, NULL);
@@ -31,11 +31,11 @@ void	middle_child(t_script script, char **path_env, int *pipein, int *pipeout, i
 
 	ret = check_builtin(script.commands[i].argv[0]);
 	if (script.commands[i].in.name)
-		pipe_in_redir(script, i);
+		in_redir(script, i);
 	else
 		pipe_dup(pipein, 0, STDIN_FILENO);
 	if (script.commands[i].out.name)
-		pipe_out_redir(script, i);
+		out_redir(script, i);
 	else
 		pipe_dup(pipeout, 1, STDOUT_FILENO);
 	close_pipes(pipein, pipeout);
@@ -58,11 +58,11 @@ void	last_child(t_script script, char **path_env, int *pipein, int i)
 
 	ret = check_builtin(script.commands[i].argv[0]);
 	if (script.commands[i].in.name)
-		pipe_in_redir(script, i);
+		in_redir(script, i);
 	else
 		pipe_dup(pipein, 0, STDIN_FILENO);
 	if (script.commands[i].out.name)
-		pipe_out_redir(script, i);
+		out_redir(script, i);
 	close_pipes(pipein, NULL);
 	if (!ret)
 	{

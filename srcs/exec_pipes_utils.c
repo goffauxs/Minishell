@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	pipe_in_redir(t_script script, int i)
+void	in_redir(t_script script, int i)
 {
 	int	fdin;
 
@@ -20,7 +20,7 @@ void	pipe_in_redir(t_script script, int i)
 		here_doc(script, i);
 }
 
-void	pipe_out_redir(t_script script, int i)
+void	out_redir(t_script script, int i)
 {
 	int	fdout;
 

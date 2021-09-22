@@ -24,6 +24,7 @@ SRCS		=	srcs/builtins.c		\
 				srcs/here_doc.c	\
 				srcs/exec_pipes_utils.c	\
 				srcs/exec_pipes_forks.c	\
+				srcs/exec_single.c	\
 				main.c 				\
 
 OBJS		=	$(SRCS:%.c=%.o)
