@@ -167,5 +167,6 @@ void	here_doc(t_script script, int i);
 ** exec_pipes_utils.c
 */
 void	pipe_in_redir(t_script script, int i);
+void	pipe_out_redir(t_script script, int i);
 
 #endif

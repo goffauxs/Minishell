@@ -3,7 +3,6 @@
 static void	middle_child(t_script script, char **path_env, int *pipein, int *pipeout, int i)
 {
 	int ret;
-	int fdout;
 
 	ret = check_builtin(script.commands[i].argv[0]);
 	if (script.commands[i].in.name)
@@ -12,21 +11,18 @@ static void	middle_child(t_script script, char **path_env, int *pipein, int *pip
 	{
 		if (dup2(pipein[0], STDIN_FILENO) == -1)
 		{
-			write(2, "dup2 error\n", 11);
+			write(2, "Error: dup2 failed\n", 19);
 			//free tout ce qu'il faut + exec_status = 1 ou 126
 			exit(1);
 		}
 	}
 	if (script.commands[i].out.name)
-	{
-		fdout = open(script.commands[i].out.name, script.commands[i].out.flag, 0644);
-		dup2(fdout, STDOUT_FILENO);
-	}	
+		pipe_out_redir(script, i);
 	else
 	{
 		if (dup2(pipeout[1], STDOUT_FILENO) == -1)
 		{
-			write(2, "dup2 error\n", 11);
+			write(2, "Error: dup2 failed\n", 19);
 			//free tout ce qu'il faut + exec_status = 1 ou 126
 			exit(1);
 		}
@@ -92,18 +88,12 @@ static int	middle_loop(t_script script, char **path_env, int *pipe1, int *pipe2)
 static void	first_child(t_script script, char **path_env, int *pipe1)
 {
 	int ret;
-	int fdout;
 
 	ret = check_builtin(script.commands[0].argv[0]);
 	if (script.commands[0].in.name)
 		pipe_in_redir(script, 0);
 	if (script.commands[0].out.name)
-	{
-		fdout = open(script.commands[0].out.name, script.commands[0].out.flag, 0644);
-		if(fdout != STDOUT_FILENO)
-			dup2(fdout, STDOUT_FILENO);
-		close(fdout);
-	}
+		pipe_out_redir(script, 0);
 	else
 	{
 		if (pipe1[1] != STDOUT_FILENO)
@@ -133,7 +123,6 @@ static void	first_child(t_script script, char **path_env, int *pipe1)
 static void	last_child(t_script script, char **path_env, int *pipein, int i)
 {
 	int ret;
-	int fdout;
 
 	ret = check_builtin(script.commands[i].argv[0]);
 	if (script.commands[i].in.name)
@@ -144,18 +133,14 @@ static void	last_child(t_script script, char **path_env, int *pipein, int i)
 		{
 			if (dup2(pipein[0], STDIN_FILENO) == -1)
 			{
-				write(2, "dup2 error\n", 11);
+				write(2, "Error: dup2 failed\n", 19);
 				//free tout ce qu'il faut + exec_status = 1 ou 126
 				exit(1);
 			}
 		}
 	}
 	if (script.commands[i].out.name)
-	{
-		fdout = open(script.commands[i].out.name, script.commands[i].out.flag, 0644);
-		if(fdout != STDOUT_FILENO)
-			dup2(fdout, STDOUT_FILENO);
-	}	
+		pipe_out_redir(script, i);
 	close(pipein[1]);
 	close(pipein[0]);
 	if (!ret)
