@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/21 16:30:23 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/22 10:28:23 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void			replace_env_var(t_token *head, char **envp);
 t_token			*create_token(const char *string, int size, t_token_type type);
 void			add_token(t_token **head, t_token *new_token);
 t_operations	search_token_type(const char *s);
-int				treat_quotes(char **str);
 
 // Free
 void			free_tokens(t_token *head);

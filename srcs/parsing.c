@@ -6,13 +6,28 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/21 16:16:18 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/22 11:07:25 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parse_commands(t_token *head, t_command *commands)
+static void	open_redirs(t_token *head, t_redirection *redir)
+{
+	redir->name = ft_trim_quotes(head->next->content);
+	if (!ft_strncmp(head->content, ">>", 2))
+		redir->flag = (O_CREAT | O_APPEND | O_RDWR);
+	else if (!ft_strncmp(head->content, ">", 1))
+		redir->flag = (O_CREAT | O_TRUNC | O_RDWR);
+	else if (!ft_strncmp(head->content, "<", 1))
+		redir->flag = O_RDWR;
+	else if (!ft_strncmp(head->content, "<<", 2))
+		redir->flag = -1;
+	redir->fd = open(redir->name, redir->flag, 0644);
+	close(redir->fd);
+}
+
+static void	parse_commands(t_token *head, t_command *commands)
 {
 	int			i;
 	int			j;
@@ -27,9 +42,9 @@ void	parse_commands(t_token *head, t_command *commands)
 			if (head->type == TOKEN_NAME)
 				commands[i].argv[j++] = ft_trim_quotes(head->content);
 			else if (head->type == TOKEN_REDIR_IN)
-				commands[i].in.name = ft_trim_quotes(head->next->content);
+				open_redirs(head, &commands[i].in);
 			else if (head->type == TOKEN_REDIR_OUT)
-				commands[i].out.name = ft_trim_quotes(head->next->content);
+				open_redirs(head, &commands[i].in);
 			if (head->type == TOKEN_REDIR_IN || head->type == TOKEN_REDIR_OUT)
 				head = head->next;
 			head = head->next;

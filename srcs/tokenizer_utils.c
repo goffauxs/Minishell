@@ -6,44 +6,42 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:12:47 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/21 16:40:27 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/22 11:09:02 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_operations	*fill_ex_ops(void)
+t_operations	add_element(const char *op, int size, t_token_type type)
 {
-	const t_operations	ops[] =
-	{
-		{">>", 2, TOKEN_REDIR_OUT},
-		{"<<", 2, TOKEN_REDIR_IN},
-		{"|", 1, TOKEN_PIPE},
-		{">", 1, TOKEN_REDIR_OUT},
-		{"<", 1, TOKEN_REDIR_IN},
-		{" ", 1, TOKEN_EAT},
-		{"\n", 1, TOKEN_EAT},
-		{"\v", 1, TOKEN_EAT},
-		{"\t", 1, TOKEN_EAT},
-		{"\r", 1, TOKEN_EAT},
-		{"\f", 1, TOKEN_EAT},
-		{NULL, 1, 0}
-	};
+	t_operations	tmp;
 
-	return (ops);
+	tmp.op = op;
+	tmp.size = size;
+	tmp.type = type;
+	return (tmp);
 }
 
-int	treat_quotes(char **str)
+t_operations	*fill_ex_ops(void)
 {
-	char	open_quote;
+	t_operations	*ops;
 
-	open_quote = **str;
-	++(*str);
-	while (**str && **str != open_quote)
-		++(*str);
-	if (!**str || (**str != open_quote))
-		return (0);
-	return (1);
+	ops = malloc(sizeof(t_operations) * 12);
+	if (!ops)
+		return (NULL);
+	ops[0] = add_element(">>", 2, TOKEN_REDIR_OUT);
+	ops[1] = add_element("<<", 2, TOKEN_REDIR_IN);
+	ops[2] = add_element("|", 1, TOKEN_PIPE);
+	ops[3] = add_element(">", 1, TOKEN_REDIR_OUT);
+	ops[4] = add_element("<", 1, TOKEN_REDIR_IN);
+	ops[5] = add_element(" ", 1, TOKEN_EAT);
+	ops[6] = add_element("\n", 1, TOKEN_EAT);
+	ops[7] = add_element("\v", 1, TOKEN_EAT);
+	ops[8] = add_element("\t", 1, TOKEN_EAT);
+	ops[9] = add_element("\r", 1, TOKEN_EAT);
+	ops[10] = add_element("\f", 1, TOKEN_EAT);
+	ops[11] = add_element(NULL, 1, 0);
+	return (ops);
 }
 
 t_token	*create_token(const char *string, int size, t_token_type type)
@@ -70,18 +68,20 @@ void	add_token(t_token **head, t_token *new_token)
 			*head = new_token;
 		else
 		{
-			while (*head)
-				*head = (*head)->next;
-			(*head)->next = new_token;
+			tmp = *head;
+			while (tmp->next)
+				tmp = tmp->next;
+			tmp->next = new_token;
 		}
 	}
 }
 
 t_operations	search_token_type(const char *s)
 {
-	const t_operations	*ex_ops = fill_ex_ops();
+	t_operations		*ex_ops;
 	t_operations		blank;
 
+	ex_ops = fill_ex_ops();
 	blank.op = 0;
 	blank.size = 0;
 	blank.type = 0;
@@ -91,5 +91,6 @@ t_operations	search_token_type(const char *s)
 			return (*ex_ops);
 		ex_ops++;
 	}
+	free(ex_ops);
 	return (blank);
 }

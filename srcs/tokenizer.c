@@ -6,11 +6,24 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:35 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/21 16:18:19 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/22 10:28:17 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	treat_quotes(char **str)
+{
+	char	open_quote;
+
+	open_quote = **str;
+	++(*str);
+	while (**str && **str != open_quote)
+		++(*str);
+	if (!**str || (**str != open_quote))
+		return (0);
+	return (1);
+}
 
 int	tokenizer(char *str, t_token **head)
 {
