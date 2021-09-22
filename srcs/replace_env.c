@@ -6,16 +6,11 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/22 11:18:37 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/22 15:47:43 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	ft_isenvv(char c)
-{
-	return ((c >= 65 && c <= 90) || ft_isdigit(c) || c == '_');
-}
 
 static char	*get_env_var(char *str, char **envp, int *i)
 {
@@ -23,11 +18,9 @@ static char	*get_env_var(char *str, char **envp, int *i)
 	char	*tmp;
 
 	*i = 0;
-	if (ft_isdigit(*str))
-		return ("");
 	if (*str == '?')
 		//return global exit code
-	while (str[*i] && ft_isenvv(str[*i]))
+	while (str[*i] && !ft_isspace(str[*i]))
 		(*i)++;
 	c = str[*i];
 	str[*i] = 0;
