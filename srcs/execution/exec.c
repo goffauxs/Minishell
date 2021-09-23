@@ -23,6 +23,7 @@ void	exec_cmd( char **path, char **cmd, char **env)
 void	handle_cmd(t_script *script)
 {
 	char	**path_env;
+	int		pid;
 
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
