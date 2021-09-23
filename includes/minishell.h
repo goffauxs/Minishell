@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/23 17:09:40 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/23 17:57:09 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int				builtin_cd(t_command command);
 int 			builtin_exit(t_command command, t_script *script);
 int				builtin_pwd(void);
 int				builtin_export(t_script *script, t_command command);
+int				builtin_unset(t_script *script, t_command command);
 int				builtin_env(char **envp);
 
 // Utils

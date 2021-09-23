@@ -112,7 +112,7 @@ int	builtin_pwd(void)
 	return (0);
 }
 
-int		check_existing(char **envp, char *str)
+int		check_existing_export(char **envp, char *str)
 {
 	int		j;
 	int		i;
@@ -167,7 +167,7 @@ int	builtin_export(t_script *script, t_command command)
 			i++;
 			continue;
 		}
-		if (check_existing((script->envp), command.argv[i]))
+		if (check_existing_export((script->envp), command.argv[i]))
 			exist = 1;
 		j = 0;
 		while ((script->envp)[j])
@@ -181,8 +181,8 @@ int	builtin_export(t_script *script, t_command command)
 		}
 		if (exist)
 		{
-			free(tmp[check_existing((script->envp), command.argv[i])]);
-			tmp[check_existing((script->envp), command.argv[i])] = ft_strdup(command.argv[i]);
+			free(tmp[check_existing_export((script->envp), command.argv[i])]);
+			tmp[check_existing_export((script->envp), command.argv[i])] = ft_strdup(command.argv[i]);
 			tmp[j] = NULL;
 		}
 		else
@@ -191,6 +191,7 @@ int	builtin_export(t_script *script, t_command command)
 			tmp[j + 1] = NULL;
 		}
 		j = 0;
+		//free envp
 		while(tmp[j])
 		{
 			(script->envp)[j] = ft_strdup(tmp[j]);
@@ -205,6 +206,79 @@ int	builtin_export(t_script *script, t_command command)
 	return(0);
 }
 //
+
+int		check_existing_unset(char *line, char *str)
+{
+	if (ft_strncmp(str, line, ft_strlen(str)))
+	{
+		return(1);
+	}
+	return (0);
+}
+
+int	builtin_unset(t_script *script, t_command command)
+{
+	char	**tmp;
+	int		i;
+	int		j;
+	int		k;
+
+	if (!(script->envp))
+		return (1);
+	i = 1;
+	while (command.argv[i])
+	{
+		if (ft_isdigit(command.argv[i][0]))
+		{
+			printf("unset: '%s': not a valid identifier\n", command.argv[i]);
+			i++;
+			continue;
+		}
+		if (has_char(command.argv[i], '='))
+		{
+			printf("unset: '%s': not a valid identifier\n", command.argv[i]);
+			i++;
+			continue;
+		}
+		//boucle
+		j = 0;
+		if (!check_existing_unset(script->envp[j], command.argv[i]))
+		{
+			i++;
+			continue;
+		}
+		while (script->envp[j])
+			j++;
+		tmp = malloc(sizeof(char *) * j);
+		j = 0;
+		k = 0;
+		while (script->envp[j])
+		{
+			if (check_existing_unset(script->envp[j], command.argv[i]))
+			{
+				tmp[k] = ft_strdup(script->envp[j]);
+				k++;
+			}
+			else
+				tmp[k] = NULL;
+			j++;
+		}
+		tmp[k] = NULL;
+		j = 0;
+		//free envp
+		while(tmp[j])
+		{
+			(script->envp)[j] = ft_strdup(tmp[j]);
+			j++;
+		}
+		(script->envp)[j] = NULL;
+		while(--j >= 0)
+			free(tmp[j]);
+		free(tmp);
+		i++;
+	}
+	return(0);
+}
 
 int	builtin_env(char **envp)
 {

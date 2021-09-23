@@ -87,6 +87,8 @@ int	handle_builtin(int ret, t_script *script, int i)
 		script->exit_status = builtin_pwd(); // ok
 	if (ret == 4)
 		script->exit_status = builtin_export(script, script->commands[i]); // segfault
+	if (ret == 5)
+		script->exit_status = builtin_unset(script, script->commands[i]); // ok
 	if (ret == 6)
 		script->exit_status = builtin_env(script->envp); // ok
 	if (ret == 7)
