@@ -5,6 +5,7 @@ static int	middle_cmds(t_script *script, char **path_env, int *pipein, int *pipe
 	int	pid;
 
 	pid = fork();
+	//g_pid = fork();
 	if (pid == -1)
 		return (1); //error
 	if (pid == 0)
