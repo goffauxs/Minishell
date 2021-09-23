@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/23 14:46:17 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/23 16:14:52 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ char			**split_paths(char **env);
 void			first_child(t_script *script, char **path_env, int *pipe1);
 void			middle_child(t_script *script, char **path_env, int *pipein, int *pipeout, int i);
 void			last_child(t_script *script, char **path_env, int *pipein, int i);
-void			single_cmd(t_script *script, char **path_env);
 
 // Signals
 void			sig_handler(int signum);
@@ -116,6 +115,7 @@ void			in_redir(t_script *script, int i);
 void			out_redir(t_script *script, int i);
 void			close_pipes(int *pipe1, int *pipe2);
 void			pipe_dup(int *pipe, int mod, int std);
+void			cmd_builtin(t_script *script, char **path_env, int ret, int i);
 void			heredoc(t_script *script, int i);
 
 // Free
