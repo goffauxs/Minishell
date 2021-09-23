@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/22 12:52:26 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/23 14:59:28 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_isenvv(char c)
+static int	ft_is_env(char c)
 {
-	return ((c >= 65 && c <= 90) || ft_isdigit(c) || c == '_');
+	return (ft_isalnum(c) || c == '_');
 }
 
 static char	*get_env_var(char *str, char **envp, int *i)
@@ -23,27 +23,21 @@ static char	*get_env_var(char *str, char **envp, int *i)
 	char	*tmp;
 
 	*i = 0;
-	if (ft_isdigit(*str))
-		return ("");
-	if (*str == '?')
-		//return global exit code
-	while (str[*i] && ft_isenvv(str[*i]))
+	(void)envp;
+	// if (*str == '?')
+	// 	return global exit code
+	while (ft_is_env(str[*i]))
 		(*i)++;
 	c = str[*i];
 	str[*i] = 0;
-	tmp = ft_strjoin(str, "=");
+	tmp = getenv(str);
 	str[*i] = c;
-	while (*envp)
+	if (!tmp)
 	{
-		if (!ft_strncmp(tmp, *envp, ft_strlen(tmp)))
-		{
-			free(tmp);
-			return (*envp + ft_strlen(tmp));
-		}
-		envp++;
+		tmp = malloc(sizeof(char));
+		tmp[0] = 0;
 	}
-	free(tmp);
-	return ("");
+	return (tmp);
 }
 
 void	replace_env_var(t_token *head, char **envp)
@@ -58,8 +52,12 @@ void	replace_env_var(t_token *head, char **envp)
 		if (head->content[0] != '\'' && ft_strchr(head->content, '$'))
 		{
 			tmp_split = ft_split(head->content, '$');
-			before = tmp_split[0];
-			tmp_split++;
+			before = "";
+			if (head->content[0] != '$')
+			{
+				before = tmp_split[0];
+				tmp_split++;
+			}
 			while (*tmp_split)
 			{
 				i = 0;

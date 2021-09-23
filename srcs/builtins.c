@@ -42,7 +42,7 @@ int	builtin_cd(t_command command)
 	return (chdir(command.argv[1]));
 }
 
-int builtin_exit(t_command command)
+int builtin_exit(t_command command, t_script *script)
 {
 	int j;
 	if(command.argv[1])
@@ -57,7 +57,7 @@ int builtin_exit(t_command command)
 				write(1, "exit\n", 5);
 				printf("%s: %s: numeric argument required\n",command.argv[0], command.argv[1]);
 				rl_on_new_line();
-				exit_status = 255;
+				script->exit_status = 255;
 				return(1);
 			}
 			j++;
@@ -67,7 +67,7 @@ int builtin_exit(t_command command)
 	{
 		write(1, "exit\n", 5);
 		printf("%s: too many arguments\n", command.argv[0]);
-		exit_status = 1;
+		script->exit_status = 1;
 		rl_on_new_line();
 		return(0);
 	}
@@ -82,14 +82,14 @@ int builtin_exit(t_command command)
 					write(1, "exit\n", 5);
 					printf("%s: %s: numeric argument required\n",command.argv[0], command.argv[1]);
 					rl_on_new_line();
-					exit_status = 255;
+					script->exit_status = 255;
 					return(1);
 				}
 			}
-			exit_status = ft_atoi(command.argv[1]) & 0xFF;
+			script->exit_status = ft_atoi(command.argv[1]) & 0xFF;
 		}
 		else
-			exit_status = 0;
+			script->exit_status = 0;
 		rl_on_new_line();
 		write(1, "exit\n", 5);
 	}
@@ -112,31 +112,17 @@ int	builtin_pwd(void)
 	return (0);
 }
 
-int	builtin_export(char ***envp, t_command command) //SEGFAULT
+int	builtin_export(char ***envp, t_command command)
 {
-	char	**tmp;
-	int		i;
+	(void)envp;
+	(void)command;
+	// char	**tmp;
+	// int		i;
 
-	if (!(*envp))
-		return (1);
-	if(ft_isdigit(command.argv[1][0]))
-	{
-		printf("export: '%s': not a valid identifier\n", command.argv[1]);
-		return(1);
-	}
-	i = 0;
-	while ((*envp)[i])
-		i++;
-	tmp = malloc(sizeof(char *) * (i + 2));
-	i = 0;
-	while((*envp)[i])
-	{
-		tmp[i] = ft_strdup((*envp)[i]);
-		i++;
-	}
-	tmp[i++] = ft_strdup(command.argv[1]);
-	tmp[i] = NULL;
-	*envp = tmp;
+	// if (!(*envp))
+	// 	return (1);
+	// i = 0;
+	
 	return(0);
 }
 

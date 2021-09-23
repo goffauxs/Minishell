@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	here_doc(t_script *script, int i)
+void	heredoc(t_script *script, int i)
 {
 	char	*tmp;
 	char	*bis;

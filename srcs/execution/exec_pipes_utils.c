@@ -17,7 +17,7 @@ void	in_redir(t_script *script, int i)
 			dup2(fdin, STDIN_FILENO);
 	}
 	else
-		here_doc(script, i);
+		heredoc(script, i);
 }
 
 void	out_redir(t_script *script, int i)
