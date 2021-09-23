@@ -6,7 +6,7 @@
 #    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/21 16:43:18 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/09/23 14:11:46 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,17 +18,29 @@ LIBFT		=	$(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
 CC			=	gcc
 INCLUDE		=	includes
-CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include
+CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include -fsanitize=address -g
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
+EXEC_DIR	=	srcs/execution
+PARSING_DIR	=	srcs/parsing
+
 SRCS		=	main.c \
-				srcs/parsing.c \
-				srcs/utils.c \
+				$(PARSING_DIR)/parsing.c \
+				$(PARSING_DIR)/utils.c \
+				$(PARSING_DIR)/replace_env.c \
+				$(PARSING_DIR)/tokenizer.c \
+				$(PARSING_DIR)/tokenizer_utils.c \
+				$(EXEC_DIR)/exec_pipes_forks.c \
+				$(EXEC_DIR)/exec_pipes_utils.c \
+				$(EXEC_DIR)/exec_pipes.c \
+				$(EXEC_DIR)/exec_single.c \
+				$(EXEC_DIR)/exec.c \
+				$(EXEC_DIR)/heredoc.c \
+				$(EXEC_DIR)/path_handling.c \
 				srcs/free.c \
-				srcs/replace_env.c \
-				srcs/tokenizer.c \
-				srcs/tokenizer_utils.c \
+				srcs/builtins.c \
+				srcs/signal.c \
 
 OBJS		=	$(SRCS:%.c=%.o)
 
