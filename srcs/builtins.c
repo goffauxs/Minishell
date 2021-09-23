@@ -177,46 +177,36 @@ int	builtin_export(char ***envp, t_command command)
 		while ((*envp)[j])
 		{
 			tmp[j] = ft_strdup((*envp)[j]);
-			// printf("tmp[j] %s\n", tmp[j]);
 			j++;
 		}
 		if (exist)
 		{
 			free(tmp[check_existing((*envp), command.argv[i])]);
 			tmp[check_existing((*envp), command.argv[i])] = ft_strdup(command.argv[i]);
-			// printf("tmp[check_exisiting((*envp), command.argv[i])] %s\n", tmp[check_existing((*envp), command.argv[i])]);
-			// printf("ft_strdup(command.argv[i]) %s\n", ft_strdup(command.argv[i]));
+			tmp[j] = NULL;
 		}
 		else
 		{
 			tmp[j] = ft_strdup(command.argv[i]);
-			// printf("NEW ARG tmp[j] %s\n", tmp[j]);
+			tmp[j + 1] = NULL;
 		}
-		j++;
-		tmp[j] = NULL;
 		j = 0;
 		while(tmp[j])
 		{
-			printf("tmp[j] %s\n", tmp[j]);
+			(*envp)[j] = ft_strdup(tmp[j]);
 			j++;
 		}
-		*envp = tmp;
-		// j = 0;
-		// while(tmp[j])
-		// {
-		// 	free(tmp[j]);
-		// 	j++;
-		// }
-		// free(tmp);
+		while(--j >= 0)
+			free(tmp[j]);
+		free(tmp);
 		i++;
 	}
-	
 	// int count = 0;
-	// while((*envp)[count])
-	// {
-	// 	printf(" env = |%s|\n", (*envp)[count]);
-	// 	count++;
-	// }
+    // while((*envp)[count])
+    // {
+    //  printf(" env = |%s|\n", (*envp)[count]);
+    //  count++;
+    // }
 	return(0);
 }
 //
