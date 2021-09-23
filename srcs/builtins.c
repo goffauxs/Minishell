@@ -42,7 +42,7 @@ int	builtin_cd(t_command command)
 	return (chdir(command.argv[1]));
 }
 
-int builtin_exit(t_command command)
+int builtin_exit(t_command command, t_script *script)
 {
 	int j;
 	if(command.argv[1])
@@ -57,7 +57,7 @@ int builtin_exit(t_command command)
 				write(1, "exit\n", 5);
 				printf("%s: %s: numeric argument required\n",command.argv[0], command.argv[1]);
 				rl_on_new_line();
-				exit_status = 255;
+				script->exit_status = 255;
 				return(1);
 			}
 			j++;
@@ -67,7 +67,7 @@ int builtin_exit(t_command command)
 	{
 		write(1, "exit\n", 5);
 		printf("%s: too many arguments\n", command.argv[0]);
-		exit_status = 1;
+		script->exit_status = 1;
 		rl_on_new_line();
 		return(0);
 	}
@@ -82,14 +82,14 @@ int builtin_exit(t_command command)
 					write(1, "exit\n", 5);
 					printf("%s: %s: numeric argument required\n",command.argv[0], command.argv[1]);
 					rl_on_new_line();
-					exit_status = 255;
+					script->exit_status = 255;
 					return(1);
 				}
 			}
-			exit_status = ft_atoi(command.argv[1]) & 0xFF;
+			script->exit_status = ft_atoi(command.argv[1]) & 0xFF;
 		}
 		else
-			exit_status = 0;
+			script->exit_status = 0;
 		rl_on_new_line();
 		write(1, "exit\n", 5);
 	}
@@ -112,7 +112,6 @@ int	builtin_pwd(void)
 	return (0);
 }
 
-///
 int		check_existing(char **envp, char *str)
 {
 	int		j;
@@ -237,106 +236,3 @@ int	builtin_env(char **envp)
 	}
 	return (0);
 }
-
-
-// EXPORT BUG
-// int		check_exisiting(char **envp, char *str)
-// {
-// 	int		j;
-// 	int		i;
-
-// 	j = 0;
-// 	i = 0;
-// 	while(str[j] && str[j] != '=')
-// 		j++;
-// 	while(envp[i])
-// 	{
-// 		if(!ft_strncmp(str, envp[i], j))
-// 			return(i);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// int		has_char(char *str, char c)
-// {
-// 	int i;
-// 	i = 0;
-// 	while(str[i])
-// 	{
-// 		if(str[i] == c)
-// 			return(0);
-// 		i++;
-// 	}
-// 	return(1);
-// }
-
-// int	builtin_export(char ***envp, t_command command)
-// {
-// 	char	**tmp;
-// 	int		i;
-// 	int		j;
-
-// 	if (!(*envp))
-// 		return (1);
-// 	i = 1;
-// 	j = 0;
-// 	while (command.argv[i])
-// 	{
-// 		if (ft_isdigit(command.argv[i][0]))
-// 		{
-// 			printf("export: '%s': not a valid identifier\n", command.argv[i]);
-// 			j++;
-// 		}
-// 		if (!has_char(command.argv[i], '='))
-// 			j++;
-// 		if (check_exisiting((*envp), command.argv[i]))
-// 			j++;
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while ((*envp)[i])
-// 		i++;
-// 	tmp = malloc(sizeof(char *) * (i + command.argc - j));
-// 	//
-	
-// 	i = 0;
-// 	j = 1;
-// 	while ((*envp)[i])
-// 	{
-// 		tmp[i] = ft_strdup((*envp)[i]);
-// 		i++;
-// 	}
-// 	while(command.argv[j])
-// 	{
-// 		if(check_exisiting((*envp), command.argv[j]) && !ft_isdigit(command.argv[j][0]) && has_char(command.argv[j], '='))
-// 		{
-// 			free(tmp[check_exisiting((*envp), command.argv[j])]);
-// 			tmp[check_exisiting((*envp), command.argv[j])] = ft_strdup(command.argv[j]);
-// 		}
-// 		j++;
-// 	}
-// 	j = 1;
-// 	while (command.argv[j])
-// 	{
-// 		if (check_exisiting((*envp), command.argv[j]) || ft_isdigit(command.argv[j][0]) || !has_char(command.argv[j], '='))
-// 			j++;
-// 		else if (!ft_isdigit(command.argv[j][0]) && has_char(command.argv[j], '='))
-// 		{
-// 			tmp[i] = ft_strdup(command.argv[j]);
-// 			j++;
-// 			i++;
-// 		}
-// 	}
-// 	tmp[i] = NULL;
-// 	*envp = tmp;
-
-// 	i = 0;
-// 	while((*envp)[i])
-// 	{
-// 		printf(" env = |%s|\n", (*envp)[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-// //

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
+#    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/22 18:29:07 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/23 15:29:38 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,29 +22,31 @@ CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
-SRCS		=	srcs/execution/exec_pipes_forks.c	\
-				srcs/execution/exec_pipes_utils.c	\
-				srcs/execution/exec_pipes.c			\
-				srcs/execution/exec_single.c		\
-				srcs/execution/exec.c				\
-				srcs/execution/here_doc.c			\
-				srcs/execution/path_handling.c		\
-				srcs/parsing/free.c					\
-				srcs/parsing/parsing.c				\
-				srcs/parsing/replace_env.c			\
-				srcs/parsing/tokenizer_utils.c		\
-				srcs/parsing/tokenizer.c			\
-				srcs/parsing/utils.c				\
-				srcs/builtins.c						\
-				srcs/signal.c						\
-				main.c 								\
+EXEC_DIR	=	srcs/execution
+PARSING_DIR	=	srcs/parsing
+
+SRCS		=	main.c \
+				$(PARSING_DIR)/parsing.c \
+				$(PARSING_DIR)/utils.c \
+				$(PARSING_DIR)/replace_env.c \
+				$(PARSING_DIR)/tokenizer.c \
+				$(PARSING_DIR)/tokenizer_utils.c \
+				$(EXEC_DIR)/exec_pipes_forks.c \
+				$(EXEC_DIR)/exec_pipes_utils.c \
+				$(EXEC_DIR)/exec_pipes.c \
+				$(EXEC_DIR)/exec.c \
+				$(EXEC_DIR)/heredoc.c \
+				$(EXEC_DIR)/path_handling.c \
+				srcs/free.c \
+				srcs/builtins.c \
+				srcs/signal.c \
 
 OBJS		=	$(SRCS:%.c=%.o)
 
 all:		$(NAME)
 
 $(NAME):	$(OBJS) $(LIBFT)
-			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib  $(OBJS) -o $(NAME)
+			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib $(OBJS) -o $(NAME)
 			@echo "Linked into executable \033[0;32mminishell\033[0m."
 
 $(LIBFT):
