@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
+#    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/22 18:29:07 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/23 13:46:20 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ RM			=	rm -f
 SRCS		=	srcs/execution/exec_pipes_forks.c	\
 				srcs/execution/exec_pipes_utils.c	\
 				srcs/execution/exec_pipes.c			\
-				srcs/execution/exec_single.c		\
 				srcs/execution/exec.c				\
 				srcs/execution/here_doc.c			\
 				srcs/execution/path_handling.c		\

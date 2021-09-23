@@ -9,9 +9,11 @@ void	first_child(t_script *script, char **path_env, int *pipe1)
 		in_redir(script, 0);
 	if (script->commands[0].out.name)
 		out_redir(script, 0);
-	else
+	else if (pipe1)
+	{
 		pipe_dup(pipe1, 1, STDOUT_FILENO);
-	close_pipes(pipe1, NULL);
+		close_pipes(pipe1, NULL);
+	}
 	if (!ret)
 	{
 		exec_cmd(path_env, script->commands[0].argv, script->envp);

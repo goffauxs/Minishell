@@ -23,10 +23,23 @@ void	exec_cmd( char **path, char **cmd, char **env)
 void	handle_cmd(t_script *script)
 {
 	char	**path_env;
+	int		pid;
 
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
-		single_cmd(script, path_env);
+	{
+		pid = fork();
+		if (pid == -1)
+		{
+			exit_status = 1 ;
+			return ; //error
+		}
+		if (pid == 0)
+			first_child(script, path_env, NULL);
+		waitpid(0, &exit_status, 0);
+		if (exit_status == 256 || exit_status == 512)
+			exit_status /= 256;
+	}
 	else
 		pipex(script, path_env);
 	free(path_env);
