@@ -23,21 +23,28 @@ void	exec_cmd( char **path, char **cmd, char **env)
 void	handle_cmd(t_script *script)
 {
 	char	**path_env;
+	int		ret;
 
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
-		g_pid = fork();
-		if (g_pid == -1)
+		ret = check_builtin(script->commands[0].argv[0]);
+		if (ret > 0)
+			handle_builtin(ret, script, 0);
+		else
 		{
-			script->exit_status = 1;
-			return ; //error
+			g_pid = fork();
+			if (g_pid == -1)
+			{
+				script->exit_status = 1;
+				return ; //error
+			}
+			if (g_pid == 0)
+				first_child(script, path_env, NULL);
+			waitpid(0, &script->exit_status, 0);
+			if (script->exit_status == 256 || script->exit_status == 512)
+				script->exit_status /= 256;
 		}
-		if (g_pid == 0)
-			first_child(script, path_env, NULL);
-		waitpid(0, &script->exit_status, 0);
-		if (script->exit_status == 256 || script->exit_status == 512)
-			script->exit_status /= 256;
 	}
 	else
 		pipex(script, path_env);
@@ -79,7 +86,9 @@ int	handle_builtin(int ret, t_script *script, int i)
 	if (ret == 3)
 		script->exit_status = builtin_pwd(); // ok
 	if (ret == 4)
-		script->exit_status = builtin_export(&script->envp, script->commands[i]); // segfault
+		script->exit_status = builtin_export(script, script->commands[i]); // ok
+	if (ret == 5)
+		script->exit_status = builtin_unset(script, script->commands[i]); // ok
 	if (ret == 6)
 		script->exit_status = builtin_env(script->envp); // ok
 	if (ret == 7)
