@@ -19,8 +19,6 @@
 // 	int	pid;
 // }	s_globale;
 
-
-
 typedef enum e_token_type
 {
 	TOKEN_EAT,
@@ -120,7 +118,6 @@ int				get_cmd_count(char *line_buf);
 int				return_error(const char *msg);
 void			get_num_args(t_token *head, t_script *script);
 
-
 /*
 ** exec.c
 */
@@ -129,14 +126,14 @@ void			get_num_args(t_token *head, t_script *script);
 //static void	init_vars(int *i, int *j);
 void	exec_cmd( char **path, char **cmd, char **env);
 // void	child(char **path_env, t_script script, int i);
-void	handle_cmd(t_script script);
+void	handle_cmd(t_script *script);
 int		check_builtin(char *cmd);
-int		handle_builtin(int ret, t_script script, int i);
+int		handle_builtin(int ret, t_script *script, int i);
 
 /*
 ** exec_pipes.c
 */
-int		pipex(t_script script, char **path_env);
+int		pipex(t_script *script, char **path_env);
 
 /*
 ** signal.c
@@ -150,7 +147,7 @@ int			builtin_echo(t_command command);
 int			builtin_cd(t_command command);
 int			builtin_exit(t_command command);
 int			builtin_pwd(void);
-int			builtin_export(t_script *script);
+int			builtin_export(char ***envp, t_command command);
 int			builtin_env(char **envp);
 
 /*
@@ -161,26 +158,26 @@ char	**split_paths(char **env);
 /*
 ** here_doc.c
 */
-void	here_doc(t_script script, int i);
+void	here_doc(t_script *script, int i);
 
 /*
 ** exec_pipes_utils.c
 */
-void	in_redir(t_script script, int i);
-void	out_redir(t_script script, int i);
+void	in_redir(t_script *script, int i);
+void	out_redir(t_script *script, int i);
 void	close_pipes(int *pipe1, int *pipe2);
 void	pipe_dup(int *pipe, int mod, int std);
 
 /*
 ** exec_pipes_forks.c
 */
-void	first_child(t_script script, char **path_env, int *pipe1);
-void	middle_child(t_script script, char **path_env, int *pipein, int *pipeout, int i);
-void	last_child(t_script script, char **path_env, int *pipein, int i);
+void	first_child(t_script *script, char **path_env, int *pipe1);
+void	middle_child(t_script *script, char **path_env, int *pipein, int *pipeout, int i);
+void	last_child(t_script *script, char **path_env, int *pipein, int i);
 
 /*
 ** exec_single.c
 */
-void	single_cmd(t_script script, char **path_env);
+void	single_cmd(t_script *script, char **path_env);
 
 #endif

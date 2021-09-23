@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	middle_cmds(t_script script, char **path_env, int *pipein, int *pipeout, int i)
+static int	middle_cmds(t_script *script, char **path_env, int *pipein, int *pipeout, int i)
 {
 	int	pid;
 
@@ -15,14 +15,14 @@ static int	middle_cmds(t_script script, char **path_env, int *pipein, int *pipeo
 	return (0);
 }
 
-static int	middle_loop(t_script script, char **path_env, int *pipe1, int *pipe2)
+static int	middle_loop(t_script *script, char **path_env, int *pipe1, int *pipe2)
 {
 	int	i;
 	int	check;
 
 	i = 1;
 	check = 0;
-	while (i < script.cmd_count - 1)
+	while (i < script->cmd_count - 1)
 	{
 		if (check == 0)
 		{
@@ -43,17 +43,17 @@ static int	middle_loop(t_script script, char **path_env, int *pipe1, int *pipe2)
 	return (check);
 }
 
-static void	last_cmd(t_script script, char **path_env, int *pipein, int pid2)
+static void	last_cmd(t_script *script, char **path_env, int *pipein, int pid2)
 {
 	int	i;
 
-	i = script.cmd_count - 1;
+	i = script->cmd_count - 1;
 	if (pid2 == 0)
 		last_child(script, path_env, pipein, i);
 	//end of function free everything etc
 }
 
-int	pipex(t_script script, char **path_env)
+int	pipex(t_script *script, char **path_env)
 {
 	int	pipe1[2];
 	int	pipe2[2];

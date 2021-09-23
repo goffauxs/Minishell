@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-void	in_redir(t_script script, int i)
+void	in_redir(t_script *script, int i)
 {
 	int	fdin;
 
-	if (script.commands[i].in.flag >= 0)
+	if (script->commands[i].in.flag >= 0)
 	{
-		fdin = open(script.commands[i].in.name, script.commands[i].in.flag);
+		fdin = open(script->commands[i].in.name, script->commands[i].in.flag);
 		if (fdin == -1)
 		{
-			printf("%s: No such file or directory\n", script.commands[i].in.name);
+			printf("%s: No such file or directory\n", script->commands[i].in.name);
 			close(fdin);
 			exit(1);
 		}
@@ -20,11 +20,11 @@ void	in_redir(t_script script, int i)
 		here_doc(script, i);
 }
 
-void	out_redir(t_script script, int i)
+void	out_redir(t_script *script, int i)
 {
 	int	fdout;
 
-	fdout = open(script.commands[i].out.name, script.commands[i].out.flag, 0644);
+	fdout = open(script->commands[i].out.name, script->commands[i].out.flag, 0644);
 	if (fdout != STDOUT_FILENO)
 	{
 		if (dup2(fdout, STDOUT_FILENO) == -1)

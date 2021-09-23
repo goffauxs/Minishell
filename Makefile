@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
+#    Updated: 2021/09/23 13:46:20 by rvan-aud         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME		=	minishell
 
 LIBFT_A		=	libft.a
@@ -10,22 +22,21 @@ CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
-SRCS		=	srcs/builtins.c		\
-				srcs/exec.c 		\
-				srcs/parsing.c 		\
-				srcs/signal.c		\
-				srcs/path_handling.c \
-				srcs/exec_pipes.c	\
-				srcs/utils.c \
-				srcs/free.c \
-				srcs/replace_env.c \
-				srcs/tokenizer.c \
-				srcs/tokenizer_utils.c \
-				srcs/here_doc.c	\
-				srcs/exec_pipes_utils.c	\
-				srcs/exec_pipes_forks.c	\
-				srcs/exec_single.c	\
-				main.c 				\
+SRCS		=	srcs/execution/exec_pipes_forks.c	\
+				srcs/execution/exec_pipes_utils.c	\
+				srcs/execution/exec_pipes.c			\
+				srcs/execution/exec.c				\
+				srcs/execution/here_doc.c			\
+				srcs/execution/path_handling.c		\
+				srcs/parsing/free.c					\
+				srcs/parsing/parsing.c				\
+				srcs/parsing/replace_env.c			\
+				srcs/parsing/tokenizer_utils.c		\
+				srcs/parsing/tokenizer.c			\
+				srcs/parsing/utils.c				\
+				srcs/builtins.c						\
+				srcs/signal.c						\
+				main.c 								\
 
 OBJS		=	$(SRCS:%.c=%.o)
 
