@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/23 17:35:27 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/24 14:04:21 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <signal.h>
 # include <limits.h>
 # include <errno.h>
+# include <termios.h>
 # include "libft.h"
 
 # define MAX_PATH_LEN 4096
@@ -73,6 +74,7 @@ typedef struct s_script
 	int			cmd_count;
 	int			exit_status;
 	char		**envp;
+	struct termios	termios_p;
 }				t_script;
 
 int				parse(t_script *script, char **line_buf);
@@ -86,7 +88,7 @@ t_operations	search_token_type(const char *s);
 
 // Exec
 void			exec_cmd( char **path, char **cmd, char **env);
-void			handle_cmd(t_script *script);
+int				handle_cmd(t_script *script);
 int				check_builtin(char *cmd);
 int				handle_builtin(int ret, t_script *script, int i);
 int				pipex(t_script *script, char **path_env);

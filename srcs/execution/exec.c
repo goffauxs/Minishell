@@ -20,24 +20,28 @@ void	exec_cmd( char **path, char **cmd, char **env)
 	}
 }
 
-void	handle_cmd(t_script *script)
+int		handle_cmd(t_script *script)
 {
 	char	**path_env;
 	int		ret;
 
+	signal(SIGQUIT, sig_handler);
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
 		ret = check_builtin(script->commands[0].argv[0]);
 		if (ret > 0)
-			handle_builtin(ret, script, 0);
+		{
+			if(handle_builtin(ret, script, 0))
+				return(1);
+		}
 		else
 		{
 			g_pid = fork();
 			if (g_pid == -1)
 			{
 				script->exit_status = 1;
-				return ; //error
+				return (1); //error
 			}
 			if (g_pid == 0)
 				first_child(script, path_env, NULL);
@@ -49,6 +53,8 @@ void	handle_cmd(t_script *script)
 	else
 		pipex(script, path_env);
 	free(path_env);
+	return(0);
+	
 }
 
 int	check_builtin(char *cmd)

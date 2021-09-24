@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/23 14:46:10 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/24 14:06:27 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,14 @@ int	parse(t_script *script, char **line_buf)
 
 	head = NULL;
 	*line_buf = readline("Minishell > ");
+	if(!line_buf)
+	{
+		//write(1, "exit\n", 5);
+		rl_replace_line("exit", 0);
+		rl_redisplay();
+		free(*line_buf);
+		return(2);
+	}
 	add_history(*line_buf);
 	if (!tokenizer(*line_buf, &head))
 	{
@@ -91,6 +99,6 @@ int	parse(t_script *script, char **line_buf)
 	get_num_args(head, script);
 	parse_commands(head, script->commands);
 	free_tokens(head);
-	free(*line_buf);
+	//free(*line_buf);
 	return (0);
 }

@@ -146,139 +146,124 @@ int		has_char(char *str, char c)
 int	builtin_export(t_script *script, t_command command)
 {
 	char	**tmp;
+	int		var;
 	int		i;
-	int		j;
 	int		exist;
 
-	if (!(script->envp))
+	if (!script->envp)
 		return (1);
-	i = 1;
-	while (command.argv[i])
+	var = 1;
+	while (command.argv[var])
 	{
 		exist = 0;
-		if (ft_isdigit(command.argv[i][0]))
+		if (ft_isdigit(command.argv[var][0]))
 		{
-			printf("export: '%s': not a valid identifier\n", command.argv[i]);
-			i++;
+			printf("export: '%s': not a valid identifier\n", command.argv[var]);
+			var++;
 			continue;
 		}
-		if (!has_char(command.argv[i], '='))
+		if (!has_char(command.argv[var], '='))
 		{
-			i++;
+			var++;
 			continue;
 		}
-		if (check_existing_export((script->envp), command.argv[i]))
+		if (check_existing_export(script->envp, command.argv[var]))
 			exist = 1;
-		j = 0;
-		while ((script->envp)[j])
-			j++;
-		tmp = malloc(sizeof(char *) * (j + 2 - exist));
-		j = 0;
-		while ((script->envp)[j])
+		i = 0;
+		while (script->envp[i])
+			i++;
+		tmp = malloc(sizeof(char *) * (i + 2 - exist));
+		i = 0;
+		while (script->envp[i])
 		{
-			tmp[j] = ft_strdup((script->envp)[j]);
-			j++;
+			tmp[i] = ft_strdup(script->envp[i]);
+			i++;
 		}
 		if (exist)
 		{
-			free(tmp[check_existing_export((script->envp), command.argv[i])]);
-			tmp[check_existing_export((script->envp), command.argv[i])] = ft_strdup(command.argv[i]);
-			tmp[j] = NULL;
+			free(tmp[check_existing_export(script->envp, command.argv[var])]);
+			tmp[check_existing_export(script->envp, command.argv[var])] = ft_strdup(command.argv[var]);
+			tmp[i] = NULL;
 		}
 		else
 		{
-			tmp[j] = ft_strdup(command.argv[i]);
-			tmp[j + 1] = NULL;
+			tmp[i] = ft_strdup(command.argv[var]);
+			tmp[i + 1] = NULL;
 		}
-		j = 0;
-		//free envp
-		while(tmp[j])
+		i = 0;
+		while(tmp[i])
 		{
-			(script->envp)[j] = ft_strdup(tmp[j]);
-			j++;
+			script->envp[i] = ft_strdup(tmp[i]);
+			i++;
 		}
-		(script->envp)[j] = NULL;
-		while(--j >= 0)
-			free(tmp[j]);
+		script->envp[i] = NULL;
+		while(--i >= 0)
+			free(tmp[i]);
 		free(tmp);
-		i++;
+		var++;
 	}
 	return(0);
 }
 //
 
-int		check_existing_unset(char **envp, char *str)
-{
-	int		i;
-
-	i = 0;
-	while(envp[i])
-	{
-		if(!ft_strncmp(str, envp[i], ft_strlen(str)))
-		{
-			printf("TEST= envp[i] %s\n", envp[i]);
-			return(i);
-		}
-		i++;
-	}
-	return (0);
-}
-
 int	builtin_unset(t_script *script, t_command command)
 {
 	char	**tmp;
+	int		var;
 	int		i;
 	int		j;
+	int		check;
 
-	if (!(script->envp))
+	if (!script->envp)
 		return (1);
-	i = 1;
-	while (command.argv[i])
+	var = 1;
+	while (command.argv[var])
 	{
-		if (ft_isdigit(command.argv[i][0]))
+		if (ft_isdigit(command.argv[var][0]) || has_char(command.argv[var], '='))
 		{
-			printf("unset: '%s': not a valid identifier\n", command.argv[i]);
-			i++;
+			printf("unset: '%s': not a valid identifier\n", command.argv[var]);
+			var++;
 			continue;
 		}
-		if (has_char(command.argv[i], '='))
+		i = 0;
+		check = 0;
+		while (script->envp[i])
 		{
-			printf("unset: '%s': not a valid identifier\n", command.argv[i]);
+			if (ft_strncmp(script->envp[i], command.argv[var], ft_strlen(command.argv[var])))
+				check = 1;
 			i++;
+		}
+		if (!check)
+		{
+			var++;
 			continue;
 		}
-		if (!check_existing_unset((script->envp), command.argv[i]))
-		{
+		while (script->envp[i])
 			i++;
-			continue;
-		}
+		tmp = malloc(sizeof(char *) * i);
+		i = 0;
 		j = 0;
-		while ((script->envp)[j])
-			j++;
-		tmp = malloc(sizeof(char *) * j);
-		j = 0;
-		while ((script->envp)[j])
+		while (script->envp[i])
 		{
-			if(check_existing_unset((script->envp), command.argv[i]))
+			if (ft_strncmp(script->envp[i], command.argv[var], ft_strlen(command.argv[var])))
 			{
-				tmp[j] = ft_strdup((script->envp)[j]);
-				printf("tmp[%d] %s\n", j, tmp[j]);
+				tmp[j] = ft_strdup(script->envp[i]);
+				j++;
 			}
-			j++;
+			i++;
 		}
 		tmp[j] = NULL;
-		j = 0;
-		//free envp
-		while(tmp[j])
+		i = 0;
+		while(tmp[i])
 		{
-			(script->envp)[j] = ft_strdup(tmp[j]);
-			j++;
+			script->envp[i] = ft_strdup(tmp[i]);
+			i++;
 		}
-		(script->envp)[j] = NULL;
-		while(--j >= 0)
-			free(tmp[j]);
+		script->envp[i] = NULL;
+		while(--i >= 0)
+			free(tmp[i]);
 		free(tmp);
-		i++;
+		var++;
 	}
 	return(0);
 }
