@@ -24,6 +24,7 @@ void	handle_cmd(t_script *script)
 {
 	char	**path_env;
 
+	signal(SIGQUIT, sig_handler);
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 		single_cmd(script, path_env);
@@ -42,18 +43,18 @@ int	check_builtin(char *cmd)
 						if (ft_strncmp(cmd, "env", 3))
 							if (ft_strncmp(cmd, "exit", 4))
 								return (0);
-							else
-								return (7);
-						else
-							return (6);
-					else
-						return (5);
-				else
-					return (4);
-			else
-				return (3);
-		else
-			return (2);
+	else
+		return (7);
+	else
+		return (6);
+	else
+		return (5);
+	else
+		return (4);
+	else
+		return (3);
+	else
+		return (2);
 	else
 		return (1);
 }
