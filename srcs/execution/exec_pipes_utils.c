@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-void	in_redir(t_script *script, int i)
+void	in_redir(t_script *s, int i)
 {
 	int	fdin;
 
-	if (script->commands[i].in.flag >= 0)
+	if (s->commands[i].in.flag >= 0)
 	{
-		fdin = open(script->commands[i].in.name, script->commands[i].in.flag);
+		fdin = open(s->commands[i].in.name, s->commands[i].in.flag);
 		if (fdin == -1)
 		{
-			printf("%s: No such file or directory\n", script->commands[i].in.name);
+			printf("%s: No such file or directory\n", s->commands[i].in.name);
 			close(fdin);
 			exit(1);
 		}
@@ -17,14 +17,14 @@ void	in_redir(t_script *script, int i)
 			dup2(fdin, STDIN_FILENO);
 	}
 	else
-		heredoc(script, i);
+		heredoc(s, i);
 }
 
-void	out_redir(t_script *script, int i)
+void	out_redir(t_script *s, int i)
 {
 	int	fdout;
 
-	fdout = open(script->commands[i].out.name, script->commands[i].out.flag, 0644);
+	fdout = open(s->commands[i].out.name, s->commands[i].out.flag, 0644);
 	if (fdout != STDOUT_FILENO)
 	{
 		if (dup2(fdout, STDOUT_FILENO) == -1)
@@ -59,4 +59,15 @@ void	pipe_dup(int *pipe, int mod, int std)
 			exit(1);
 		}
 	}
+}
+
+void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
+{
+	if (!ret)
+	{
+		exec_cmd(path_env, script->commands[i].argv, script->envp);
+		write(2, "command not found\n", 18);
+	}
+	else
+		handle_builtin(ret, script, i);
 }
