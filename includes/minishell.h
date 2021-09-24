@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 15:10:52 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/24 15:59:19 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,6 @@ void			heredoc(t_script *script, int i);
 // Free
 void			free_tokens(t_token *head);
 void			free_commands(t_script *script);
+void			free_path_env(char **path_env);
 
 #endif
