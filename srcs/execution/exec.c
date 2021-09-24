@@ -29,7 +29,9 @@ void	handle_cmd(t_script *script)
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
-		ret = check_builtin(script->commands[0].argv[0]);
+		ret = 0;
+		if (script->commands[0].argv[0])
+			ret = check_builtin(script->commands[0].argv[0]);
 		if (ret > 0)
 			handle_builtin(ret, script, 0);
 		else
@@ -49,7 +51,7 @@ void	handle_cmd(t_script *script)
 	}
 	else
 		pipex(script, path_env);
-	free(path_env);
+	free_path_env(path_env);
 }
 
 int	check_builtin(char *cmd)
