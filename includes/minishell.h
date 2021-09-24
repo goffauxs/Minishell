@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 14:04:21 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/24 15:04:51 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int				builtin_echo(t_command command);
 int				builtin_cd(t_command command);
 int 			builtin_exit(t_command command, t_script *script);
 int				builtin_pwd(void);
+int				has_char(char *str, char c);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_env(char **envp);
 int				builtin_unset(t_script *script, t_command command);
