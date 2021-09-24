@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:29 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/21 16:29:53 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/24 16:25:46 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_trim_quotes(char *str)
 	int		newlen;
 
 	c = str[0];
-	newlen = ft_strlen(str) - 2;
+	newlen = ft_strlen(str) - 1;
 	if (c == '\'' || c == '\"')
 	{
 		ret = malloc(sizeof(char) * newlen);
