@@ -6,7 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/24 15:06:10 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/24 17:18:17 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRCS		=	main.c \
 				$(BUILTIN_DIR)/builtin_export.c \
 				$(BUILTIN_DIR)/builtin_unset.c \
 				$(BUILTIN_DIR)/builtin_cd_pwd_env.c \
+				$(BUILTIN_DIR)/utils_export_unset.c \
 				srcs/free.c \
 				srcs/signal.c \
 
