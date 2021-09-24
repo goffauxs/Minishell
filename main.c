@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/23 15:09:39 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/24 14:52:04 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,22 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	script.envp = envp;
 	line_buf = NULL;
+	tcgetattr(STDIN_FILENO, &script.termios_p);
+	script.termios_p.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &script.termios_p);
+	signal(SIGINT, sig_handler);
 	while (1)
-	{	
-		signal(SIGINT, sig_handler);
-		signal(SIGQUIT, sig_handler);
+	{
+		signal(SIGQUIT, SIG_IGN);
+		g_pid = 0;
 		if (parse(&script, &line_buf))
 			continue ;
 		if (script.cmd_count > 0)
 			handle_cmd(&script);
 		free_commands(&script);
+		system("leaks minishell");
 		if (!ft_strncmp(line_buf, "exit", 4) && script.cmd_count == 1)
-		{
-			free(line_buf);
 			break ;
-		}
 	}
+	return (0);
 }

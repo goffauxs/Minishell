@@ -24,7 +24,6 @@ void	first_child(t_script *script, char **path_env, int *pipe1)
 	if (!nocmd)
 		cmd_builtin(script, path_env, ret, 0);
 	exit(0);
-	//free etc
 }
 
 void	middle_child(t_script *script, char **path_env, int *pipein, int *pipeout, int i)
@@ -51,7 +50,6 @@ void	middle_child(t_script *script, char **path_env, int *pipein, int *pipeout, 
 	if (!nocmd)
 		cmd_builtin(script, path_env, ret, i);
 	exit(0);
-	//free etc
 }
 
 void	last_child(t_script *script, char **path_env, int *pipein, int i)
@@ -76,5 +74,4 @@ void	last_child(t_script *script, char **path_env, int *pipein, int i)
 	if (!nocmd)
 		cmd_builtin(script, path_env, ret, i);
 	exit(0);
-	//free etc
 }

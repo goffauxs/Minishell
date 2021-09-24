@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/23 17:57:09 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/24 14:31:00 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <limits.h>
 # include <errno.h>
 # include "libft.h"
+# include <termios.h>
 
 # define MAX_PATH_LEN 4096
 
@@ -69,10 +70,11 @@ typedef struct s_command
 
 typedef struct s_script
 {
-	t_command	*commands;
-	int			cmd_count;
-	int			exit_status;
-	char		**envp;
+	t_command		*commands;
+	int				cmd_count;
+	int				exit_status;
+	char			**envp;
+	struct termios	termios_p;
 }				t_script;
 
 int				parse(t_script *script, char **line_buf);
@@ -94,6 +96,7 @@ char			**split_paths(char **env);
 void			first_child(t_script *script, char **path_env, int *pipe1);
 void			middle_child(t_script *script, char **path_env, int *pipein, int *pipeout, int i);
 void			last_child(t_script *script, char **path_env, int *pipein, int i);
+void			single_cmd(t_script *script, char **path_env);
 
 // Signals
 void			sig_handler(int signum);
@@ -122,5 +125,6 @@ void			heredoc(t_script *script, int i);
 // Free
 void			free_tokens(t_token *head);
 void			free_commands(t_script *script);
+void			free_path_env(char **path_env);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:08:33 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/21 16:30:03 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/24 14:30:40 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,17 @@ void	free_tokens(t_token *head)
 		free(head);
 		head = tmp;
 	}
+}
+
+void	free_path_env(char **path_env)
+{
+	int	i;
+
+	i = 0;
+	while (path_env[i])
+	{
+		free(path_env[i]);
+		i++;
+	}
+	free(path_env);
 }

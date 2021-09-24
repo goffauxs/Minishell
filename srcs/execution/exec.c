@@ -25,6 +25,7 @@ void	handle_cmd(t_script *script)
 	char	**path_env;
 	int		ret;
 
+	signal(SIGQUIT, sig_handler);
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
@@ -48,7 +49,7 @@ void	handle_cmd(t_script *script)
 	}
 	else
 		pipex(script, path_env);
-	free(path_env);
+	free_path_env(path_env);
 }
 
 int	check_builtin(char *cmd)
@@ -86,7 +87,7 @@ int	handle_builtin(int ret, t_script *script, int i)
 	if (ret == 3)
 		script->exit_status = builtin_pwd(); // ok
 	if (ret == 4)
-		script->exit_status = builtin_export(script, script->commands[i]); // segfault
+		script->exit_status = builtin_export(script, script->commands[i]); // ok
 	if (ret == 5)
 		script->exit_status = builtin_unset(script, script->commands[i]); // ok
 	if (ret == 6)
