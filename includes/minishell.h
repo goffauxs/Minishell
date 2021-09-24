@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 12:01:47 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/24 15:10:52 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_operations	search_token_type(const char *s);
 
 // Exec
 void			exec_cmd( char **path, char **cmd, char **env);
-void			handle_cmd(t_script *script);
+int				handle_cmd(t_script *script);
 int				check_builtin(char *cmd);
 int				handle_builtin(int ret, t_script *script, int i);
 int				pipex(t_script *script, char **path_env);

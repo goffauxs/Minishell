@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/23 14:46:10 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/24 14:37:08 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ int	parse(t_script *script, char **line_buf)
 
 	head = NULL;
 	*line_buf = readline("Minishell > ");
+	if (!*line_buf)
+		return (2);
 	add_history(*line_buf);
 	if (!tokenizer(*line_buf, &head))
 	{
