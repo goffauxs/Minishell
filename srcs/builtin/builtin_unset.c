@@ -6,13 +6,13 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:08 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/24 17:48:22 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/26 16:12:42 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_script	*lop_unset(t_script *script, t_command command, int var, char **tmp)
+t_script	*loopunset(t_script *script, t_command command, int var, char **tmp)
 {
 	int		i;
 	int		j;
@@ -87,7 +87,7 @@ int	builtin_unset(t_script *script, t_command command)
 		}
 		i = env_len(script->envp);
 		tmp = malloc(sizeof(char *) * i);
-		script = lop_unset(script, command, var, tmp);
+		script = loopunset(script, command, var, tmp);
 		var++;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 14:06:36 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/26 16:28:02 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,33 @@ int	main(int argc, char **argv, char **envp)
 	script.envp = envp;
 	line_buf = NULL;
 	tcgetattr(STDIN_FILENO, &script.termios_p);
-	script.termios_p.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &script.termios_p);
 	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
-	{	
-		signal(SIGQUIT, SIG_IGN);
+	{
 		g_pid = 0;
 		ret = parse(&script, &line_buf);
 		if (ret == 1)
 			continue ;
 		else if (ret == 2)
-			break;
+		{
+			rl_replace_line("exit", 0);
+			rl_redisplay();
+			break ;
+		}
 		if (script.cmd_count > 0)
 		{
-			if(handle_cmd(&script))
-			{
-				free(line_buf);
+			script.termios_p.c_lflag |= ECHOCTL;
+			tcsetattr(STDIN_FILENO, TCSAFLUSH, &script.termios_p);
+			if (handle_cmd(&script))
 				break ;
-			}
+			script.termios_p.c_lflag &= ~ECHOCTL;
+			tcsetattr(STDIN_FILENO, TCSAFLUSH, &script.termios_p);
 		}
 		free_commands(&script);
 	}
+	script.termios_p.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script.termios_p);
+	return (0);
 }
+

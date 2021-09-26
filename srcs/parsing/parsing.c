@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 14:45:05 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/26 16:15:03 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,8 @@ int	parse(t_script *script, char **line_buf)
 
 	head = NULL;
 	*line_buf = readline("Minishell > ");
-	if(!*line_buf)
-	{
-		write(1, "exit\n", 5);
-		return(2);
-	}
+	if (!*line_buf)
+		return (2);
 	add_history(*line_buf);
 	if (!tokenizer(*line_buf, &head))
 	{
@@ -96,6 +93,6 @@ int	parse(t_script *script, char **line_buf)
 	get_num_args(head, script);
 	parse_commands(head, script->commands);
 	free_tokens(head);
-	//free(*line_buf);
+	free(*line_buf);
 	return (0);
 }

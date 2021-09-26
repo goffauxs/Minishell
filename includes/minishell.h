@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 17:19:16 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/26 16:20:28 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <signal.h>
 # include <limits.h>
 # include <errno.h>
-# include <termios.h>
 # include "libft.h"
+# include <termios.h>
 
 # define MAX_PATH_LEN 4096
 
@@ -70,10 +70,10 @@ typedef struct s_command
 
 typedef struct s_script
 {
-	t_command	*commands;
-	int			cmd_count;
-	int			exit_status;
-	char		**envp;
+	t_command		*commands;
+	int				cmd_count;
+	int				exit_status;
+	char			**envp;
 	struct termios	termios_p;
 }				t_script;
 
@@ -123,10 +123,12 @@ void			in_redir(t_script *script, int i);
 void			out_redir(t_script *script, int i);
 void			close_pipes(int *pipe1, int *pipe2);
 void			pipe_dup(int *pipe, int mod, int std);
+void			cmd_builtin(t_script *script, char **path_env, int ret, int i);
 void			heredoc(t_script *script, int i);
 
 // Free
 void			free_tokens(t_token *head);
 void			free_commands(t_script *script);
+void			free_path_env(char **path_env);
 
 #endif

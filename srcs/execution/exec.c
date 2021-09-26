@@ -1,3 +1,4 @@
+
 #include "minishell.h"
 
 void	exec_cmd( char **path, char **cmd, char **env)
@@ -20,7 +21,7 @@ void	exec_cmd( char **path, char **cmd, char **env)
 	}
 }
 
-int		handle_cmd(t_script *script)
+int	handle_cmd(t_script *script)
 {
 	char	**path_env;
 	int		ret;
@@ -29,11 +30,13 @@ int		handle_cmd(t_script *script)
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
-		ret = check_builtin(script->commands[0].argv[0]);
+		ret = 0;
+		if (script->commands[0].argv[0])
+			ret = check_builtin(script->commands[0].argv[0]);
 		if (ret > 0)
 		{
-			if(handle_builtin(ret, script, 0))
-				return(1);
+			if (handle_builtin(ret, script, 0))
+				return (1);
 		}
 		else
 		{
@@ -52,9 +55,8 @@ int		handle_cmd(t_script *script)
 	}
 	else
 		pipex(script, path_env);
-	free(path_env);
-	return(0);
-	
+	free_path_env(path_env);
+	return (0);
 }
 
 int	check_builtin(char *cmd)
@@ -92,7 +94,7 @@ int	handle_builtin(int ret, t_script *script, int i)
 	if (ret == 3)
 		script->exit_status = builtin_pwd(); // ok
 	if (ret == 4)
-		script->exit_status = builtin_export(script, script->commands[i]); // segfault
+		script->exit_status = builtin_export(script, script->commands[i]); // ok
 	if (ret == 5)
 		script->exit_status = builtin_unset(script, script->commands[i]); // ok
 	if (ret == 6)

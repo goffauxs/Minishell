@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/24 17:34:50 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/26 16:11:10 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ch(char **envp, char *str)
 	return (0);
 }
 
-t_script	*lop_export(t_script *script, t_command command, int var)
+t_script	*loopexport(t_script *script, t_command command, int var)
 {
 	int		exist;
 	int		i;
@@ -81,7 +81,7 @@ int	builtin_export(t_script *script, t_command command)
 			var++;
 			continue ;
 		}
-		script = lop_export(script, command, var);
+		script = loopexport(script, command, var);
 		var++;
 	}
 	return (0);
