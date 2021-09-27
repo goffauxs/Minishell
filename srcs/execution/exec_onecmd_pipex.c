@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_one_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 17:10:20 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/27 18:41:50 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,32 @@ int	one_cmd(t_script *script, char **path_env)
 			return (1);
 	}
 	free_path_env(path_env);
+	return (0);
+}
+
+int	pipex(t_script *script, char **path_env)
+{
+	int	pipe1[2];
+	int	pipe2[2];
+	int	check;
+
+	check = 0;
+	if (first_cmd(script, path_env, pipe1) == 1)
+		return (1);
+	wait(0);
+	check = mid_loop(script, path_env, pipe1, pipe2);
+	if (check == -1)
+		return (1);
+	g_pid = fork();
+	if (g_pid == -1)
+	{
+		fork_error(script, path_env);
+		return (1);
+	}
+	if (check == 1)
+		last_cmd(script, path_env, pipe2);
+	else if (check == 0)
+		last_cmd(script, path_env, pipe1);
+	wait(0);
 	return (0);
 }
