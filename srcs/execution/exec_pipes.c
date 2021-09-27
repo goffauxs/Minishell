@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 18:40:10 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/27 18:54:38 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	**pipe_init(t_script *s, char **path_env, int *pipe1, int *pipe2)
 	return (pipes);
 }
 
-int	mid_loop(t_script *script, char **path_env, int *pipe1, int *pipe2)
+int	mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2)
 {
 	int	i;
 	int	check;
@@ -73,19 +73,19 @@ int	mid_loop(t_script *script, char **path_env, int *pipe1, int *pipe2)
 
 	i = 0;
 	check = 0;
-	while (++i < script->cmd_count - 1)
+	while (++i < s->cmd_count - 1)
 	{
 		if (check == 0)
 		{
-			pipes = pipe_init(script, path_env, pipe1, pipe2);
-			if (middle_cmds(script, path_env, pipes, i) == 1)
+			pipes = pipe_init(s, path_env, pipe1, pipe2);
+			if (middle_cmds(s, path_env, pipes, i) == 1)
 				return (-1);
 			check = 1;
 		}
 		else if (check == 1)
 		{
-			pipes = pipe_init(script, path_env, pipe2, pipe1);
-			if (middle_cmds(script, path_env, pipes, i) == 1)
+			pipes = pipe_init(s, path_env, pipe2, pipe1);
+			if (middle_cmds(s, path_env, pipes, i) == 1)
 				return (-1);
 			check = 0;
 		}
