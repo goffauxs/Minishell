@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 15:52:02 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/27 16:44:30 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ t_operations	search_token_type(const char *s);
 // Exec
 void			exec_cmd( char **path, char **cmd, char **env);
 int				handle_cmd(t_script *script);
+int				one_cmd(t_script *script, char **path_env);
 int				check_builtin(char *cmd);
 int				handle_builtin(int ret, t_script *script, int i);
 int				pipex(t_script *script, char **path_env);
