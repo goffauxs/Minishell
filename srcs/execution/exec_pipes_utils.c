@@ -78,10 +78,15 @@ int	pipe_dup(int *pipe, int mod, int std)
 
 void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 {
+	char	*tmp;
+
 	if (!ret)
 	{
+		tmp = script->commands[i].argv[0];
 		exec_cmd(path_env, script->commands[i].argv, script->envp);
-		write(2, "command not found\n", 18);
+		printf("Minishell: %s: command not found\n", tmp);
+		free_cmds_path(script, path_env);
+		exit(1);
 	}
 	else
 		handle_builtin(ret, script, i);

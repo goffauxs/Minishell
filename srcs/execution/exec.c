@@ -35,7 +35,10 @@ int	handle_cmd(t_script *script)
 		if (ret > 0)
 		{
 			if (handle_builtin(ret, script, 0))
+			{
+				free_path_env(path_env);
 				return (1);
+			}
 		}
 		else
 		{
@@ -51,10 +54,10 @@ int	handle_cmd(t_script *script)
 			if (script->exit_status == 256 || script->exit_status == 512)
 				script->exit_status /= 256;
 		}
+		free_path_env(path_env);
 	}
 	else
 		pipex(script, path_env);
-	free_path_env(path_env);
 	return (0);
 }
 
@@ -87,18 +90,18 @@ int	check_builtin(char *cmd)
 int	handle_builtin(int ret, t_script *script, int i)
 {
 	if (ret == 1)
-		script->exit_status = builtin_echo(script->commands[i]); // ok
+		script->exit_status = builtin_echo(script->commands[i]);
 	if (ret == 2)
-		script->exit_status = builtin_cd(script->commands[i]); // ok
+		script->exit_status = builtin_cd(script->commands[i]);
 	if (ret == 3)
-		script->exit_status = builtin_pwd(); // ok
+		script->exit_status = builtin_pwd();
 	if (ret == 4)
-		script->exit_status = builtin_export(script, script->commands[i]); // ok
+		script->exit_status = builtin_export(script, script->commands[i]);
 	if (ret == 5)
-		script->exit_status = builtin_unset(script, script->commands[i]); // ok
+		script->exit_status = builtin_unset(script, script->commands[i]);
 	if (ret == 6)
-		script->exit_status = builtin_env(script->envp); // ok
+		script->exit_status = builtin_env(script->envp);
 	if (ret == 7)
-		return (builtin_exit(script->commands[i], script)); // ok
+		return (builtin_exit(script->commands[i], script));
 	return (0);
 }

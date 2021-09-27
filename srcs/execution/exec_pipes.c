@@ -57,6 +57,7 @@ static void	last_cmd(t_script *script, char **path_env, int *pipein)
 	i = script->cmd_count - 1;
 	if (g_pid == 0)
 		last_child(script, path_env, pipein, i);
+	free_path_env(path_env);
 }
 
 int	pipex(t_script *script, char **path_env)
