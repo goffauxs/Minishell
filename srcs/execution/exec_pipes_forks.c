@@ -19,11 +19,7 @@ void	first_child(t_script *script, char **path_env, int *pipe1)
 	else if (pipe1)
 	{
 		if (pipe_dup(pipe1, 1, STDOUT_FILENO) == 1)
-		{
-			free_cmds_path(script, path_env);
-			close_pipes(pipe1, NULL);
-			exit(1);
-		}
+			close_free_exit(script, path_env, pipe1, NULL);
 		close_pipes(pipe1, NULL);
 	}
 	if (!nocmd)
@@ -47,19 +43,11 @@ void	middle_child(t_script *script, char **path_env, int *pipein, int *pipeout, 
 	if (script->commands[i].in.name)
 		in_redir(script, i, path_env);
 	else if (pipe_dup(pipein, 0, STDIN_FILENO) == 1)
-	{
-		close_pipes(pipein, pipeout);
-		free_cmds_path(script, path_env);
-		exit(1);
-	}
+		close_free_exit(script, path_env, pipein, pipeout);
 	if (script->commands[i].out.name)
 		out_redir(script, i, path_env);
 	else if (pipe_dup(pipeout, 1, STDOUT_FILENO) == 1)
-	{
-		close_pipes(pipein, pipeout);
-		free_cmds_path(script, path_env);
-		exit(1);
-	}
+		close_free_exit(script, path_env, pipein, pipeout);
 	close_pipes(pipein, pipeout);
 	if (!nocmd)
 		cmd_builtin(script, path_env, ret, i);
@@ -82,11 +70,7 @@ void	last_child(t_script *script, char **path_env, int *pipein, int i)
 	if (script->commands[i].in.name)
 		in_redir(script, i, path_env);
 	else if (pipe_dup(pipein, 0, STDIN_FILENO) == 1)
-	{
-		close_pipes(pipein, NULL);
-		free_cmds_path(script, path_env);
-		exit(1);
-	}
+		close_free_exit(script, path_env, pipein, NULL);
 	if (script->commands[i].out.name)
 		out_redir(script, i, path_env);
 	close_pipes(pipein, NULL);
