@@ -2,13 +2,11 @@
 
 void	sig_handler(int signum)
 {
-	struct termios termios_p;
-	tcgetattr(STDIN_FILENO, &termios_p);
 	if (signum == SIGQUIT && g_pid != 0)
 	{
 		write(1, "Quit: 3\n", 8);
-		termios_p.c_lflag |= ECHO;
 		rl_on_new_line();
+		tputs(carriage_return, 1, ft_putchar);
 	}
 	else if (signum == SIGINT && g_pid != 0)
 	{

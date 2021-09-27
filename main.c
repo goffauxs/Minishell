@@ -6,11 +6,16 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 15:48:00 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/27 12:18:24 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_putchar(int c)
+{
+	return (write(1, &c, 1));
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -24,9 +29,9 @@ int	main(int argc, char **argv, char **envp)
 	line_buf = NULL;
 	tcgetattr(STDIN_FILENO, &script.termios_p);
 	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		g_pid = 0;
 		ret = parse(&script, &line_buf);
 		if (ret == 1)
@@ -47,7 +52,6 @@ int	main(int argc, char **argv, char **envp)
 			tcsetattr(STDIN_FILENO, TCSAFLUSH, &script.termios_p);
 		}
 		free_commands(&script);
+		system("leaks minishell");
 	}
-	script.termios_p.c_lflag |= ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script.termios_p);
 }

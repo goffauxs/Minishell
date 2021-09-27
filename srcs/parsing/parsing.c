@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 14:37:08 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/27 12:09:00 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	parse(t_script *script, char **line_buf)
 		free_tokens(head);
 		return (1);
 	}
-	replace_env_var(head, script->envp);
+	replace_env_var(head, script);
 	script->cmd_count = get_cmd_count(*line_buf);
 	script->commands = malloc(sizeof(t_command) * script->cmd_count);
 	set_filenames_null(script->commands, script->cmd_count);
