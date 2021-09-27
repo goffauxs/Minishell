@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:08:33 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/26 16:15:49 by mdeclerf         ###   ########.fr       */
-=======
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/21 16:08:33 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 15:26:09 by rvan-aud         ###   ########.fr       */
->>>>>>> origin/main
+/*   Updated: 2021/09/27 15:09:37 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +57,3 @@ void	free_path_env(char **path_env)
 	}
 	free(path_env);
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main

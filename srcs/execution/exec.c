@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
 #include "minishell.h"
 
 void	exec_cmd( char **path, char **cmd, char **env)

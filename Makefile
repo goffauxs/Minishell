@@ -6,11 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2021/09/27 10:51:07 by mdeclerf         ###   ########.fr        #
-=======
-#    Updated: 2021/09/27 14:27:03 by sgoffaux         ###   ########.fr        #
->>>>>>> origin/main
+#    Updated: 2021/09/27 15:08:53 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +18,7 @@ LIBFT		=	$(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
 CC			=	gcc
 INCLUDE		=	includes
-<<<<<<< HEAD
-CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include -g
-=======
 CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include
->>>>>>> origin/main
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
@@ -46,18 +38,11 @@ SRCS		=	main.c \
 				$(EXEC_DIR)/exec.c \
 				$(EXEC_DIR)/heredoc.c \
 				$(EXEC_DIR)/path_handling.c \
-<<<<<<< HEAD
-=======
 				$(BUILTIN_DIR)/builtin_cd_pwd_env.c \
->>>>>>> origin/main
 				$(BUILTIN_DIR)/builtin_echo.c \
 				$(BUILTIN_DIR)/builtin_exit.c \
 				$(BUILTIN_DIR)/builtin_export.c \
 				$(BUILTIN_DIR)/builtin_unset.c \
-<<<<<<< HEAD
-				$(BUILTIN_DIR)/builtin_cd_pwd_env.c \
-=======
->>>>>>> origin/main
 				$(BUILTIN_DIR)/utils_export_unset.c \
 				srcs/free.c \
 				srcs/signal.c \
@@ -67,11 +52,7 @@ OBJS		=	$(SRCS:%.c=%.o)
 all:		$(NAME)
 
 $(NAME):	$(OBJS) $(LIBFT)
-<<<<<<< HEAD
 			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib $(OBJS) -o $(NAME)
-=======
-			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib -ltermcap $(OBJS) -o $(NAME)
->>>>>>> origin/main
 			@echo "Linked into executable \033[0;32mminishell\033[0m."
 
 $(LIBFT):
