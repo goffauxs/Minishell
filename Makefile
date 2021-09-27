@@ -6,7 +6,7 @@
 #    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/27 12:06:33 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/09/27 14:27:03 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ RM			=	rm -f
 
 EXEC_DIR	=	srcs/execution
 PARSING_DIR	=	srcs/parsing
+BUILTIN_DIR	=	srcs/builtin
 
 SRCS		=	main.c \
 				$(PARSING_DIR)/parsing.c \
@@ -37,8 +38,13 @@ SRCS		=	main.c \
 				$(EXEC_DIR)/exec.c \
 				$(EXEC_DIR)/heredoc.c \
 				$(EXEC_DIR)/path_handling.c \
+				$(BUILTIN_DIR)/builtin_cd_pwd_env.c \
+				$(BUILTIN_DIR)/builtin_echo.c \
+				$(BUILTIN_DIR)/builtin_exit.c \
+				$(BUILTIN_DIR)/builtin_export.c \
+				$(BUILTIN_DIR)/builtin_unset.c \
+				$(BUILTIN_DIR)/utils_export_unset.c \
 				srcs/free.c \
-				srcs/builtins.c \
 				srcs/signal.c \
 
 OBJS		=	$(SRCS:%.c=%.o)

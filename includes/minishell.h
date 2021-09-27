@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 11:44:28 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/27 13:31:04 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ int				builtin_pwd(void);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_unset(t_script *script, t_command command);
 int				builtin_env(char **envp);
+int				has_char(char *str, char c);
+void			free_tab(int i, char **tmp);
+int				strdup_iteration(char **array1, char **array2);
+int				env_len(char **array);
 
 // Utils
 char			*ft_trim_quotes(char *str);

@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 12:18:24 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/27 14:37:38 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		else if (ret == 2)
 		{
-			rl_replace_line("exit", 0);
-			rl_redisplay();
+			// write exit after prompt
 			break ;
 		}
 		if (script.cmd_count > 0)
