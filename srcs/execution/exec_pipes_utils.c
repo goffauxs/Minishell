@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	in_redir(t_script *s, int i)
+void	in_redir(t_script *s, int i, char **path_env)
 {
 	int	fdin;
 
@@ -10,28 +10,43 @@ void	in_redir(t_script *s, int i)
 		if (fdin == -1)
 		{
 			printf("%s: No such file or directory\n", s->commands[i].in.name);
-			close(fdin);
+			free_cmds_path(s, path_env);
 			exit(1);
 		}
 		else if (fdin != STDIN_FILENO)
-			dup2(fdin, STDIN_FILENO);
+		{
+			if (dup2(fdin, STDIN_FILENO) == -1)
+			{
+				write(2, "Error: dup2 failed\n", 19);
+				close(fdin);
+				free_cmds_path(s, path_env);
+				exit(1);
+			}
+		}
 	}
 	else
-		heredoc(s, i);
+		heredoc(s, i, path_env);
 }
 
-void	out_redir(t_script *s, int i)
+void	out_redir(t_script *s, int i, char **path_env)
 {
 	int	fdout;
 
 	fdout = open(s->commands[i].out.name, s->commands[i].out.flag, 0644);
-	if (fdout != STDOUT_FILENO)
+	if (fdout == -1)
+	{
+		printf("%s: No such file or directory\n", s->commands[i].out.name);
+		free_cmds_path(s, path_env);
+		exit(1);
+	}
+	else if (fdout != STDOUT_FILENO)
 	{
 		if (dup2(fdout, STDOUT_FILENO) == -1)
 		{
 			write(2, "Error: dup2 failed\n", 19);
-			//free tout ce qu'il faut + exec_status = 1 ou 126
-			exit (1);
+			close(fdout);
+			free_cmds_path(s, path_env);
+			exit(1);
 		}
 	}
 	close(fdout);
@@ -48,17 +63,17 @@ void	close_pipes(int *pipe1, int *pipe2)
 	}
 }
 
-void	pipe_dup(int *pipe, int mod, int std)
+int	pipe_dup(int *pipe, int mod, int std)
 {
 	if (pipe[mod] != std)
 	{
 		if (dup2(pipe[mod], std) == -1)
 		{
 			write(2, "Error: dup2 failed\n", 19);
-			//free tout ce qu'il faut + exec_status = 1 ou 126
-			exit(1);
+			return (1);
 		}
 	}
+	return (0);
 }
 
 void	cmd_builtin(t_script *script, char **path_env, int ret, int i)

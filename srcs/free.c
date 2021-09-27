@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:08:33 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 15:26:09 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/27 15:02:20 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,17 @@ void	free_path_env(char **path_env)
 		i++;
 	}
 	free(path_env);
+}
+
+void	free_cmds_path(t_script *script, char **path_env)
+{
+	free_commands(script);
+	free_path_env(path_env);
+}
+
+void	close_free_exit(t_script *s, char **path_env, int *p1, int *p2)
+{
+	free_cmds_path(s, path_env);
+	close_pipes(p1, p2);
+	exit(1);
 }

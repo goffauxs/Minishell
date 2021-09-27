@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 13:31:04 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/27 15:04:12 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,19 @@ char			*ft_trim_quotes(char *str);
 int				get_cmd_count(char *line_buf);
 int				return_error(const char *msg);
 void			get_num_args(t_token *head, t_script *script);
-void			in_redir(t_script *script, int i);
-void			out_redir(t_script *script, int i);
+void			in_redir(t_script *script, int i, char **path_env);
+void			out_redir(t_script *script, int i, char **path_env);
 void			close_pipes(int *pipe1, int *pipe2);
-void			pipe_dup(int *pipe, int mod, int std);
+int				pipe_dup(int *pipe, int mod, int std);
 void			cmd_builtin(t_script *script, char **path_env, int ret, int i);
-void			heredoc(t_script *script, int i);
+void			heredoc(t_script *script, int i, char **path_env);
 int				ft_putchar(int c);
 
 // Free
 void			free_tokens(t_token *head);
 void			free_commands(t_script *script);
 void			free_path_env(char **path_env);
+void			free_cmds_path(t_script *script, char **path_env);
+void			close_free_exit(t_script *s, char **path_env, int *p1, int *p2);
 
 #endif

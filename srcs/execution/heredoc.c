@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	heredoc(t_script *script, int i)
+void	heredoc(t_script *script, int i, char **path_env)
 {
 	char	*tmp;
 	char	*bis;
@@ -18,7 +18,16 @@ void	heredoc(t_script *script, int i)
 		bis = ft_strjoin(bis, tmp);
 	}
 	write(pipe_tmp[1], bis, ft_strlen(bis));
-	dup2(pipe_tmp[0], STDIN_FILENO);
+	if (pipe_tmp[0] != STDIN_FILENO)
+	{
+		if (dup2(pipe_tmp[0], STDIN_FILENO) == -1)
+		{
+			write(2, "Error: dup2 failed\n", 19);
+			close_pipes(pipe_tmp, NULL);
+			free_cmds_path(script, path_env);
+			exit(1);
+		}
+	}
 	close(pipe_tmp[0]);
 	close(pipe_tmp[1]);
 }
