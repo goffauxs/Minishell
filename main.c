@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 17:56:38 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/27 19:30:48 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	main_loop(t_script *script, char **line_buf)
 				break ;
 		}
 		free_commands(script);
-		// system("leaks minishell");
+		system("leaks minishell"); 
 	}
 }
 

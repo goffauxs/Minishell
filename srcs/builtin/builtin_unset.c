@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:08 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 14:32:17 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/27 19:31:58 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	loopunset(t_script *script, char *arg, int len)
+static int	loopunset(t_script *script, char *arg, int len, int loop)
 {
 	int		i;
 	int		j;
@@ -30,14 +30,18 @@ static void	loopunset(t_script *script, char *arg, int len)
 			tmp[j] = script->envp[i];
 			j++;
 		}
-		else
-			free(script->envp[i]);
+		// else if (loop)
+		// {
+		// 	free(script->envp[i]);
+		// }
 		i++;
 	}
 	free(str);
 	tmp[j] = NULL;
-	free(script->envp);
+	if (loop)
+		free(script->envp);
 	script->envp = tmp;
+	return (1);
 }
 
 int	check_invalid(t_command command, int var)
@@ -71,10 +75,12 @@ int	check_exisiting(t_script *script, t_command command, int var)
 int	builtin_unset(t_script *script, t_command command)
 {
 	int		var;
+	int		loop;
 
 	if (!script->envp)
 		return (1);
 	var = 1;
+	loop = 0;
 	while (command.argv[var])
 	{
 		if (!(check_exisiting(script, command, var))
@@ -83,7 +89,8 @@ int	builtin_unset(t_script *script, t_command command)
 			var++;
 			continue ;
 		}
-		loopunset(script, command.argv[var], env_len(script->envp));
+		loopunset(script, command.argv[var], env_len(script->envp), loop);
+		loop++;
 		var++;
 	}
 	return (0);
