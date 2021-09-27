@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:08:33 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 15:09:37 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/27 15:17:19 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,17 @@ void	free_path_env(char **path_env)
 		i++;
 	}
 	free(path_env);
+}
+
+void	free_cmds_path(t_script *script, char **path_env)
+{
+	free_commands(script);
+	free_path_env(path_env);
+}
+
+void	close_free_exit(t_script *s, char **path_env, int *p1, int *p2)
+{
+	free_cmds_path(s, path_env);
+	close_pipes(p1, p2);
+	exit(1);
 }

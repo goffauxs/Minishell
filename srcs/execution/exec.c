@@ -20,41 +20,54 @@ void	exec_cmd( char **path, char **cmd, char **env)
 	}
 }
 
+int	one_cmd(t_script	*script, char **path_env)
+{
+	int	ret;
+
+	ret = 0;
+	if (script->commands[0].argv[0])
+		ret = check_builtin(script->commands[0].argv[0]);
+	if (ret > 0)
+	{
+		if (handle_builtin(ret, script, 0))
+			return (1);
+	}
+	else
+	{
+		g_pid = fork();
+		if (g_pid == -1)
+		{
+			script->exit_status = 1;
+			return (1); //error
+		}
+		if (g_pid == 0)
+			first_child(script, path_env, NULL);
+		waitpid(0, &script->exit_status, 0);
+		if (script->exit_status == 256 || script->exit_status == 512)
+			script->exit_status /= 256;
+	}
+	return (0);
+}
+
 int	handle_cmd(t_script *script)
 {
 	char	**path_env;
-	int		ret;
+
+	script->termios_p.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script->termios_p);
 
 	signal(SIGQUIT, sig_handler);
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
-		ret = 0;
-		if (script->commands[0].argv[0])
-			ret = check_builtin(script->commands[0].argv[0]);
-		if (ret > 0)
-		{
-			if (handle_builtin(ret, script, 0))
-				return (1);
-		}
-		else
-		{
-			g_pid = fork();
-			if (g_pid == -1)
-			{
-				script->exit_status = 1;
-				return (1); //error
-			}
-			if (g_pid == 0)
-				first_child(script, path_env, NULL);
-			waitpid(0, &script->exit_status, 0);
-			if (script->exit_status == 256 || script->exit_status == 512)
-				script->exit_status /= 256;
-		}
+		if(one_cmd(script, path_env))
+			return (1);
 	}
 	else
 		pipex(script, path_env);
 	free_path_env(path_env);
+	script->termios_p.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script->termios_p);
 	return (0);
 }
 
@@ -87,18 +100,18 @@ int	check_builtin(char *cmd)
 int	handle_builtin(int ret, t_script *script, int i)
 {
 	if (ret == 1)
-		script->exit_status = builtin_echo(script->commands[i]); // ok
+		script->exit_status = builtin_echo(script->commands[i]);
 	if (ret == 2)
-		script->exit_status = builtin_cd(script->commands[i]); // ok
+		script->exit_status = builtin_cd(script->commands[i]);
 	if (ret == 3)
-		script->exit_status = builtin_pwd(); // ok
+		script->exit_status = builtin_pwd();
 	if (ret == 4)
-		script->exit_status = builtin_export(script, script->commands[i]); // ok
+		script->exit_status = builtin_export(script, script->commands[i]);
 	if (ret == 5)
-		script->exit_status = builtin_unset(script, script->commands[i]); // ok
+		script->exit_status = builtin_unset(script, script->commands[i]);
 	if (ret == 6)
-		script->exit_status = builtin_env(script->envp); // ok
+		script->exit_status = builtin_env(script->envp);
 	if (ret == 7)
-		return (builtin_exit(script->commands[i], script)); // ok
+		return (builtin_exit(script->commands[i], script));
 	return (0);
 }
