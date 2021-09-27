@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
+/*   Updated: 2021/09/27 16:29:25 by mdeclerf         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	exec_cmd( char **path, char **cmd, char **env)
@@ -53,16 +65,18 @@ int	one_cmd(t_script	*script, char **path_env)
 	free_path_env(path_env);
 	return (0);
 }
+
 int	handle_cmd(t_script *script)
 {
 	char	**path_env;
+
 	script->termios_p.c_lflag |= ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script->termios_p);
 	signal(SIGQUIT, sig_handler);
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
-		if(one_cmd(script, path_env))
+		if (one_cmd(script, path_env))
 			return (1);
 	}
 	else
