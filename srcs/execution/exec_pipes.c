@@ -4,7 +4,10 @@ static int	middle_cmds(t_script *script, char **path_env, int *pipein, int *pipe
 {
 	g_pid = fork();
 	if (g_pid == -1)
-		return (1); //error
+	{
+		fork_error(script, path_env);
+		return (1);
+	}
 	if (g_pid == 0)
 		middle_child(script, path_env, pipein, pipeout, i);
 	close(pipein[0]);
@@ -25,14 +28,20 @@ static int	middle_loop(t_script *script, char **path_env, int *pipe1, int *pipe2
 		if (check == 0)
 		{
 			if (pipe(pipe2) == -1)
-				return (-1); //error
+			{
+				pipe_error(script, path_env);
+				return (-1);
+			}
 			middle_cmds(script, path_env, pipe1, pipe2, i);
 			check = 1;
 		}
 		else if (check == 1)
 		{
 			if (pipe(pipe1) == -1)
-				return (-1); //error
+			{
+				pipe_error(script, path_env);
+				return (-1);
+			}
 			middle_cmds(script, path_env, pipe2, pipe1, i);
 			check = 0;
 		}
@@ -48,7 +57,7 @@ static void	last_cmd(t_script *script, char **path_env, int *pipein)
 	i = script->cmd_count - 1;
 	if (g_pid == 0)
 		last_child(script, path_env, pipein, i);
-	//end of function free everything etc
+	free_path_env(path_env);
 }
 
 int	pipex(t_script *script, char **path_env)
@@ -59,20 +68,29 @@ int	pipex(t_script *script, char **path_env)
 
 	check = 0;
 	if (pipe(pipe1) == -1)
-		return (1); //error
+	{
+		pipe_error(script, path_env);
+		return (1);
+	}
 	g_pid = fork();
 	if (g_pid == -1)
-		return (1); //error
+	{
+		fork_error(script, path_env);
+		return (1);
+	}
 	if (g_pid == 0)
 		first_child(script, path_env, pipe1);
 	close(pipe1[1]);
 	wait(0);
 	check = middle_loop(script, path_env, pipe1, pipe2);
 	if (check == -1)
-		return (1); //error
+		return (1);
 	g_pid = fork();
 	if (g_pid == -1)
-		return (1); //error
+	{
+		fork_error(script, path_env);
+		return (1);
+	}
 	if (check == 1)
 		last_cmd(script, path_env, pipe2);
 	else if (check == 0)

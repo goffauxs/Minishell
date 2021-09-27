@@ -7,7 +7,12 @@ void	heredoc(t_script *script, int i, char **path_env)
 	int		pipe_tmp[2];
 
 	bis = "";
-	pipe(pipe_tmp);
+	if (pipe(pipe_tmp) == -1)
+	{
+		write(2, "Error: pipe failed\n", 19);
+		free_cmds_path(script, path_env);
+		exit(1);
+	}
 	while (1)
 	{
 		tmp = readline("> ");
