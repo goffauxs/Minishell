@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
+/*   Updated: 2021/09/27 17:07:59 by rvan-aud         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	exec_cmd( char **path, char **cmd, char **env)
@@ -18,46 +30,59 @@ void	exec_cmd( char **path, char **cmd, char **env)
 		}
 		i++;
 	}
+	free(tmp);
+}
+
+int	one_cmd(t_script	*script, char **path_env)
+{
+	int	ret;
+
+	ret = 0;
+	if (script->commands[0].argv[0])
+		ret = check_builtin(script->commands[0].argv[0]);
+	if (ret > 0)
+	{
+		if (handle_builtin(ret, script, 0))
+		{
+			free_path_env(path_env);
+			return (1);
+		}
+	}
+	else
+	{
+		g_pid = fork();
+		if (g_pid == -1)
+		{
+			fork_error(script, path_env);
+			return (1);
+		}
+		if (g_pid == 0)
+			first_child(script, path_env, NULL);
+		waitpid(0, &script->exit_status, 0);
+		if (script->exit_status >= 256)
+			script->exit_status /= 256;
+	}
+	free_path_env(path_env);
+	return (0);
 }
 
 int	handle_cmd(t_script *script)
 {
 	char	**path_env;
-	int		ret;
 
+	script->termios_p.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script->termios_p);
 	signal(SIGQUIT, sig_handler);
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
-		ret = 0;
-		if (script->commands[0].argv[0])
-			ret = check_builtin(script->commands[0].argv[0]);
-		if (ret > 0)
-		{
-			if (handle_builtin(ret, script, 0))
-			{
-				free_path_env(path_env);
-				return (1);
-			}
-		}
-		else
-		{
-			g_pid = fork();
-			if (g_pid == -1)
-			{
-				fork_error(script, path_env);
-				return (1);
-			}
-			if (g_pid == 0)
-				first_child(script, path_env, NULL);
-			waitpid(0, &script->exit_status, 0);
-			if (script->exit_status == 256 || script->exit_status == 512)
-				script->exit_status /= 256;
-		}
-		free_path_env(path_env);
+		if (one_cmd(script, path_env))
+			return (1);
 	}
 	else
 		pipex(script, path_env);
+	script->termios_p.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script->termios_p);
 	return (0);
 }
 
