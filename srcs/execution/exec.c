@@ -42,8 +42,8 @@ int	handle_cmd(t_script *script)
 			g_pid = fork();
 			if (g_pid == -1)
 			{
-				script->exit_status = 1;
-				return (1); //error
+				fork_error(script, path_env);
+				return (1);
 			}
 			if (g_pid == 0)
 				first_child(script, path_env, NULL);

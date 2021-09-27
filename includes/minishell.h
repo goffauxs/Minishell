@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 14:57:12 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/27 15:21:56 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,10 @@ char			**split_paths(char **env);
 void			first_child(t_script *script, char **path_env, int *pipe1);
 void			middle_child(t_script *script, char **path_env, int *pipein, int *pipeout, int i);
 void			last_child(t_script *script, char **path_env, int *pipein, int i);
-void			single_cmd(t_script *script, char **path_env);
+
+// Exec errors
+void			fork_error(t_script *script, char **path_env);
+void			pipe_error(t_script *script, char **path_env);
 
 // Signals
 void			sig_handler(int signum);
@@ -111,6 +114,10 @@ int				builtin_pwd(void);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_unset(t_script *script, t_command command);
 int				builtin_env(char **envp);
+int				has_char(char *str, char c);
+void			free_tab(int i, char **tmp);
+int				strdup_iteration(char **array1, char **array2);
+int				env_len(char **array);
 
 // Utils
 char			*ft_trim_quotes(char *str);

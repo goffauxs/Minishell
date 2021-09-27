@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 14:23:46 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/27 14:37:38 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		else if (ret == 2)
 		{
-			rl_replace_line("exit", 0);
-			rl_redisplay();
+			// write exit after prompt
 			break ;
 		}
 		if (script.cmd_count > 0)
@@ -52,6 +51,6 @@ int	main(int argc, char **argv, char **envp)
 			tcsetattr(STDIN_FILENO, TCSAFLUSH, &script.termios_p);
 		}
 		free_commands(&script);
-		// system("leaks minishell");
+		system("leaks minishell");
 	}
 }
