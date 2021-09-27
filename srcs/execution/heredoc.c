@@ -6,13 +6,13 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 18:10:54 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/27 18:12:05 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	loop_heredoc(t_script *script, int pipe, int i)
+static void	loop_heredoc(t_script *script, int pipe, int i)
 {
 	char	*tmp;
 	char	*bis;
