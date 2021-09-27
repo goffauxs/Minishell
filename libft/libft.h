@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/01 09:22:04 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/23 15:02:17 by sgoffaux         ###   ########.fr       */
+/*   Created: 2021/09/27 12:14:12 by sgoffaux          #+#    #+#             */
+/*   Updated: 2021/09/27 12:14:14 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void			*ft_calloc(size_t nmemb, size_t size);
 char			*ft_strdup(const char *s);
 char			*ft_substr(const char *s, unsigned int start, size_t len);
 char			*ft_strjoin(const char *s1, const char *s2);
+char			*ft_strjoin_free(char *s1, char *s2);
 char			*ft_strtrim(const char *s1, const char *set);
 char			**ft_split(const char *s, char c);
 char			*ft_itoa(int n);

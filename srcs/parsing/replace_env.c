@@ -3,69 +3,115 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 14:57:55 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/27 12:12:18 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_is_env(char c)
+static char	*ft_getenv(char *str, char **envp)
 {
-	return (ft_isalnum(c) || c == '_');
+	char	*tmp;
+	char	*ret;
+	int		len;
+
+	tmp = ft_strjoin(str, "=");
+	len = ft_strlen(tmp);
+	ret = NULL;
+	while (*envp)
+	{
+		if (!ft_strncmp(tmp, *envp, len))
+		{
+			ret = ft_strdup(*envp + len);
+			break ;
+		}
+		envp++;
+	}
+	free(tmp);
+	if (!ret)
+	{
+		ret = malloc(sizeof(char));
+		ret[0] = '\0';
+	}
+	return (ret);
 }
 
-static char	*get_env_var(char *str, char **envp, int *i)
+static char	*get_env_var(char *str, char **envp, int *i, t_script *script)
 {
 	char	c;
 	char	*tmp;
 
 	*i = 0;
-	(void)envp;
-	// if (*str == '?')
-	// 	return global exit code
-	while (ft_is_env(str[*i]))
+	if (*str == '?')
+	{
+		(*i)++;
+		return (ft_itoa(script->exit_status));
+	}
+	while (ft_isalnum(str[*i]) || str[*i] == '_')
 		(*i)++;
 	c = str[*i];
 	str[*i] = 0;
-	tmp = getenv(str);
+	tmp = ft_getenv(str, envp);
 	str[*i] = c;
-	if (!tmp)
-	{
-		tmp = malloc(sizeof(char));
-		tmp[0] = 0;
-	}
 	return (tmp);
 }
 
-void	replace_env_var(t_token *head, char **envp)
+static void	free_split(char **split)
 {
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
+static char	*env_loop(char **split, t_script *script, t_token *head)
+{
+	int		i;
 	char	*tmp;
+	char	*ret;
+
+	if (head->content[0] != '$')
+	{
+		ret = ft_strdup(split[0]);
+		split++;
+	}
+	else
+	{
+		ret = malloc(sizeof(char));
+		ret[0] = '\0';
+	}
+	while (*split)
+	{
+		i = 0;
+		tmp = ft_strjoin_free(ret,
+				get_env_var(*split, script->envp, &i, script));
+		ret = ft_strjoin(tmp, (*split + i));
+		free(tmp);
+		split++;
+	}
+	return (ret);
+}
+
+void	replace_env_var(t_token *head, t_script *script)
+{
 	char	**tmp_split;
 	char	*before;
-	int		i;
 
 	while (head)
 	{
 		if (head->content[0] != '\'' && ft_strchr(head->content, '$'))
 		{
 			tmp_split = ft_split(head->content, '$');
-			before = "";
-			if (head->content[0] != '$')
-			{
-				before = tmp_split[0];
-				tmp_split++;
-			}
-			while (*tmp_split)
-			{
-				i = 0;
-				tmp = ft_strjoin(before, get_env_var(*tmp_split, envp, &i));
-				before = ft_strjoin(tmp, (*tmp_split + i));
-				free(tmp);
-				tmp_split++;
-			}
+			before = env_loop(tmp_split, script, head);
+			free_split(tmp_split);
 			free(head->content);
 			head->content = before;
 		}

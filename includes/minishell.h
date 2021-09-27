@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 14:31:00 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:44:28 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <errno.h>
 # include "libft.h"
 # include <termios.h>
+# include <curses.h>
+# include <term.h>
 
 # define MAX_PATH_LEN 4096
 
@@ -79,7 +81,7 @@ typedef struct s_script
 
 int				parse(t_script *script, char **line_buf);
 int				tokenizer(char *str, t_token **head);
-void			replace_env_var(t_token *head, char **envp);
+void			replace_env_var(t_token *head, t_script *script);
 
 // Tokenizer utils
 t_token			*create_token(const char *string, int size, t_token_type type);
@@ -88,7 +90,7 @@ t_operations	search_token_type(const char *s);
 
 // Exec
 void			exec_cmd( char **path, char **cmd, char **env);
-void			handle_cmd(t_script *script);
+int				handle_cmd(t_script *script);
 int				check_builtin(char *cmd);
 int				handle_builtin(int ret, t_script *script, int i);
 int				pipex(t_script *script, char **path_env);
@@ -121,6 +123,7 @@ void			close_pipes(int *pipe1, int *pipe2);
 void			pipe_dup(int *pipe, int mod, int std);
 void			cmd_builtin(t_script *script, char **path_env, int ret, int i);
 void			heredoc(t_script *script, int i);
+int				ft_putchar(int c);
 
 // Free
 void			free_tokens(t_token *head);
