@@ -71,5 +71,3 @@ void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 	else
 		handle_builtin(ret, script, i);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/26 16:20:28 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/27 14:52:13 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <errno.h>
 # include "libft.h"
 # include <termios.h>
+# include <curses.h>
+# include <term.h>
 
 # define MAX_PATH_LEN 4096
 
@@ -79,7 +81,7 @@ typedef struct s_script
 
 int				parse(t_script *script, char **line_buf);
 int				tokenizer(char *str, t_token **head);
-void			replace_env_var(t_token *head, char **envp);
+void			replace_env_var(t_token *head, t_script *script);
 
 // Tokenizer utils
 t_token			*create_token(const char *string, int size, t_token_type type);
@@ -106,13 +108,13 @@ int				builtin_echo(t_command command);
 int				builtin_cd(t_command command);
 int 			builtin_exit(t_command command, t_script *script);
 int				builtin_pwd(void);
+int				builtin_export(t_script *script, t_command command);
+int				builtin_unset(t_script *script, t_command command);
+int				builtin_env(char **envp);
 int				has_char(char *str, char c);
 void			free_tab(int i, char **tmp);
 int				strdup_iteration(char **array1, char **array2);
 int				env_len(char **array);
-int				builtin_export(t_script *script, t_command command);
-int				builtin_env(char **envp);
-int				builtin_unset(t_script *script, t_command command);
 
 // Utils
 char			*ft_trim_quotes(char *str);
@@ -125,6 +127,7 @@ void			close_pipes(int *pipe1, int *pipe2);
 void			pipe_dup(int *pipe, int mod, int std);
 void			cmd_builtin(t_script *script, char **path_env, int ret, int i);
 void			heredoc(t_script *script, int i);
+int				ft_putchar(int c);
 
 // Free
 void			free_tokens(t_token *head);

@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/24 17:18:40 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/27 14:51:23 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	strdup_iteration(char **array1, char **array2)
 	i = 0;
 	while (array1[i])
 	{
-		array2[i] = ft_strdup(array1[i]);
+		array2[i] = array1[i];
 		i++;
 	}
 	return (i);

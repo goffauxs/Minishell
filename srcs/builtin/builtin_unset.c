@@ -6,34 +6,38 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:08 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/26 16:12:42 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/27 14:51:18 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_script	*loopunset(t_script *script, t_command command, int var, char **tmp)
+static void	loopunset(t_script *script, char *arg, int len)
 {
 	int		i;
 	int		j;
+	char	*str;
+	char	**tmp;
 
+	tmp = malloc(sizeof(char *) * len);
 	i = 0;
 	j = 0;
+	str = ft_strjoin(arg, "=");
 	while (script->envp[i])
 	{
-		if (ft_strncmp(script->envp[i], command.argv[var],
-				ft_strlen(command.argv[var])))
+		if (ft_strncmp(script->envp[i], str, ft_strlen(str)))
 		{
-			tmp[j] = ft_strdup(script->envp[i]);
+			tmp[j] = script->envp[i];
 			j++;
 		}
+		else
+			free(script->envp[i]);
 		i++;
 	}
+	free(str);
 	tmp[j] = NULL;
-	i = strdup_iteration(tmp, script->envp);
-	script->envp[i] = NULL;
-	free_tab(i, tmp);
-	return (script);
+	free(script->envp);
+	script->envp = tmp;
 }
 
 int	check_invalid(t_command command, int var)
@@ -66,28 +70,20 @@ int	check_exisiting(t_script *script, t_command command, int var)
 
 int	builtin_unset(t_script *script, t_command command)
 {
-	char	**tmp;
 	int		var;
-	int		i;
 
 	if (!script->envp)
 		return (1);
 	var = 1;
 	while (command.argv[var])
 	{
-		if (!(check_invalid(command, var)))
+		if (!(check_exisiting(script, command, var))
+			|| !(check_invalid(command, var)))
 		{
 			var++;
 			continue ;
 		}
-		if (!(check_exisiting(script, command, var)))
-		{
-			var++;
-			continue ;
-		}
-		i = env_len(script->envp);
-		tmp = malloc(sizeof(char *) * i);
-		script = loopunset(script, command, var, tmp);
+		loopunset(script, command.argv[var], env_len(script->envp));
 		var++;
 	}
 	return (0);
