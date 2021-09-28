@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:57 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 16:30:34 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 12:12:04 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,20 @@ static int	check_path_line(char **env)
 	int	i;
 
 	i = 0;
-	while (ft_strncmp(env[i], "PATH=", 5))
+	while (env[i] && ft_strncmp(env[i], "PATH=", 5))
 		i++;
 	return (i);
 }
 
-static void	init_vars(int *i, int *j)
-{
-	*i = 0;
-	*j = 5;
-}
-
-char	**split_paths(char **env)
+char	**path_fill(char **env, int p_line)
 {
 	char	**path;
 	char	*tmp;
 	int		i;
 	int		j;
-	int		p_line;
 
-	init_vars(&i, &j);
-	p_line = check_path_line(env);
+	i = 0;
+	j = 5;
 	path = ft_split(env[p_line], ':');
 	tmp = ft_strdup(path[0]);
 	free(path[0]);
@@ -73,6 +66,22 @@ char	**split_paths(char **env)
 		free(path[i]);
 		path[i] = add_forw_slash(tmp);
 		i++;
+	}
+	return (path);
+}
+
+char	**split_paths(char **env)
+{
+	char	**path;
+	int		p_line;
+
+	p_line = check_path_line(env);
+	if (env[p_line] != NULL)
+		path = path_fill(env, p_line);
+	else
+	{
+		path = malloc(sizeof(char *));
+		path[0] = NULL;
 	}
 	return (path);
 }

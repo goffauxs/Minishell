@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 16:42:50 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 11:51:18 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@ void	exec_cmd( char **path, char **cmd, char **env)
 
 	tmp = ft_strdup(*cmd);
 	i = 0;
+	if (execve(*cmd, cmd, env) != -1)
+	{
+		free(*cmd);
+		free(tmp);
+		return ;
+	}
 	while (execve(*cmd, cmd, env) == -1 && path[i])
 	{
 		free(*cmd);

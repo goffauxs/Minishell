@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 16:44:30 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 12:02:53 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_script
 	struct termios	termios_p;
 }				t_script;
 
+
 int				parse(t_script *script, char **line_buf);
 int				tokenizer(char *str, t_token **head);
 void			replace_env_var(t_token *head, t_script *script);
@@ -132,6 +133,7 @@ int				pipe_dup(int *pipe, int mod, int std);
 void			cmd_builtin(t_script *script, char **path_env, int ret, int i);
 void			heredoc(t_script *script, int i, char **path_env);
 int				ft_putchar(int c);
+void			termios(t_script *script);
 
 // Free
 void			free_tokens(t_token *head);

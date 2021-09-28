@@ -6,7 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/27 19:28:52 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/28 12:03:08 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFT		=	$(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
 CC			=	gcc
 INCLUDE		=	includes
-CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include 
+CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include
 CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
@@ -48,6 +48,7 @@ SRCS		=	main.c \
 				$(BUILTIN_DIR)/utils_export_unset.c \
 				srcs/free.c \
 				srcs/signal.c \
+				srcs/termios.c \
 
 OBJS		=	$(SRCS:%.c=%.o)
 
