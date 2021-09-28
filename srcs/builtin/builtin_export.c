@@ -6,13 +6,12 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 15:15:26 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 16:17:41 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// ch -> check_exisiting_export
 static int	check_exisiting_export(char **envp, char *str)
 {
 	int		j;
@@ -56,8 +55,7 @@ static void	loopexport(t_script *script, char **argv, int var, int len)
 		tmp[i] = ft_strdup(argv[var]);
 		tmp[i + 1] = NULL;
 	}
-	if (var > 1)
-		free(script->envp);
+	free(script->envp);
 	script->envp = tmp;
 }
 

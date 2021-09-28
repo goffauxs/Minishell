@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 15:49:43 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 16:15:12 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	handle_cmd(t_script *script)
 
 	script->termios_p.c_lflag |= ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script->termios_p);
-	signal(SIGQUIT, sig_handler);
+	signal(SIGQUIT, sig_handler_fork);
+	signal(SIGINT, sig_handler_fork);
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
