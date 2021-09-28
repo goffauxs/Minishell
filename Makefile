@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
+#    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/28 12:15:05 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/28 15:17:28 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ LIBFT		=	$(addprefix $(LIBFT_DIR), $(LIBFT_A))
 CC			=	gcc
 INCLUDE		=	includes
 CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include
-CPPFLAGS 	= $(CFLAGS)
 RM			=	rm -f
 
 EXEC_DIR	=	srcs/execution
@@ -54,17 +53,17 @@ OBJS		=	$(SRCS:%.c=%.o)
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS) $(LIBFT)
+$(NAME):	$(LIBFT) $(OBJS)
 			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib -ltermcap $(OBJS) -o $(NAME)
-			@echo "Linked into executable \033[0;32mminishell\033[0m."
+			@echo "\nLinked into executable \033[0;32mminishell\033[0m."
 
 $(LIBFT):
-			@$(MAKE) -s -C $(LIBFT_DIR)
 			@echo "Compiled libft.a"
+			@$(MAKE) -s -C $(LIBFT_DIR)
 
 .c.o:
+			@printf "\033[0;33mGenerating minishell objects... %-33.33s\r" $@
 			@$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
-			@echo "Compiling $<."
 
 localclean:
 			@$(RM) $(OBJS)

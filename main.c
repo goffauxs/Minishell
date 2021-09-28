@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 13:27:37 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 15:12:25 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static char	**envp_malloc(char **envp)
 	while (envp[i])
 		i++;
 	tmp = malloc(sizeof(char *) * (i + 1));
+	if (!tmp)
+		return (NULL);
 	i = 0;
 	while (envp[i])
 	{
@@ -37,6 +39,7 @@ static void	main_loop(t_script *script, char **line_buf)
 
 	while (1)
 	{
+		script->cmd_count = 0;
 		signal(SIGQUIT, SIG_IGN);
 		g_pid = 0;
 		ret = parse(script, line_buf);
@@ -53,9 +56,9 @@ static void	main_loop(t_script *script, char **line_buf)
 				break ;
 		}
 		free_commands(script);
-		// system("leaks minishell"); 
 	}
-	free_commands(script);
+	if (script->cmd_count > 0)
+		free_commands(script);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -71,4 +74,5 @@ int	main(int argc, char **argv, char **envp)
 	termios(&script);
 	main_loop(&script, &line_buf);
 	free_path_env(script.envp);
+	return (script.exit_status);
 }

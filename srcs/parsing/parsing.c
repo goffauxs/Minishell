@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 16:27:46 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 15:18:43 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	parse(t_script *script, char **line_buf)
 	t_token	*head;
 
 	head = NULL;
-	*line_buf = readline("Minishell > ");
+	*line_buf = readline("\033[0;32mMinishell > \033[0m");
 	if (!*line_buf)
 		return (2);
 	add_history(*line_buf);

@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 12:12:18 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 14:49:25 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ static char	*get_env_var(char *str, char **envp, int *i, t_script *script)
 	if (*str == '?')
 	{
 		(*i)++;
-		return (ft_itoa(script->exit_status));
+		if (script->exit_status >= 256)
+			return (ft_itoa(WEXITSTATUS(script->exit_status)));
+		else
+			return (ft_itoa(script->exit_status));
 	}
 	while (ft_isalnum(str[*i]) || str[*i] == '_')
 		(*i)++;

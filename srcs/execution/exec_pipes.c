@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 18:54:38 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/28 14:33:26 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	middle_cmds(t_script *script, char **path_env, int **pipes, int i)
 	close(pipes[0][0]);
 	close(pipes[1][1]);
 	free(pipes);
-	wait(0);
+	wait(&script->exit_status);
 	return (0);
 }
 

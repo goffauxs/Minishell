@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_one_cmd.c                                     :+:      :+:    :+:   */
+/*   exec_onecmd_pipex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 18:41:50 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/28 14:33:22 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ static int	one_cmd_exec(t_script *script, char **path_env)
 	}
 	if (g_pid == 0)
 		first_child(script, path_env, NULL);
-	waitpid(0, &script->exit_status, 0);
-	if (script->exit_status == 256 || script->exit_status == 512)
-		script->exit_status /= 256;
+	wait(&script->exit_status);
 	return (0);
 }
 
@@ -61,7 +59,7 @@ int	pipex(t_script *script, char **path_env)
 	check = 0;
 	if (first_cmd(script, path_env, pipe1) == 1)
 		return (1);
-	wait(0);
+	wait(&script->exit_status);
 	check = mid_loop(script, path_env, pipe1, pipe2);
 	if (check == -1)
 		return (1);
@@ -75,6 +73,6 @@ int	pipex(t_script *script, char **path_env)
 		last_cmd(script, path_env, pipe2);
 	else if (check == 0)
 		last_cmd(script, path_env, pipe1);
-	wait(0);
+	wait(&script->exit_status);
 	return (0);
 }
