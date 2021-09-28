@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 12:15:26 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 13:27:37 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	main_loop(t_script *script, char **line_buf)
 		free_commands(script);
 		// system("leaks minishell"); 
 	}
+	free_commands(script);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -69,4 +70,5 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, sig_handler);
 	termios(&script);
 	main_loop(&script, &line_buf);
+	free_path_env(script.envp);
 }
