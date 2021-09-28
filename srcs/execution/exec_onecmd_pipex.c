@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_onecmd_pipex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 14:33:22 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 16:42:07 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 static int	one_cmd_exec(t_script *script, char **path_env)
 {
-	g_pid = fork();
-	if (g_pid == -1)
+	int	pid;
+
+	pid = fork();
+	if (pid == -1)
 	{
 		fork_error(script, path_env);
 		return (1);
 	}
-	if (g_pid == 0)
+	if (pid == 0)
 		first_child(script, path_env, NULL);
 	wait(&script->exit_status);
 	return (0);
@@ -52,6 +54,7 @@ int	one_cmd(t_script *script, char **path_env)
 
 int	pipex(t_script *script, char **path_env)
 {
+	int	pid;
 	int	pipe1[2];
 	int	pipe2[2];
 	int	check;
@@ -63,16 +66,16 @@ int	pipex(t_script *script, char **path_env)
 	check = mid_loop(script, path_env, pipe1, pipe2);
 	if (check == -1)
 		return (1);
-	g_pid = fork();
-	if (g_pid == -1)
+	pid = fork();
+	if (pid == -1)
 	{
 		fork_error(script, path_env);
 		return (1);
 	}
 	if (check == 1)
-		last_cmd(script, path_env, pipe2);
+		last_cmd(script, path_env, pipe2, pid);
 	else if (check == 0)
-		last_cmd(script, path_env, pipe1);
+		last_cmd(script, path_env, pipe1, pid);
 	wait(&script->exit_status);
 	return (0);
 }

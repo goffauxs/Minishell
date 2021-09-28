@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 15:57:30 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 16:43:17 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 
 int	first_cmd(t_script *script, char **path_env, int *pipe1)
 {
+	int	pid;
+
 	if (pipe(pipe1) == -1)
 	{
 		pipe_error(script, path_env);
 		return (1);
 	}
-	g_pid = fork();
-	if (g_pid == -1)
+	pid = fork();
+	if (pid == -1)
 	{
 		fork_error(script, path_env);
 		return (1);
 	}
-	if (g_pid == 0)
+	if (pid == 0)
 		first_child(script, path_env, pipe1);
 	close(pipe1[1]);
 	return (0);
@@ -33,15 +35,17 @@ int	first_cmd(t_script *script, char **path_env, int *pipe1)
 
 static int	middle_cmds(t_script *script, char **path_env, int **pipes, int i)
 {
+	int	pid;
+
 	if (!pipes)
 		return (1);
-	g_pid = fork();
-	if (g_pid == -1)
+	pid = fork();
+	if (pid == -1)
 	{
 		fork_error(script, path_env);
 		return (1);
 	}
-	if (g_pid == 0)
+	if (pid == 0)
 		middle_child(script, path_env, pipes, i);
 	close(pipes[0][0]);
 	close(pipes[1][1]);
@@ -97,12 +101,12 @@ int	mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2)
 	return (check);
 }
 
-void	last_cmd(t_script *script, char **path_env, int *pipein)
+void	last_cmd(t_script *script, char **path_env, int *pipein, int pid)
 {
 	int	i;
 
 	i = script->cmd_count - 1;
-	if (g_pid == 0)
+	if (pid == 0)
 		last_child(script, path_env, pipein, i);
 	free_path_env(path_env);
 }
