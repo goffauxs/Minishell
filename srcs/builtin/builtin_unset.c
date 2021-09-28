@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:08 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 11:59:38 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 15:20:36 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,15 @@ static void	loopunset(t_script *script, char *arg, int len)
 	char	**tmp;
 
 	tmp = malloc(sizeof(char *) * len);
+	if (!tmp)
+		return ;
 	i = 0;
 	j = 0;
 	str = ft_strjoin(arg, "=");
 	while (script->envp[i])
 	{
 		if (ft_strncmp(script->envp[i], str, ft_strlen(str)))
-		{
-			tmp[j] = script->envp[i];
-			j++;
-		}
+			tmp[j++] = script->envp[i];
 		else
 			free(script->envp[i]);
 		i++;

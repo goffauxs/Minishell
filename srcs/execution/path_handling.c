@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:57 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 12:12:04 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 15:57:54 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static char	*add_forw_slash(char *str)
 	tmp = ft_strdup(str);
 	free(str);
 	str = (char *)malloc(sizeof(char) * (ft_strlen(tmp) + 2));
+	if (!str)
+		return (NULL);
 	while (tmp[i])
 	{
 		str[i] = tmp[i];
@@ -52,13 +54,9 @@ char	**path_fill(char **env, int p_line)
 	i = 0;
 	j = 5;
 	path = ft_split(env[p_line], ':');
-	tmp = ft_strdup(path[0]);
+	tmp = ft_strdup(path[0] + 5);
 	free(path[0]);
-	path[0] = (char *)malloc(sizeof(char) * ((ft_strlen(tmp) - 5) + 1));
-	while (tmp[j])
-		path[0][i++] = tmp[j++];
-	path[0][i] = '\0';
-	free(tmp);
+	path[0] = tmp;
 	i = 0;
 	while (path[i])
 	{
@@ -81,6 +79,8 @@ char	**split_paths(char **env)
 	else
 	{
 		path = malloc(sizeof(char *));
+		if (!path)
+			return (NULL);
 		path[0] = NULL;
 	}
 	return (path);

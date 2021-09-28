@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 15:02:28 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 15:48:23 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void			pipe_error(t_script *script, char **path_env);
 
 // Signals
 void			sig_handler(int signum);
+void			sig_handler_fork(int signum);
 
 // Builtins
 int				builtin_echo(t_command command);

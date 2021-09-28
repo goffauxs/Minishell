@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 14:33:26 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 15:57:30 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ static int	**pipe_init(t_script *s, char **path_env, int *pipe1, int *pipe2)
 	int	**pipes;
 
 	pipes = malloc(sizeof(int *) * 2);
+	if (!pipes)
+		return (NULL);
+	if (!pipes)
+		return (NULL);
 	if (pipe(pipe2) == -1)
 	{
 		pipe_error(s, path_env);

@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 14:49:25 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 16:13:08 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ static char	*ft_getenv(char *str, char **envp)
 	free(tmp);
 	if (!ret)
 	{
-		ret = malloc(sizeof(char));
-		ret[0] = '\0';
+		ret = ft_strdup("");
+		if (!ret)
+			return (NULL);
 	}
 	return (ret);
 }
@@ -83,13 +84,14 @@ static char	*env_loop(char **split, t_script *script, t_token *head)
 
 	if (head->content[0] != '$')
 	{
-		ret = ft_strdup(split[0]);
+		ret = ft_strdup(*split);
 		split++;
 	}
 	else
 	{
-		ret = malloc(sizeof(char));
-		ret[0] = '\0';
+		ret = ft_strdup("");
+		if (!ret)
+			return (NULL);
 	}
 	while (*split)
 	{
