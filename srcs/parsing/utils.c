@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:29 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/24 16:25:46 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 17:20:34 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,20 @@ char	*ft_trim_quotes(char *str)
 	return (ret);
 }
 
+static int	check_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	get_cmd_count(char *line_buf)
 {
 	int		i;
@@ -42,9 +56,13 @@ int	get_cmd_count(char *line_buf)
 		return (0);
 	count = 0;
 	split_str = ft_split(line_buf, '|');
-	while (split_str[count])
-		count++;
-	i = count;
+	i = 0;
+	while (split_str[i])
+	{
+		if (check_spaces(split_str[i]))
+			count++;
+		i++;
+	}
 	while (i-- > 0)
 		free(split_str[i]);
 	free(split_str);

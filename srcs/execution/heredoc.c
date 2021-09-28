@@ -6,25 +6,18 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 16:28:54 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/27 18:12:05 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	heredoc(t_script *script, int i, char **path_env)
+static void	loop_heredoc(t_script *script, int pipe, int i)
 {
 	char	*tmp;
 	char	*bis;
-	int		pipe_tmp[2];
 
 	bis = "";
-	if (pipe(pipe_tmp) == -1)
-	{
-		write(2, "Error: pipe failed\n", 19);
-		free_cmds_path(script, path_env);
-		exit(1);
-	}
 	while (1)
 	{
 		tmp = readline("> ");
@@ -33,8 +26,21 @@ void	heredoc(t_script *script, int i, char **path_env)
 			break ;
 		tmp = ft_strjoin(tmp, "\n");
 		bis = ft_strjoin(bis, tmp);
+	}	
+	write(pipe, bis, ft_strlen(bis));
+}
+
+void	heredoc(t_script *script, int i, char **path_env)
+{
+	int		pipe_tmp[2];
+
+	if (pipe(pipe_tmp) == -1)
+	{
+		write(2, "Error: pipe failed\n", 19);
+		free_cmds_path(script, path_env);
+		exit(1);
 	}
-	write(pipe_tmp[1], bis, ft_strlen(bis));
+	loop_heredoc(script, pipe_tmp[1], i);
 	if (pipe_tmp[0] != STDIN_FILENO)
 	{
 		if (dup2(pipe_tmp[0], STDIN_FILENO) == -1)

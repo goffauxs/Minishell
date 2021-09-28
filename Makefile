@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
+#    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/27 16:07:15 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/28 17:55:17 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,7 @@ LIBFT		=	$(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
 CC			=	gcc
 INCLUDE		=	includes
-CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include 
-CPPFLAGS 	= $(CFLAGS)
+CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include
 RM			=	rm -f
 
 EXEC_DIR	=	srcs/execution
@@ -28,14 +27,15 @@ BUILTIN_DIR	=	srcs/builtin
 
 SRCS		=	main.c \
 				$(PARSING_DIR)/parsing.c \
-				$(PARSING_DIR)/utils.c \
 				$(PARSING_DIR)/replace_env.c \
 				$(PARSING_DIR)/tokenizer.c \
 				$(PARSING_DIR)/tokenizer_utils.c \
+				$(PARSING_DIR)/utils.c \
 				$(EXEC_DIR)/exec_errors.c \
 				$(EXEC_DIR)/exec_pipes_forks.c \
 				$(EXEC_DIR)/exec_pipes_utils.c \
 				$(EXEC_DIR)/exec_pipes.c \
+				$(EXEC_DIR)/exec_onecmd_pipex.c \
 				$(EXEC_DIR)/exec.c \
 				$(EXEC_DIR)/heredoc.c \
 				$(EXEC_DIR)/path_handling.c \
@@ -47,22 +47,23 @@ SRCS		=	main.c \
 				$(BUILTIN_DIR)/utils_export_unset.c \
 				srcs/free.c \
 				srcs/signal.c \
+				srcs/termios.c \
 
 OBJS		=	$(SRCS:%.c=%.o)
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS) $(LIBFT)
+$(NAME):	$(LIBFT) $(OBJS)
 			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib -ltermcap $(OBJS) -o $(NAME)
-			@echo "Linked into executable \033[0;32mminishell\033[0m."
+			@echo "\nLinked into executable \033[0;32mminishell\033[0m."
 
 $(LIBFT):
+			@echo "Compiling libft.a"
 			@$(MAKE) -s -C $(LIBFT_DIR)
-			@echo "Compiled libft.a"
 
 .c.o:
+			@printf "\033[0;33mGenerating minishell objects... %-33.33s\r" $@
 			@$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
-			@echo "Compiling $<."
 
 localclean:
 			@$(RM) $(OBJS)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:30 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 16:28:33 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 16:38:58 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 		exec_cmd(path_env, script->commands[i].argv, script->envp);
 		printf("Minishell: %s: command not found\n", tmp);
 		free_cmds_path(script, path_env);
-		exit(1);
+		exit(127);
 	}
 	else
 		handle_builtin(ret, script, i);

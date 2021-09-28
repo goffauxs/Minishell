@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/27 17:07:33 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/28 16:13:08 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ static char	*ft_getenv(char *str, char **envp)
 	free(tmp);
 	if (!ret)
 	{
-		ret = malloc(sizeof(char));
-		ret[0] = '\0';
+		ret = ft_strdup("");
+		if (!ret)
+			return (NULL);
 	}
 	return (ret);
 }
@@ -48,7 +49,10 @@ static char	*get_env_var(char *str, char **envp, int *i, t_script *script)
 	if (*str == '?')
 	{
 		(*i)++;
-		return (ft_itoa(script->exit_status));
+		if (script->exit_status >= 256)
+			return (ft_itoa(WEXITSTATUS(script->exit_status)));
+		else
+			return (ft_itoa(script->exit_status));
 	}
 	while (ft_isalnum(str[*i]) || str[*i] == '_')
 		(*i)++;
@@ -80,13 +84,14 @@ static char	*env_loop(char **split, t_script *script, t_token *head)
 
 	if (head->content[0] != '$')
 	{
-		ret = ft_strdup(split[0]);
+		ret = ft_strdup(*split);
 		split++;
 	}
 	else
 	{
-		ret = malloc(sizeof(char));
-		ret[0] = '\0';
+		ret = ft_strdup("");
+		if (!ret)
+			return (NULL);
 	}
 	while (*split)
 	{
