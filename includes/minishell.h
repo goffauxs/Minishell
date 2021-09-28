@@ -6,25 +6,25 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 16:42:45 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/28 17:56:20 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <sys/stat.h>
-# include <stdio.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <signal.h>
-# include <limits.h>
-# include <errno.h>
-# include <termios.h>
 # include <curses.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdio.h>
+# include <sys/stat.h>
+# include <termios.h>
 # include <term.h>
+# include <unistd.h>
 # include "libft.h"
 
 # define MAX_PATH_LEN 4096
@@ -98,7 +98,7 @@ int				pipex(t_script *script, char **path_env);
 char			**split_paths(char **env);
 int				first_cmd(t_script *script, char **path_env, int *pipe1);
 int				mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2);
-void			last_cmd(t_script *script, char **path_env, int *pipein, int pid);
+void			last_cmd(t_script *s, char **path_env, int *pipein, int pid);
 void			first_child(t_script *script, char **path_env, int *pipe1);
 void			middle_child(t_script *s, char **path_env, int **pipes, int i);
 void			last_child(t_script *s, char **path_env, int *pipein, int i);

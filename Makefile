@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
+#    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/28 15:17:28 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/09/28 17:55:17 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,15 +27,15 @@ BUILTIN_DIR	=	srcs/builtin
 
 SRCS		=	main.c \
 				$(PARSING_DIR)/parsing.c \
-				$(PARSING_DIR)/utils.c \
 				$(PARSING_DIR)/replace_env.c \
 				$(PARSING_DIR)/tokenizer.c \
 				$(PARSING_DIR)/tokenizer_utils.c \
+				$(PARSING_DIR)/utils.c \
 				$(EXEC_DIR)/exec_errors.c \
 				$(EXEC_DIR)/exec_pipes_forks.c \
-				$(EXEC_DIR)/exec_onecmd_pipex.c \
 				$(EXEC_DIR)/exec_pipes_utils.c \
 				$(EXEC_DIR)/exec_pipes.c \
+				$(EXEC_DIR)/exec_onecmd_pipex.c \
 				$(EXEC_DIR)/exec.c \
 				$(EXEC_DIR)/heredoc.c \
 				$(EXEC_DIR)/path_handling.c \
@@ -58,7 +58,7 @@ $(NAME):	$(LIBFT) $(OBJS)
 			@echo "\nLinked into executable \033[0;32mminishell\033[0m."
 
 $(LIBFT):
-			@echo "Compiled libft.a"
+			@echo "Compiling libft.a"
 			@$(MAKE) -s -C $(LIBFT_DIR)
 
 .c.o:

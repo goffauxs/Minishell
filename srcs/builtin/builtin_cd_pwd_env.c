@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd_pwd_env.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 15:50:05 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 17:59:32 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	builtin_pwd(t_command command)
 {
 	char	*buff;
 
-	if(command.argv[1])
+	if (command.argv[1])
 	{
 		printf("pwd: too many arguments\n");
 		return (1);
@@ -59,7 +59,7 @@ int	builtin_env(char **envp, t_command command)
 {
 	int	i;
 
-	if(command.argv[1])
+	if (command.argv[1])
 	{
 		printf("env: too many arguments\n");
 		return (1);

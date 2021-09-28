@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 16:43:17 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/28 17:58:53 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,12 @@ int	mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2)
 	return (check);
 }
 
-void	last_cmd(t_script *script, char **path_env, int *pipein, int pid)
+void	last_cmd(t_script *s, char **path_env, int *pipein, int pid)
 {
 	int	i;
 
-	i = script->cmd_count - 1;
+	i = s->cmd_count - 1;
 	if (pid == 0)
-		last_child(script, path_env, pipein, i);
+		last_child(s, path_env, pipein, i);
 	free_path_env(path_env);
 }

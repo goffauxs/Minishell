@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 15:12:25 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 17:39:42 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	main_loop(t_script *script, char **line_buf)
 	{
 		script->cmd_count = 0;
 		signal(SIGQUIT, SIG_IGN);
-		g_pid = 0;
 		ret = parse(script, line_buf);
 		if (ret == 1)
 			continue ;
@@ -56,6 +55,7 @@ static void	main_loop(t_script *script, char **line_buf)
 				break ;
 		}
 		free_commands(script);
+		system("leaks minishell");
 	}
 	if (script->cmd_count > 0)
 		free_commands(script);
