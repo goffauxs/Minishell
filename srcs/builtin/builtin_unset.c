@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:08 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 11:59:38 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 16:22:12 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,28 @@ int	check_exisiting(t_script *script, t_command command, int var)
 int	builtin_unset(t_script *script, t_command command)
 {
 	int		var;
+	int		err;
 
 	if (!script->envp)
 		return (1);
 	var = 1;
+	err = 0;
 	while (command.argv[var])
 	{
-		if (!(check_exisiting(script, command, var))
-			|| !(check_invalid(command, var)))
+		if (!(check_exisiting(script, command, var)))
 		{
 			var++;
 			continue ;
 		}
+		else if (!(check_invalid(command, var)))
+		{
+			err = 1;
+			var++;
+			continue ;
+		}
+		err = 0;
 		loopunset(script, command.argv[var], env_len(script->envp));
 		var++;
 	}
-	return (0);
+	return (err);
 }
