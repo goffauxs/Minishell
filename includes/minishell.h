@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 15:48:23 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 16:15:25 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,10 @@ void			sig_handler_fork(int signum);
 int				builtin_echo(t_command command);
 int				builtin_cd(t_command command);
 int				builtin_exit(t_command command, t_script *script);
-int				builtin_pwd(void);
+int				builtin_pwd(t_command command);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_unset(t_script *script, t_command command);
-int				builtin_env(char **envp);
+int				builtin_env(char **envp, t_command command);
 int				has_char(char *str, char c);
 void			free_tab(int i, char **tmp);
 int				strdup_iteration(char **array1, char **array2);
