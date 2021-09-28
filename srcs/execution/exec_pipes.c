@@ -3,82 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/27 16:30:24 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/27 18:54:38 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	middle_cmds(t_script *script, char **path_env, int *pipein, int *pipeout, int i)
+int	first_cmd(t_script *script, char **path_env, int *pipe1)
 {
-	g_pid = fork();
-	if (g_pid == -1)
-	{
-		fork_error(script, path_env);
-		return (1);
-	}
-	if (g_pid == 0)
-		middle_child(script, path_env, pipein, pipeout, i);
-	close(pipein[0]);
-	close(pipeout[1]);
-	wait(0);
-	return (0);
-}
-
-static int	middle_loop(t_script *script, char **path_env, int *pipe1, int *pipe2)
-{
-	int	i;
-	int	check;
-
-	i = 1;
-	check = 0;
-	while (i < script->cmd_count - 1)
-	{
-		if (check == 0)
-		{
-			if (pipe(pipe2) == -1)
-			{
-				pipe_error(script, path_env);
-				return (-1);
-			}
-			middle_cmds(script, path_env, pipe1, pipe2, i);
-			check = 1;
-		}
-		else if (check == 1)
-		{
-			if (pipe(pipe1) == -1)
-			{
-				pipe_error(script, path_env);
-				return (-1);
-			}
-			middle_cmds(script, path_env, pipe2, pipe1, i);
-			check = 0;
-		}
-		i++;
-	}
-	return (check);
-}
-
-static void	last_cmd(t_script *script, char **path_env, int *pipein)
-{
-	int	i;
-
-	i = script->cmd_count - 1;
-	if (g_pid == 0)
-		last_child(script, path_env, pipein, i);
-	free_path_env(path_env);
-}
-
-int	pipex(t_script *script, char **path_env)
-{
-	int	pipe1[2];
-	int	pipe2[2];
-	int	check;
-
-	check = 0;
 	if (pipe(pipe1) == -1)
 	{
 		pipe_error(script, path_env);
@@ -93,9 +28,12 @@ int	pipex(t_script *script, char **path_env)
 	if (g_pid == 0)
 		first_child(script, path_env, pipe1);
 	close(pipe1[1]);
-	wait(0);
-	check = middle_loop(script, path_env, pipe1, pipe2);
-	if (check == -1)
+	return (0);
+}
+
+static int	middle_cmds(t_script *script, char **path_env, int **pipes, int i)
+{
+	if (!pipes)
 		return (1);
 	g_pid = fork();
 	if (g_pid == -1)
@@ -103,10 +41,64 @@ int	pipex(t_script *script, char **path_env)
 		fork_error(script, path_env);
 		return (1);
 	}
-	if (check == 1)
-		last_cmd(script, path_env, pipe2);
-	else if (check == 0)
-		last_cmd(script, path_env, pipe1);
+	if (g_pid == 0)
+		middle_child(script, path_env, pipes, i);
+	close(pipes[0][0]);
+	close(pipes[1][1]);
+	free(pipes);
 	wait(0);
 	return (0);
+}
+
+static int	**pipe_init(t_script *s, char **path_env, int *pipe1, int *pipe2)
+{
+	int	**pipes;
+
+	pipes = malloc(sizeof(int *) * 2);
+	if (pipe(pipe2) == -1)
+	{
+		pipe_error(s, path_env);
+		return (NULL);
+	}
+	pipes[0] = pipe1;
+	pipes[1] = pipe2;
+	return (pipes);
+}
+
+int	mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2)
+{
+	int	i;
+	int	check;
+	int	**pipes;
+
+	i = 0;
+	check = 0;
+	while (++i < s->cmd_count - 1)
+	{
+		if (check == 0)
+		{
+			pipes = pipe_init(s, path_env, pipe1, pipe2);
+			if (middle_cmds(s, path_env, pipes, i) == 1)
+				return (-1);
+			check = 1;
+		}
+		else if (check == 1)
+		{
+			pipes = pipe_init(s, path_env, pipe2, pipe1);
+			if (middle_cmds(s, path_env, pipes, i) == 1)
+				return (-1);
+			check = 0;
+		}
+	}
+	return (check);
+}
+
+void	last_cmd(t_script *script, char **path_env, int *pipein)
+{
+	int	i;
+
+	i = script->cmd_count - 1;
+	if (g_pid == 0)
+		last_child(script, path_env, pipein, i);
+	free_path_env(path_env);
 }

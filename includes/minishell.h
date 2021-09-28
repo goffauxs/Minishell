@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 12:02:53 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/28 12:15:19 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 
 # define MAX_PATH_LEN 4096
 
-int g_pid;
+int	g_pid;
 
 typedef enum e_token_type
 {
@@ -97,9 +97,12 @@ int				check_builtin(char *cmd);
 int				handle_builtin(int ret, t_script *script, int i);
 int				pipex(t_script *script, char **path_env);
 char			**split_paths(char **env);
+int				first_cmd(t_script *script, char **path_env, int *pipe1);
+int				mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2);
+void			last_cmd(t_script *script, char **path_env, int *pipein);
 void			first_child(t_script *script, char **path_env, int *pipe1);
-void			middle_child(t_script *script, char **path_env, int *pipein, int *pipeout, int i);
-void			last_child(t_script *script, char **path_env, int *pipein, int i);
+void			middle_child(t_script *s, char **path_env, int **pipes, int i);
+void			last_child(t_script *s, char **path_env, int *pipein, int i);
 
 // Exec errors
 void			fork_error(t_script *script, char **path_env);
@@ -111,7 +114,7 @@ void			sig_handler(int signum);
 // Builtins
 int				builtin_echo(t_command command);
 int				builtin_cd(t_command command);
-int 			builtin_exit(t_command command, t_script *script);
+int				builtin_exit(t_command command, t_script *script);
 int				builtin_pwd(void);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_unset(t_script *script, t_command command);

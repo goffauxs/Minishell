@@ -6,7 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/28 12:03:08 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/09/28 12:15:05 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRCS		=	main.c \
 				$(PARSING_DIR)/tokenizer_utils.c \
 				$(EXEC_DIR)/exec_errors.c \
 				$(EXEC_DIR)/exec_pipes_forks.c \
-				$(EXEC_DIR)/exec_one_cmd.c \
+				$(EXEC_DIR)/exec_onecmd_pipex.c \
 				$(EXEC_DIR)/exec_pipes_utils.c \
 				$(EXEC_DIR)/exec_pipes.c \
 				$(EXEC_DIR)/exec.c \
