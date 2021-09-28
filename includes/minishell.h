@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 15:02:28 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/28 15:49:36 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,10 @@ void			sig_handler(int signum);
 int				builtin_echo(t_command command);
 int				builtin_cd(t_command command);
 int				builtin_exit(t_command command, t_script *script);
-int				builtin_pwd(void);
+int				builtin_pwd(t_command command);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_unset(t_script *script, t_command command);
-int				builtin_env(char **envp);
+int				builtin_env(char **envp, t_command command);
 int				has_char(char *str, char c);
 void			free_tab(int i, char **tmp);
 int				strdup_iteration(char **array1, char **array2);
