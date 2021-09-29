@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:08:33 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 12:15:32 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:50:42 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ void	free_commands(t_script *script)
 		if (script->commands[i].out.name)
 			free(script->commands[i].out.name);
 		free(script->commands[i].argv);
+		if (script->commands[i].in.heredoc)
+		{
+			ft_lstclear(&script->commands[i].in.heredoc, free);
+			free(script->commands[i].in.heredoc);
+		}
 	}
 	free(script->commands);
 }
