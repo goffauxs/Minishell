@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 17:20:02 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:41:20 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static void	open_redirs(t_token *head, t_redirection *redir)
 {
-	int	fd;
+	int		fd;
+	t_list	*tmp;
 
 	if (redir->name)
 		free(redir->name);
@@ -22,7 +23,16 @@ static void	open_redirs(t_token *head, t_redirection *redir)
 	if (!ft_strncmp(head->content, ">>", 2))
 		redir->flag = (O_CREAT | O_APPEND | O_RDWR);
 	else if (!ft_strncmp(head->content, "<<", 2))
+	{
+		tmp = ft_lstnew(ft_strdup(redir->name));
+		if (!tmp)
+			return ;
+		if (redir->heredoc == NULL)
+			redir->heredoc = tmp;
+		else
+			ft_lstadd_back(&redir->heredoc, tmp);
 		redir->flag = -1;
+	}
 	else if (!ft_strncmp(head->content, ">", 1))
 		redir->flag = (O_CREAT | O_TRUNC | O_RDWR);
 	else if (!ft_strncmp(head->content, "<", 1))

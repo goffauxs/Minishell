@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
+#    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/28 17:55:17 by rvan-aud         ###   ########.fr        #
+#    Updated: 2021/09/29 10:35:54 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ $(NAME):	$(LIBFT) $(OBJS)
 
 $(LIBFT):
 			@echo "Compiling libft.a"
-			@$(MAKE) -s -C $(LIBFT_DIR)
+			@$(MAKE) bonus -s -C $(LIBFT_DIR)
 
 .c.o:
 			@printf "\033[0;33mGenerating minishell objects... %-33.33s\r" $@

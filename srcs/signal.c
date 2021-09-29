@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 18:56:59 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/09/28 15:47:54 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:14:24 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,13 @@ void	sig_handler_fork(int signum)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
+	}
+}
+
+void	sig_handler_heredoc(int signum)
+{
+	if (signum == SIGQUIT)
+	{
+		
 	}
 }
