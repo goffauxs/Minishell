@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 10:53:01 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/29 13:21:36 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ static void	loop_heredoc(t_script *script, int pipe, int i)
 
 	bis = "";
 	heredoc_tmp = script->commands[i].in.heredoc;
-	while (heredoc_tmp)
+	while (g_exit_status != 1 && heredoc_tmp)
 	{
 		tmp = readline("\033[0;32m> \033[0m");
-		if (!ft_strncmp(tmp, heredoc_tmp->content,
+		if (!tmp || !ft_strncmp(tmp, heredoc_tmp->content,
 				ft_strlen(heredoc_tmp->content) + 1))
 		{
+			if (!tmp)
+				printf("Minishell: warning: here-document delimited by end-of-file (wanted '%s')\n", heredoc_tmp->content);
 			heredoc_tmp = heredoc_tmp->next;
 			continue ;
 		}
@@ -48,6 +50,8 @@ void	heredoc(t_script *script, int i, char **path_env)
 		free_cmds_path(script, path_env);
 		exit(1);
 	}
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sig_handler_heredoc);
 	loop_heredoc(script, pipe_tmp[1], i);
 	if (pipe_tmp[0] != STDIN_FILENO)
 	{

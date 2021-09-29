@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/29 10:41:20 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/29 11:26:47 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	parse_commands(t_token *head, t_command *commands, int i, int j)
 		commands[i].argv = malloc(sizeof(char *) * (commands[i].argc + 1));
 		if (!commands[i].argv)
 			return ;
+		commands[i].in.heredoc = NULL;
 		j = 0;
 		while (head && head->type != TOKEN_PIPE)
 		{

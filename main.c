@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/29 10:05:44 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/29 13:13:36 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static void	main_loop(t_script *script, char **line_buf)
 	while (1)
 	{
 		script->cmd_count = 0;
+		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
 		ret = parse(script, line_buf);
 		if (ret == 1)
@@ -55,7 +56,7 @@ static void	main_loop(t_script *script, char **line_buf)
 				break ;
 		}
 		free_commands(script);
-		system("leaks minishell");
+		// system("leaks minishell");
 	}
 	if (script->cmd_count > 0)
 		free_commands(script);
@@ -70,7 +71,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	script.envp = envp_malloc(envp);
 	line_buf = NULL;
-	signal(SIGINT, sig_handler);
 	termios(&script);
 	main_loop(&script, &line_buf);
 	free_path_env(script.envp);
