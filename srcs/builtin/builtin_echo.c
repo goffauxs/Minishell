@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:52 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 16:06:23 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:06:41 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	flag_handling(t_command command, size_t *flag, int *i)
+static void	flag_handling(t_command command, size_t *flag, int *i)
 {
 	(*flag)++;
 	while (command.argv[*i][*flag] == 'n' || command.argv[*i][*flag] == 'e'
@@ -24,7 +24,7 @@ void	flag_handling(t_command command, size_t *flag, int *i)
 		*flag = 0;
 }
 
-int	echo_print(t_command command, int i)
+static int	echo_print(t_command command, int i)
 {
 	write(1, command.argv[i], ft_strlen(command.argv[i]));
 	if (i != command.argc - 1)

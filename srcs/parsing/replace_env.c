@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 16:13:08 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/29 09:59:45 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*ft_getenv(char *str, char **envp)
 	return (ret);
 }
 
-static char	*get_env_var(char *str, char **envp, int *i, t_script *script)
+static char	*get_env_var(char *str, char **envp, int *i)
 {
 	char	c;
 	char	*tmp;
@@ -49,10 +49,10 @@ static char	*get_env_var(char *str, char **envp, int *i, t_script *script)
 	if (*str == '?')
 	{
 		(*i)++;
-		if (script->exit_status >= 256)
-			return (ft_itoa(WEXITSTATUS(script->exit_status)));
+		if (g_exit_status >= 256)
+			return (ft_itoa(WEXITSTATUS(g_exit_status)));
 		else
-			return (ft_itoa(script->exit_status));
+			return (ft_itoa(g_exit_status));
 	}
 	while (ft_isalnum(str[*i]) || str[*i] == '_')
 		(*i)++;
@@ -97,7 +97,7 @@ static char	*env_loop(char **split, t_script *script, t_token *head)
 	{
 		i = 0;
 		tmp = ft_strjoin_free(ret,
-				get_env_var(*split, script->envp, &i, script));
+				get_env_var(*split, script->envp, &i));
 		ret = ft_strjoin(tmp, (*split + i));
 		free(tmp);
 		split++;

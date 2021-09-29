@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 16:15:12 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:04:54 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,18 +90,18 @@ int	check_builtin(char *cmd)
 int	handle_builtin(int ret, t_script *script, int i)
 {
 	if (ret == 1)
-		script->exit_status = builtin_echo(script->commands[i]);
+		g_exit_status = builtin_echo(script->commands[i]);
 	if (ret == 2)
-		script->exit_status = builtin_cd(script->commands[i]);
+		g_exit_status = builtin_cd(script->commands[i]);
 	if (ret == 3)
-		script->exit_status = builtin_pwd(script->commands[i]);
+		g_exit_status = builtin_pwd(script->commands[i]);
 	if (ret == 4)
-		script->exit_status = builtin_export(script, script->commands[i]);
+		g_exit_status = builtin_export(script, script->commands[i]);
 	if (ret == 5)
-		script->exit_status = builtin_unset(script, script->commands[i]);
+		g_exit_status = builtin_unset(script, script->commands[i]);
 	if (ret == 6)
-		script->exit_status = builtin_env(script->envp, script->commands[i]);
+		g_exit_status = builtin_env(script->envp, script->commands[i]);
 	if (ret == 7)
-		return (builtin_exit(script->commands[i], script));
+		return (builtin_exit(script->commands[i]));
 	return (0);
 }

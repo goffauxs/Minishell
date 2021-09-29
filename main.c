@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 17:39:42 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:05:44 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,5 @@ int	main(int argc, char **argv, char **envp)
 	termios(&script);
 	main_loop(&script, &line_buf);
 	free_path_env(script.envp);
-	return (script.exit_status);
+	return (g_exit_status);
 }

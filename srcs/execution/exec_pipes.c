@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 17:58:53 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:01:49 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	first_cmd(t_script *script, char **path_env, int *pipe1)
 
 	if (pipe(pipe1) == -1)
 	{
-		pipe_error(script, path_env);
+		pipe_error(path_env);
 		return (1);
 	}
 	pid = fork();
 	if (pid == -1)
 	{
-		fork_error(script, path_env);
+		fork_error(path_env);
 		return (1);
 	}
 	if (pid == 0)
@@ -42,7 +42,7 @@ static int	middle_cmds(t_script *script, char **path_env, int **pipes, int i)
 	pid = fork();
 	if (pid == -1)
 	{
-		fork_error(script, path_env);
+		fork_error(path_env);
 		return (1);
 	}
 	if (pid == 0)
@@ -50,11 +50,11 @@ static int	middle_cmds(t_script *script, char **path_env, int **pipes, int i)
 	close(pipes[0][0]);
 	close(pipes[1][1]);
 	free(pipes);
-	wait(&script->exit_status);
+	wait(&g_exit_status);
 	return (0);
 }
 
-static int	**pipe_init(t_script *s, char **path_env, int *pipe1, int *pipe2)
+static int	**pipe_init(char **path_env, int *pipe1, int *pipe2)
 {
 	int	**pipes;
 
@@ -65,7 +65,7 @@ static int	**pipe_init(t_script *s, char **path_env, int *pipe1, int *pipe2)
 		return (NULL);
 	if (pipe(pipe2) == -1)
 	{
-		pipe_error(s, path_env);
+		pipe_error(path_env);
 		return (NULL);
 	}
 	pipes[0] = pipe1;
@@ -85,14 +85,14 @@ int	mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2)
 	{
 		if (check == 0)
 		{
-			pipes = pipe_init(s, path_env, pipe1, pipe2);
+			pipes = pipe_init(path_env, pipe1, pipe2);
 			if (middle_cmds(s, path_env, pipes, i) == 1)
 				return (-1);
 			check = 1;
 		}
 		else if (check == 1)
 		{
-			pipes = pipe_init(s, path_env, pipe2, pipe1);
+			pipes = pipe_init(path_env, pipe2, pipe1);
 			if (middle_cmds(s, path_env, pipes, i) == 1)
 				return (-1);
 			check = 0;

@@ -3,26 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:00 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/24 15:23:00 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:04:37 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exit_numeric_arg(t_command command, t_script *script)
+static int	exit_numeric_arg(t_command command)
 {
 	write(1, "exit\n", 5);
 	printf("%s: %s: numeric argument required\n",
 		command.argv[0], command.argv[1]);
 	rl_on_new_line();
-	script->exit_status = 255;
+	g_exit_status = 255;
 	return (1);
 }
 
-int	check_flag(t_command command, t_script *script)
+static int	exit_too_many_arg(t_command command)
+{
+	write(1, "exit\n", 5);
+	printf("%s: too many arguments\n", command.argv[0]);
+	g_exit_status = 1;
+	rl_on_new_line();
+	return (0);
+}
+
+static int	check_flag(t_command command)
 {
 	int	j;
 
@@ -32,30 +41,21 @@ int	check_flag(t_command command, t_script *script)
 		if (command.argv[1][j] == '-')
 			j++;
 		if (!ft_isdigit(command.argv[1][j]))
-			return (exit_numeric_arg(command, script));
+			return (exit_numeric_arg(command));
 		j++;
 	}
 	return (0);
 }
 
-int	exit_too_many_arg(t_command command, t_script *script)
-{
-	write(1, "exit\n", 5);
-	printf("%s: too many arguments\n", command.argv[0]);
-	script->exit_status = 1;
-	rl_on_new_line();
-	return (0);
-}
-
-int	builtin_exit(t_command command, t_script *script)
+int	builtin_exit(t_command command)
 {
 	if (command.argv[1])
 	{
-		if (check_flag(command, script))
+		if (check_flag(command))
 			return (1);
 	}
 	if (command.argc > 2)
-		return (exit_too_many_arg(command, script));
+		return (exit_too_many_arg(command));
 	else
 	{
 		if (command.argv[1])
@@ -64,12 +64,12 @@ int	builtin_exit(t_command command, t_script *script)
 			{
 				if (ft_atoi(command.argv[1]) == -1
 					&& ft_strlen(command.argv[1]) > 18)
-					return (exit_numeric_arg(command, script));
+					return (exit_numeric_arg(command));
 			}
-			script->exit_status = ft_atoi(command.argv[1]) & 0xFF;
+			g_exit_status = ft_atoi(command.argv[1]) & 0xFF;
 		}
 		else
-			script->exit_status = 0;
+			g_exit_status = 0;
 		rl_on_new_line();
 		write(1, "exit\n", 5);
 	}

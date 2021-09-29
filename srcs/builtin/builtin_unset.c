@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:08 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 16:24:54 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:07:10 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	loopunset(t_script *script, char *arg, int len)
 	script->envp = tmp;
 }
 
-int	check_invalid(t_command command, int var)
+static int	check_invalid(t_command command, int var)
 {
 	if (ft_isdigit(command.argv[var][0])
 			|| has_char(command.argv[var], '='))
@@ -50,7 +50,7 @@ int	check_invalid(t_command command, int var)
 	return (1);
 }
 
-int	check_exisiting(t_script *script, t_command command, int var)
+static int	check_exisiting(t_script *script, t_command command, int var)
 {
 	int	check;
 	int	i;

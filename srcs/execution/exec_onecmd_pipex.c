@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 16:42:07 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:02:30 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ static int	one_cmd_exec(t_script *script, char **path_env)
 	pid = fork();
 	if (pid == -1)
 	{
-		fork_error(script, path_env);
+		fork_error(path_env);
 		return (1);
 	}
 	if (pid == 0)
 		first_child(script, path_env, NULL);
-	wait(&script->exit_status);
+	wait(&g_exit_status);
 	return (0);
 }
 
@@ -62,20 +62,20 @@ int	pipex(t_script *script, char **path_env)
 	check = 0;
 	if (first_cmd(script, path_env, pipe1) == 1)
 		return (1);
-	wait(&script->exit_status);
+	wait(&g_exit_status);
 	check = mid_loop(script, path_env, pipe1, pipe2);
 	if (check == -1)
 		return (1);
 	pid = fork();
 	if (pid == -1)
 	{
-		fork_error(script, path_env);
+		fork_error(path_env);
 		return (1);
 	}
 	if (check == 1)
 		last_cmd(script, path_env, pipe2, pid);
 	else if (check == 0)
 		last_cmd(script, path_env, pipe1, pid);
-	wait(&script->exit_status);
+	wait(&g_exit_status);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/28 17:56:20 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:04:46 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 
 # define MAX_PATH_LEN 4096
 
-int	g_pid;
+int	g_exit_status;
 
 typedef enum e_token_type
 {
@@ -104,8 +104,8 @@ void			middle_child(t_script *s, char **path_env, int **pipes, int i);
 void			last_child(t_script *s, char **path_env, int *pipein, int i);
 
 // Exec errors
-void			fork_error(t_script *script, char **path_env);
-void			pipe_error(t_script *script, char **path_env);
+void			fork_error(char **path_env);
+void			pipe_error(char **path_env);
 
 // Signals
 void			sig_handler(int signum);
@@ -114,7 +114,7 @@ void			sig_handler_fork(int signum);
 // Builtins
 int				builtin_echo(t_command command);
 int				builtin_cd(t_command command);
-int				builtin_exit(t_command command, t_script *script);
+int				builtin_exit(t_command command);
 int				builtin_pwd(t_command command);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_unset(t_script *script, t_command command);
