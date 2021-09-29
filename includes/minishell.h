@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/29 11:05:10 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/29 13:25:39 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include "libft.h"
 
 # define MAX_PATH_LEN 4096
+# define HEREDOC_WARNING "Minishell: warning: here-document delimited by end-of-file \
+(wanted '%s')\n"
 
 int	g_exit_status;
 

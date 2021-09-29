@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 13:16:27 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/29 13:23:21 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	one_cmd_exec(t_script *script, char **path_env)
 {
 	int	pid;
 
-	if (script->commands[0].in.flag == - 1)
+	if (script->commands[0].in.flag == -1)
 		signal(SIGQUIT, SIG_IGN);
 	else
 		signal(SIGQUIT, sig_handler_fork);

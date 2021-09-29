@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 13:21:36 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/29 13:25:05 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	loop_heredoc(t_script *script, int pipe, int i)
 				ft_strlen(heredoc_tmp->content) + 1))
 		{
 			if (!tmp)
-				printf("Minishell: warning: here-document delimited by end-of-file (wanted '%s')\n", heredoc_tmp->content);
+				printf(HEREDOC_WARNING, heredoc_tmp->content);
 			heredoc_tmp = heredoc_tmp->next;
 			continue ;
 		}
