@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 12:59:04 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/29 16:46:30 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,19 @@ void	exec_cmd( char **path, char **cmd, char **env)
 	i = 0;
 	if (execve(*cmd, cmd, env) != -1)
 	{
-		free(*cmd);
 		free(tmp);
 		return ;
 	}
-	while (execve(*cmd, cmd, env) == -1 && path[i])
+	while (execve(tmp, cmd, env) == -1 && path[i])
 	{
-		free(*cmd);
-		*cmd = ft_strjoin(path[i], tmp);
-		if (!*cmd)
-		{
-			free(cmd);
+		free(tmp);
+		tmp = ft_strjoin(path[i], *cmd);
+		if (!tmp)
 			break ;
-		}
 		i++;
 	}
-	free(tmp);
+	if (tmp)
+		free(tmp);
 }
 
 int	handle_cmd(t_script *script)

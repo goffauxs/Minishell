@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd_pwd_env.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 17:59:32 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/29 16:28:11 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ int	builtin_pwd(t_command command)
 		return (1);
 	buff = getcwd(buff, MAX_PATH_LEN);
 	if (!buff)
+	{
+		perror("getcwd");
 		return (1);
+	}
 	write(1, buff, ft_strlen(buff));
 	write(1, "\n", 1);
 	free(buff);
