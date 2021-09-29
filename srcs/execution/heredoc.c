@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 10:15:09 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:53:01 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,24 @@ static void	loop_heredoc(t_script *script, int pipe, int i)
 {
 	char	*tmp;
 	char	*bis;
+	t_list	*heredoc_tmp;
 
 	bis = "";
-	while (1)
+	heredoc_tmp = script->commands[i].in.heredoc;
+	while (heredoc_tmp)
 	{
 		tmp = readline("\033[0;32m> \033[0m");
-		if (!ft_strncmp(tmp, script->commands[i].in.name,
-				ft_strlen(script->commands[i].in.name) + 1))
-			break ;
-		tmp = ft_strjoin(tmp, "\n");
-		bis = ft_strjoin(bis, tmp);
+		if (!ft_strncmp(tmp, heredoc_tmp->content,
+				ft_strlen(heredoc_tmp->content) + 1))
+		{
+			heredoc_tmp = heredoc_tmp->next;
+			continue ;
+		}
+		if (!heredoc_tmp->next)
+		{
+			tmp = ft_strjoin(tmp, "\n");
+			bis = ft_strjoin(bis, tmp);
+		}
 	}	
 	write(pipe, bis, ft_strlen(bis));
 }
