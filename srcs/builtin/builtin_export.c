@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 18:21:07 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/30 18:29:12 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,41 +53,17 @@ static int	check_exisiting_export(char **envp, char *str)
 	return (0);
 }
 
-static void	prep_tmp_exist(char **argv, int var, char **tmp, const int ch)
+static void	prep_tmp_exist(char *argvar, char **tmp, const int ch, int i)
 {
-	if (ft_strnstr(argv[var], "+=", ft_strlen(argv[var])))
+	if (ft_strnstr(argvar, "+=", ft_strlen(argvar)))
 		tmp[ch] = ft_strjoin_free(tmp[ch],
-				ft_strdup(ft_strchr(argv[var], '=') + 1));
+				ft_strdup(ft_strchr(argvar, '=') + 1));
 	else
 	{
 		free(tmp[ch]);
-		tmp[ch] = ft_strdup(argv[var]);
+		tmp[ch] = ft_strdup(argvar);
 	}
-}
-
-static char	*remove_plus(char *argvar)
-{
-	int		i;
-	int		j;
-	char	*tmp;
-
-	i = 0;
-	j = 0;
-	tmp = NULL;
-	if (ft_strnstr(argvar, "+=", ft_strlen(argvar)))
-	{
-		tmp = malloc(sizeof(char) * ft_strlen(argvar));
-		if (!tmp)
-			return (NULL);
-		while (argvar[i])
-		{
-			if (argvar[i] != '+')
-				tmp[j++] = argvar[i];
-			i++;
-		}
-		tmp[j] = '\0';
-	}
-	return (tmp);
+	tmp[i] = NULL;
 }
 
 static void	loopexport(t_script *script, char **argv, int var, int len)
@@ -105,35 +81,16 @@ static void	loopexport(t_script *script, char **argv, int var, int len)
 		return ;
 	i = copy_env(script->envp, tmp);
 	if (exist)
-	{
-		prep_tmp_exist(argv, var, tmp, ch);
-		tmp[i] = NULL;
-	}
+		prep_tmp_exist(argv[var], tmp, ch, i);
 	else
 	{
-		tmp[i] = remove_plus(argv[var]);
+		tmp[i] = copy_no_plus(argv[var]);
 		if (!tmp[i])
 			tmp[i] = ft_strdup(argv[var]);
 		tmp[i + 1] = NULL;
 	}
 	free(script->envp);
 	script->envp = tmp;
-}
-
-static int	check_valid(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '-' || str[i] == '.' || str[i] == '{' || str[i] == '}' || str[i] == '*' || str[i] == '#' || str[i] == '@' || str[i] == '!' || str[i] == '^' || str[i] == '~')
-			return (0);
-		if (str[i] == '+' && str[i + 1] != '=')
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 int	builtin_export(t_script *script, t_command cmd)
@@ -148,9 +105,9 @@ int	builtin_export(t_script *script, t_command cmd)
 	while (cmd.argv[var])
 	{
 		if (ft_isdigit(cmd.argv[var][0]) || !ft_strchr(cmd.argv[var], '=')
-			|| !ft_strncmp(cmd.argv[var], "=", 1) || !check_valid(cmd.argv[var]))
+			|| !ft_strncmp(cmd.argv[var], "=", 1) || !checkvalid(cmd.argv[var]))
 		{
-			if (ft_isdigit(cmd.argv[var][0]) || !check_valid(cmd.argv[var])
+			if (ft_isdigit(cmd.argv[var][0]) || !checkvalid(cmd.argv[var])
 				|| !ft_strncmp(cmd.argv[var], "=", 1))
 				printf("export: '%s': not a valid identifier\n", cmd.argv[var]);
 			else

@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/30 15:36:55 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/30 18:29:38 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ int				builtin_env(char **envp, t_command command);
 void			free_tab(int i, char **tmp);
 int				copy_env(char **array1, char **array2);
 int				env_len(char **array);
+char			*copy_no_plus(char *argvar);
+int				checkvalid(char *str);
 
 // Utils
 char			*ft_trim_quotes(char *str);
