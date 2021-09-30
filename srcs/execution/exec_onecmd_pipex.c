@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_onecmd_pipex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 13:23:21 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:35:09 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ static int	one_cmd_exec(t_script *script, char **path_env)
 	signal(SIGINT, sig_handler_fork);
 	pid = fork();
 	if (pid == -1)
-	{
-		fork_error(path_env);
-		return (1);
-	}
+		return (fork_error(path_env));
 	if (pid == 0)
 		first_child(script, path_env, NULL);
 	wait(&g_exit_status);
@@ -67,20 +64,19 @@ int	pipex(t_script *script, char **path_env)
 	check = 0;
 	if (first_cmd(script, path_env, pipe1) == 1)
 		return (1);
-	wait(&g_exit_status);
 	check = mid_loop(script, path_env, pipe1, pipe2);
 	if (check == -1)
 		return (1);
 	pid = fork();
 	if (pid == -1)
-	{
-		fork_error(path_env);
-		return (1);
-	}
-	if (check == 1)
+		return (fork_error(path_env));
+	if (check % 2 == 1)
 		last_cmd(script, path_env, pipe2, pid);
-	else if (check == 0)
+	else
 		last_cmd(script, path_env, pipe1, pid);
+	wait(&g_exit_status);
+	while (check-- > 0)
+		wait(&g_exit_status);
 	wait(&g_exit_status);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 10:01:49 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:38:42 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,10 @@ int	first_cmd(t_script *script, char **path_env, int *pipe1)
 	int	pid;
 
 	if (pipe(pipe1) == -1)
-	{
-		pipe_error(path_env);
-		return (1);
-	}
+		return (pipe_error(path_env));
 	pid = fork();
 	if (pid == -1)
-	{
-		fork_error(path_env);
-		return (1);
-	}
+		return (fork_error(path_env));
 	if (pid == 0)
 		first_child(script, path_env, pipe1);
 	close(pipe1[1]);
@@ -41,16 +35,12 @@ static int	middle_cmds(t_script *script, char **path_env, int **pipes, int i)
 		return (1);
 	pid = fork();
 	if (pid == -1)
-	{
-		fork_error(path_env);
-		return (1);
-	}
+		return (fork_error(path_env));
 	if (pid == 0)
 		middle_child(script, path_env, pipes, i);
 	close(pipes[0][0]);
 	close(pipes[1][1]);
 	free(pipes);
-	wait(&g_exit_status);
 	return (0);
 }
 
@@ -83,20 +73,19 @@ int	mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2)
 	check = 0;
 	while (++i < s->cmd_count - 1)
 	{
-		if (check == 0)
+		if (check % 2 == 0)
 		{
 			pipes = pipe_init(path_env, pipe1, pipe2);
 			if (middle_cmds(s, path_env, pipes, i) == 1)
 				return (-1);
-			check = 1;
 		}
-		else if (check == 1)
+		else
 		{
 			pipes = pipe_init(path_env, pipe2, pipe1);
 			if (middle_cmds(s, path_env, pipes, i) == 1)
 				return (-1);
-			check = 0;
 		}
+		check++;
 	}
 	return (check);
 }

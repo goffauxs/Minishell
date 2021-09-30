@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/30 12:11:17 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:37:55 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void			middle_child(t_script *s, char **path_env, int **pipes, int i);
 void			last_child(t_script *s, char **path_env, int *pipein, int i);
 
 // Exec errors
-void			fork_error(char **path_env);
-void			pipe_error(char **path_env);
+int				fork_error(char **path_env);
+int				pipe_error(char **path_env);
 
 // Signals
 void			sig_handler(int signum);
