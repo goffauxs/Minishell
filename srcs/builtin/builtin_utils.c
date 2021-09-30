@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_export_unset.c                               :+:      :+:    :+:   */
+/*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 12:00:31 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/09/30 11:51:07 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,7 @@ int	has_char(char *str, char c)
 	return (0);
 }
 
-void	free_tab(int i, char **tmp)
-{
-	while (--i >= 0)
-		free(tmp[i]);
-	free(tmp);
-}
-
-int	strdup_iteration(char **array1, char **array2)
+int	copy_env(char **array1, char **array2)
 {
 	int	i;
 

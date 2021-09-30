@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 16:46:30 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/30 12:11:11 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ int	handle_builtin(int ret, t_script *script, int i)
 	if (ret == 1)
 		g_exit_status = builtin_echo(script->commands[i]);
 	if (ret == 2)
-		g_exit_status = builtin_cd(script->commands[i]);
+		g_exit_status = builtin_cd(script->commands[i], script->envp);
 	if (ret == 3)
-		g_exit_status = builtin_pwd(script->commands[i]);
+		g_exit_status = builtin_pwd(script->commands[i], script->envp);
 	if (ret == 4)
 		g_exit_status = builtin_export(script, script->commands[i]);
 	if (ret == 5)

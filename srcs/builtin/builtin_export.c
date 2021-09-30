@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 16:17:41 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/30 11:44:37 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	loopexport(t_script *script, char **argv, int var, int len)
 	tmp = malloc(sizeof(char *) * (len + 2 - exist));
 	if (!tmp)
 		return ;
-	i = strdup_iteration(script->envp, tmp);
+	i = copy_env(script->envp, tmp);
 	if (exist)
 	{
 		free(tmp[ch]);

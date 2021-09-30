@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/29 09:59:45 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/30 10:58:00 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*ft_getenv(char *str, char **envp)
+char	*get_env_content(char *str, char **envp)
 {
 	char	*tmp;
 	char	*ret;
@@ -58,7 +58,7 @@ static char	*get_env_var(char *str, char **envp, int *i)
 		(*i)++;
 	c = str[*i];
 	str[*i] = 0;
-	tmp = ft_getenv(str, envp);
+	tmp = get_env_content(str, envp);
 	str[*i] = c;
 	return (tmp);
 }

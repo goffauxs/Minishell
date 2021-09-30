@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/29 13:25:39 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/30 12:11:17 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,15 +117,15 @@ void			sig_handler_heredoc(int signum);
 
 // Builtins
 int				builtin_echo(t_command command);
-int				builtin_cd(t_command command);
+int				builtin_cd(t_command command, char **envp);
 int				builtin_exit(t_command command);
-int				builtin_pwd(t_command command);
+int				builtin_pwd(t_command command, char **envp);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_unset(t_script *script, t_command command);
 int				builtin_env(char **envp, t_command command);
 int				has_char(char *str, char c);
 void			free_tab(int i, char **tmp);
-int				strdup_iteration(char **array1, char **array2);
+int				copy_env(char **array1, char **array2);
 int				env_len(char **array);
 
 // Utils
@@ -141,6 +141,7 @@ void			cmd_builtin(t_script *script, char **path_env, int ret, int i);
 void			heredoc(t_script *script, int i, char **path_env);
 int				ft_putchar(int c);
 void			termios(t_script *script);
+char			*get_env_content(char *str, char **envp);
 
 // Free
 void			free_tokens(t_token *head);

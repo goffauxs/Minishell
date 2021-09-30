@@ -6,7 +6,7 @@
 #    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/29 11:25:09 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/09/30 12:05:55 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFT		=	$(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
 CC			=	gcc
 INCLUDE		=	includes
-CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include -fsanitize=address -g
+CFLAGS		=	-Wall -Wextra -Werror -I$(INCLUDE) -I/Users/$(USER)/.brew/opt/readline/include
 RM			=	rm -f
 
 EXEC_DIR	=	srcs/execution
@@ -39,12 +39,14 @@ SRCS		=	main.c \
 				$(EXEC_DIR)/exec.c \
 				$(EXEC_DIR)/heredoc.c \
 				$(EXEC_DIR)/path_handling.c \
-				$(BUILTIN_DIR)/builtin_cd_pwd_env.c \
+				$(BUILTIN_DIR)/builtin_cd.c \
+				$(BUILTIN_DIR)/builtin_env.c \
+				$(BUILTIN_DIR)/builtin_pwd.c \
 				$(BUILTIN_DIR)/builtin_echo.c \
 				$(BUILTIN_DIR)/builtin_exit.c \
 				$(BUILTIN_DIR)/builtin_export.c \
 				$(BUILTIN_DIR)/builtin_unset.c \
-				$(BUILTIN_DIR)/utils_export_unset.c \
+				$(BUILTIN_DIR)/builtin_utils.c \
 				srcs/free.c \
 				srcs/signal.c \
 				srcs/termios.c \
