@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:08 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 10:07:10 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:45:40 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	loopunset(t_script *script, char *arg, int len)
 static int	check_invalid(t_command command, int var)
 {
 	if (ft_isdigit(command.argv[var][0])
-			|| has_char(command.argv[var], '='))
+			|| ft_strchr(command.argv[var], '='))
 	{
 		printf("unset: '%s': not a valid identifier\n", command.argv[var]);
 		return (0);

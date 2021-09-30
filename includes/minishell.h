@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/30 14:37:55 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:45:59 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ int				builtin_pwd(t_command command, char **envp);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_unset(t_script *script, t_command command);
 int				builtin_env(char **envp, t_command command);
-int				has_char(char *str, char c);
 void			free_tab(int i, char **tmp);
 int				copy_env(char **array1, char **array2);
 int				env_len(char **array);
