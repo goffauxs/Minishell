@@ -6,21 +6,14 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 15:36:41 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/30 16:16:56 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_exisiting_export(char **envp, char *str)
+static void	prep_bis(char *tmp, char *bis)
 {
-	int		i;
-	char	*tmp;
-	char	*bis;
-
-	i = 0;
-	tmp = ft_strdup(str);
-	bis = ft_strnstr(tmp, "+=", ft_strlen(tmp));
 	if (bis)
 	{
 		bis[0] = '=';
@@ -32,6 +25,18 @@ static int	check_exisiting_export(char **envp, char *str)
 		if (bis)
 			bis[0] = '\0';
 	}
+}
+
+static int	check_exisiting_export(char **envp, char *str)
+{
+	int		i;
+	char	*tmp;
+	char	*bis;
+
+	i = 0;
+	tmp = ft_strdup(str);
+	bis = ft_strnstr(tmp, "+=", ft_strlen(tmp));
+	prep_bis(tmp, bis);
 	if (bis)
 	{
 		while (envp[i])
@@ -46,6 +51,18 @@ static int	check_exisiting_export(char **envp, char *str)
 	}
 	free(tmp);
 	return (0);
+}
+
+static void	prep_tmp_exist(char **argv, int var, char **tmp, const int ch)
+{
+	if (ft_strnstr(argv[var], "+=", ft_strlen(argv[var])))
+		tmp[ch] = ft_strjoin_free(tmp[ch],
+				ft_strdup(ft_strchr(argv[var], '=') + 1));
+	else
+	{
+		free(tmp[ch]);
+		tmp[ch] = ft_strdup(argv[var]);
+	}
 }
 
 static void	loopexport(t_script *script, char **argv, int var, int len)
@@ -64,13 +81,7 @@ static void	loopexport(t_script *script, char **argv, int var, int len)
 	i = copy_env(script->envp, tmp);
 	if (exist)
 	{
-		if (ft_strnstr(argv[var], "+=", ft_strlen(argv[var])))
-			tmp[ch] = ft_strjoin_free(tmp[ch], ft_strdup(ft_strchr(argv[var], '=') + 1));
-		else
-		{
-			free(tmp[ch]);
-			tmp[ch] = ft_strdup(argv[var]);
-		}
+		prep_tmp_exist(argv, var, tmp, ch);
 		tmp[i] = NULL;
 	}
 	else
@@ -82,31 +93,31 @@ static void	loopexport(t_script *script, char **argv, int var, int len)
 	script->envp = tmp;
 }
 
-int    builtin_export(t_script *script, t_command command)
+int	builtin_export(t_script *script, t_command cmd)
 {
-    int        var;
-    int        err;
+	int	var;
+	int	err;
 
-    if (!script->envp)
-        return (1);
-    var = 1;
-    err = 1;
-    while (command.argv[var])
-    {
-        if (ft_isdigit(command.argv[var][0]) || !(ft_strncmp(command.argv[var], "=", 1))
-            || !ft_strchr(command.argv[var], '='))
-        {
-            if (ft_isdigit(command.argv[var][0]) || !(ft_strncmp(command.argv[var], "=", 1)))
-                printf("export: '%s': not a valid identifier\n",
-                    command.argv[var]);
-            else
-                err = 0;
-            var++;
-            continue ;
-        }
-        err = 0;
-        loopexport(script, command.argv, var, env_len(script->envp));
-        var++;
-    }
-    return (err);
+	if (!script->envp)
+		return (1);
+	var = 1;
+	err = 1;
+	while (cmd.argv[var])
+	{
+		if (ft_isdigit(cmd.argv[var][0]) || !ft_strchr(cmd.argv[var], '=')
+			|| !ft_strncmp(cmd.argv[var], "=", 1))
+		{
+			if (ft_isdigit(cmd.argv[var][0])
+				|| !(ft_strncmp(cmd.argv[var], "=", 1)))
+				printf("export: '%s': not a valid identifier\n", cmd.argv[var]);
+			else
+				err = 0;
+			var++;
+			continue ;
+		}
+		err = 0;
+		loopexport(script, cmd.argv, var, env_len(script->envp));
+		var++;
+	}
+	return (err);
 }
