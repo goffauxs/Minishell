@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:00 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 10:04:37 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:02:44 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	exit_numeric_arg(t_command command)
 	printf("%s: %s: numeric argument required\n",
 		command.argv[0], command.argv[1]);
 	rl_on_new_line();
-	g_exit_status = 255;
+	g_exit_status = 2;
 	return (1);
 }
 
@@ -60,12 +60,11 @@ int	builtin_exit(t_command command)
 	{
 		if (command.argv[1])
 		{
-			if (ft_strncmp(command.argv[1], "9223372036854775807", 19) != 0)
-			{
-				if (ft_atoi(command.argv[1]) == -1
-					&& ft_strlen(command.argv[1]) > 18)
-					return (exit_numeric_arg(command));
-			}
+			if ((ft_atoi(command.argv[1]) == -1
+					&& ft_strncmp(command.argv[1], "-1", 2))
+				|| (ft_atoi(command.argv[1]) == 0
+					&& ft_strncmp(command.argv[1], "0", 1)))
+				return (exit_numeric_arg(command));
 			g_exit_status = ft_atoi(command.argv[1]) & 0xFF;
 		}
 		else
