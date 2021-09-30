@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 11:44:37 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:07:52 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	builtin_export(t_script *script, t_command command)
 	while (command.argv[var])
 	{
 		if (ft_isdigit(command.argv[var][0])
-			|| !has_char(command.argv[var], '='))
+			|| !ft_strchr(command.argv[var], '='))
 		{
 			if (ft_isdigit(command.argv[var][0]))
 				printf("export: '%s': not a valid identifier\n",
