@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 12:11:04 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/09/30 17:39:44 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	change_dir(char *path, char ***envp)
 	ret = chdir(path);
 	if (ret == -1)
 	{
-		printf("cd: no such file or directory: %s\n", path);
+		printf("cd: %s: no such file or directory\n", path);
 		return (1);
 	}
 	pwd = NULL;
@@ -67,7 +67,7 @@ int	builtin_cd(t_command command, char **envp)
 	}
 	if (command.argv[2])
 	{
-		printf("cd: string not in pwd: %s\n", command.argv[1]);
+		printf("cd: too many arguments\n");
 		return (1);
 	}
 	return (change_dir(command.argv[1], &envp));

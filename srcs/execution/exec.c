@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 15:47:11 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/09/30 18:23:19 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ int	handle_builtin(int ret, t_script *script, int i)
 		g_exit_status = builtin_env(script->envp, script->commands[i]);
 	if (ret == 7)
 		return (builtin_exit(script->commands[i]));
-	system("leaks minishell");
 	return (0);
 }
