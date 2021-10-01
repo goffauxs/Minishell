@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/01 17:22:25 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/01 18:52:00 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,37 +81,46 @@ static void	set_filenames_null(t_command *commands, int max)
 	}
 }
 
+static int	tokenize(char **split_b, char **line_b, t_token **head, t_script *s)
+{
+	int		i;
+	t_token	*tmp;
+
+	split_b = ft_split(*line_b, ' ');
+	i = 0;
+	while (split_b[i])
+	{
+		if (!tokenizer(replace_env_var(split_b[i], s->envp), head))
+		{
+			return_error("Syntax error\n");
+			free_split(split_b);
+			free_tokens(*head);
+			return (1);
+		}
+		i++;
+	}
+	tmp = *head;
+	while (tmp)
+	{
+		tmp->content = remove_quotes(tmp->content);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 int	parse(t_script *script, char **line_buf)
 {
 	t_token	*head;
 	char	**split_buf;
-	int		i;
-	t_token	*tmp;
 
 	head = NULL;
 	*line_buf = readline("\033[0;32mMinishell > \033[0m");
 	if (!*line_buf)
 		return (2);
 	add_history(*line_buf);
-	split_buf = ft_split(*line_buf, ' ');
-	i = 0;
-	while (split_buf[i])
-	{
-		if (!tokenizer(replace_env_var_2(split_buf[i], script->envp), &head))
-		{
-			return_error("Syntax error\n");
-			free_split(split_buf);
-			free_tokens(head);
-			return (1);
-		}
-		i++;
-	}
-	tmp = head;
-	while (tmp)
-	{
-		tmp->content = remove_quotes(tmp->content);
-		tmp = tmp->next;
-	}
+	split_buf = NULL;
+	if (tokenize(split_buf, line_buf, &head, script))
+		return (1);
 	script->cmd_count = get_cmd_count(*line_buf);
 	script->commands = malloc(sizeof(t_command) * script->cmd_count);
 	if (!script->commands)

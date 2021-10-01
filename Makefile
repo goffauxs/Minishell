@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
+#    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/10/01 11:49:40 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/10/01 18:48:09 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ BUILTIN_DIR	=	srcs/builtin
 SRCS		=	main.c \
 				$(PARSING_DIR)/parsing.c \
 				$(PARSING_DIR)/replace_env.c \
+				$(PARSING_DIR)/replace_env_utils.c \
 				$(PARSING_DIR)/tokenizer.c \
 				$(PARSING_DIR)/tokenizer_utils.c \
 				$(PARSING_DIR)/utils.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:35 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/01 17:25:47 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/01 18:59:25 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,6 @@ static int	treat_quotes(char **str)
 	if (!**str || (**str != open_quote))
 		return (0);
 	return (1);
-}
-
-int	get_double_quote_count(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str && *str)
-	{
-		str = ft_strnstr(str, "\"\"", ft_strlen(str));
-		if (str)
-		{
-			str += 2;
-			i++;
-		}
-	}
-	return (i);
 }
 
 char	*remove_double_quotes(char *str)
@@ -68,14 +51,15 @@ char	*remove_double_quotes(char *str)
 	return (ret);
 }
 
-void	copy_in_dquotes(char *start, char *end, char **str, int *i)
+static char	*end_remove_quotes(char *tmp, char *copy, int i)
 {
-	while (start != end)
-	{
-		(*str)[*i] = *start;
-		start++;
-		(*i)++;
-	}
+	char	*ret;
+
+	tmp[i] = '\0';
+	ret = ft_strdup(tmp);
+	free(tmp);
+	free(copy);
+	return (ret);
 }
 
 char	*remove_quotes(char *str)
@@ -89,6 +73,8 @@ char	*remove_quotes(char *str)
 	i = 0;
 	copy = str;
 	tmp = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!tmp)
+		return (NULL);
 	while (str && *str)
 	{
 		if (*str == '\"')
@@ -101,10 +87,7 @@ char	*remove_quotes(char *str)
 			tmp[i++] = *str;
 		str++;
 	}
-	tmp[i] = '\0';
-	ret = ft_strdup(tmp);
-	free(tmp);
-	free(copy);
+	ret = end_remove_quotes(tmp, copy, i);
 	return (ret);
 }
 

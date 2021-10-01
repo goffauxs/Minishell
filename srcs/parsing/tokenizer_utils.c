@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:12:47 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/01 11:34:51 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:59:03 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,31 @@ t_operations	search_token_type(const char *s)
 		if (!ft_strncmp(s, ex_ops[i].op, ex_ops[i].size))
 			return (ex_ops[i]);
 	return (blank);
+}
+
+int	get_double_quote_count(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str && *str)
+	{
+		str = ft_strnstr(str, "\"\"", ft_strlen(str));
+		if (str)
+		{
+			str += 2;
+			i++;
+		}
+	}
+	return (i);
+}
+
+void	copy_in_dquotes(char *start, char *end, char **str, int *i)
+{
+	while (start != end)
+	{
+		(*str)[*i] = *start;
+		start++;
+		(*i)++;
+	}
 }
