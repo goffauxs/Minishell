@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/30 15:46:56 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:22:25 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	open_redirs(t_token *head, t_redirection *redir)
 
 	if (redir->name)
 		free(redir->name);
-	redir->name = ft_trim_quotes(head->next->content);
+	redir->name = head->next->content;
 	if (!ft_strncmp(head->content, ">>", 2))
 		redir->flag = (O_CREAT | O_APPEND | O_RDWR);
 	else if (!ft_strncmp(head->content, "<<", 2))
@@ -53,7 +53,7 @@ static void	parse_commands(t_token *head, t_command *commands, int i, int j)
 		while (head && head->type != TOKEN_PIPE)
 		{
 			if (head->type == TOKEN_NAME)
-				commands[i].argv[j++] = ft_trim_quotes(head->content);
+				commands[i].argv[j++] = ft_strdup(head->content);
 			else if (head->type == TOKEN_REDIR_IN)
 				open_redirs(head, &commands[i].in);
 			else if (head->type == TOKEN_REDIR_OUT)
@@ -84,20 +84,34 @@ static void	set_filenames_null(t_command *commands, int max)
 int	parse(t_script *script, char **line_buf)
 {
 	t_token	*head;
+	char	**split_buf;
+	int		i;
+	t_token	*tmp;
 
 	head = NULL;
 	*line_buf = readline("\033[0;32mMinishell > \033[0m");
 	if (!*line_buf)
 		return (2);
 	add_history(*line_buf);
-	if (!tokenizer(*line_buf, &head))
+	split_buf = ft_split(*line_buf, ' ');
+	i = 0;
+	while (split_buf[i])
 	{
-		return_error("Syntax error\n");
-		free(*line_buf);
-		free_tokens(head);
-		return (1);
+		if (!tokenizer(replace_env_var_2(split_buf[i], script->envp), &head))
+		{
+			return_error("Syntax error\n");
+			free_split(split_buf);
+			free_tokens(head);
+			return (1);
+		}
+		i++;
 	}
-	replace_env_var(head, script);
+	tmp = head;
+	while (tmp)
+	{
+		tmp->content = remove_quotes(tmp->content);
+		tmp = tmp->next;
+	}
 	script->cmd_count = get_cmd_count(*line_buf);
 	script->commands = malloc(sizeof(t_command) * script->cmd_count);
 	if (!script->commands)

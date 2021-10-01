@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/30 18:29:38 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/01 16:46:39 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <termios.h>
 # include <term.h>
 # include <unistd.h>
+# include <stdlib.h>
 # include "libft.h"
 
 # define MAX_PATH_LEN 4096
@@ -85,6 +86,9 @@ typedef struct s_script
 int				parse(t_script *script, char **line_buf);
 int				tokenizer(char *str, t_token **head);
 void			replace_env_var(t_token *head, t_script *script);
+char			*replace_env_var_2(char *line_buf, char **envp);
+void			free_split(char **split);
+char			*remove_quotes(char *str);
 
 // Tokenizer utils
 t_token			*create_token(const char *string, int size, t_token_type type);
