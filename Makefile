@@ -6,7 +6,7 @@
 #    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/10/04 15:16:05 by rvan-aud         ###   ########.fr        #
+#    Updated: 2021/10/04 15:18:13 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,29 +26,29 @@ PARSING_DIR	=	srcs/parsing
 BUILTIN_DIR	=	srcs/builtin
 
 SRCS		=	main.c \
-				$(PARSING_DIR)/parsing.c \
-				$(PARSING_DIR)/replace_env.c \
-				$(PARSING_DIR)/replace_env_utils.c \
-				$(PARSING_DIR)/tokenizer.c \
-				$(PARSING_DIR)/tokenizer_utils.c \
-				$(PARSING_DIR)/parsing_utils.c \
+				$(BUILTIN_DIR)/builtin_cd.c \
+				$(BUILTIN_DIR)/builtin_echo.c \
+				$(BUILTIN_DIR)/builtin_env.c \
+				$(BUILTIN_DIR)/builtin_exit.c \
+				$(BUILTIN_DIR)/builtin_export.c \
+				$(BUILTIN_DIR)/builtin_pwd.c \
+				$(BUILTIN_DIR)/builtin_unset.c \
+				$(BUILTIN_DIR)/builtin_utils_2.c \
+				$(BUILTIN_DIR)/builtin_utils.c \
 				$(EXEC_DIR)/exec_errors.c \
+				$(EXEC_DIR)/exec_onecmd_pipex.c \
 				$(EXEC_DIR)/exec_pipes_forks.c \
 				$(EXEC_DIR)/exec_pipes_utils.c \
 				$(EXEC_DIR)/exec_pipes.c \
-				$(EXEC_DIR)/exec_onecmd_pipex.c \
 				$(EXEC_DIR)/exec.c \
 				$(EXEC_DIR)/heredoc.c \
 				$(EXEC_DIR)/path_handling.c \
-				$(BUILTIN_DIR)/builtin_cd.c \
-				$(BUILTIN_DIR)/builtin_env.c \
-				$(BUILTIN_DIR)/builtin_pwd.c \
-				$(BUILTIN_DIR)/builtin_echo.c \
-				$(BUILTIN_DIR)/builtin_exit.c \
-				$(BUILTIN_DIR)/builtin_export.c \
-				$(BUILTIN_DIR)/builtin_unset.c \
-				$(BUILTIN_DIR)/builtin_utils.c \
-				$(BUILTIN_DIR)/builtin_utils_2.c \
+				$(PARSING_DIR)/parsing_utils.c \
+				$(PARSING_DIR)/parsing.c \
+				$(PARSING_DIR)/replace_env_utils.c \
+				$(PARSING_DIR)/replace_env.c \
+				$(PARSING_DIR)/tokenizer_utils.c \
+				$(PARSING_DIR)/tokenizer.c \
 				srcs/free.c \
 				srcs/signal.c \
 				srcs/utils.c \
