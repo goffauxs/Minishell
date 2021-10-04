@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/29 13:25:05 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:45:05 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	error_message_heredoc(char *content)
+{
+	ft_putstr_fd("Minishell: warning: here-document delimited", 2);
+	ft_putstr_fd("by end-of-file (wanted '", 2);
+	ft_putstr_fd(content, 2);
+	ft_putendl_fd("\')", 2);
+}
 
 static void	loop_heredoc(t_script *script, int pipe, int i)
 {
@@ -27,7 +35,7 @@ static void	loop_heredoc(t_script *script, int pipe, int i)
 				ft_strlen(heredoc_tmp->content) + 1))
 		{
 			if (!tmp)
-				printf(HEREDOC_WARNING, heredoc_tmp->content);
+				error_message_heredoc(heredoc_tmp->content);
 			heredoc_tmp = heredoc_tmp->next;
 			continue ;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:30 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 16:38:58 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:32:14 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	in_redir(t_script *s, int i, char **path_env)
 		fdin = open(s->commands[i].in.name, s->commands[i].in.flag);
 		if (fdin == -1)
 		{
-			printf("%s: No such file or directory\n", s->commands[i].in.name);
+			ft_putstr_fd(s->commands[i].in.name, 2);
+			ft_putendl_fd(": No such file or directory", 2);
 			free_cmds_path(s, path_env);
 			exit(1);
 		}
@@ -29,7 +30,7 @@ void	in_redir(t_script *s, int i, char **path_env)
 		{
 			if (dup2(fdin, STDIN_FILENO) == -1)
 			{
-				write(2, "Error: dup2 failed\n", 19);
+				ft_putendl_fd("Error: dup2 failed", 2);
 				close(fdin);
 				free_cmds_path(s, path_env);
 				exit(1);
@@ -47,7 +48,8 @@ void	out_redir(t_script *s, int i, char **path_env)
 	fdout = open(s->commands[i].out.name, s->commands[i].out.flag, 0644);
 	if (fdout == -1)
 	{
-		printf("%s: No such file or directory\n", s->commands[i].out.name);
+		ft_putstr_fd(s->commands[i].in.name, 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		free_cmds_path(s, path_env);
 		exit(1);
 	}
@@ -55,7 +57,7 @@ void	out_redir(t_script *s, int i, char **path_env)
 	{
 		if (dup2(fdout, STDOUT_FILENO) == -1)
 		{
-			write(2, "Error: dup2 failed\n", 19);
+			ft_putendl_fd("Error: dup2 failed", 2);
 			close(fdout);
 			free_cmds_path(s, path_env);
 			exit(1);
@@ -96,7 +98,9 @@ void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 	{
 		tmp = script->commands[i].argv[0];
 		exec_cmd(path_env, script->commands[i].argv, script->envp);
-		printf("Minishell: %s: command not found\n", tmp);
+		ft_putstr_fd("Minishell: ", 2);
+		ft_putstr_fd(tmp, 2);
+		ft_putendl_fd(": command not found", 2);
 		free_cmds_path(script, path_env);
 		exit(127);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:08 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 15:36:45 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:29:18 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ static int	check_invalid(t_command command, int var)
 	if (ft_isdigit(command.argv[var][0])
 			|| ft_strchr(command.argv[var], '='))
 	{
-		printf("unset: '%s': not a valid identifier\n", command.argv[var]);
+		ft_putstr_fd("unset: '", 2);
+		ft_putstr_fd(command.argv[var], 2);
+		ft_putendl_fd("': not a valid identifier", 2);
 		return (0);
 	}
 	return (1);
