@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:29 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/29 10:46:48 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:59:50 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	set_filenames_null(t_command *commands, int max, t_token *head)
+{
+	int	i;
+
+	i = -1;
+	while (++i < max)
+	{
+		commands[i].in.name = NULL;
+		commands[i].out.name = NULL;
+	}
+	while (head)
+	{
+		head->content = remove_quotes(head->content);
+		head = head->next;
+	}
+}
 
 char	*ft_trim_quotes(char *str)
 {
@@ -67,12 +84,6 @@ int	get_cmd_count(char *line_buf)
 		free(split_str[i]);
 	free(split_str);
 	return (count);
-}
-
-int	return_error(const char *msg)
-{
-	write(2, msg, ft_strlen(msg));
-	return (1);
 }
 
 void	get_num_args(t_token *head, t_script *script)

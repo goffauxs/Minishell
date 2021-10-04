@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:35:51 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:38:17 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,6 @@ static void	parse_commands(t_token *head, t_command *commands, int i, int j)
 	}
 }
 
-static void	set_filenames_null(t_command *commands, int max, t_token *head)
-{
-	int	i;
-
-	i = -1;
-	while (++i < max)
-	{
-		commands[i].in.name = NULL;
-		commands[i].out.name = NULL;
-	}
-	while (head)
-	{
-		head->content = remove_quotes(head->content);
-		head = head->next;
-	}
-}
-
 static int	tokenize(char **line, t_token **head, t_script *s)
 {
 	int		i;
@@ -112,13 +95,13 @@ static int	tokenize(char **line, t_token **head, t_script *s)
 	return (0);
 }
 
-int	check_syntax(t_token *head)
+static int	check_syntax(t_token *head)
 {
 	int	cmd;
 
 	cmd = (head && head->type == TOKEN_NAME);
 	if (head && head->type == TOKEN_PIPE)
-		return (return_error("Syntax error1\n"));
+		return (return_error("Syntax error\n"));
 	while (head)
 	{
 		if (head->next && head->next->type == TOKEN_NAME
@@ -129,12 +112,12 @@ int	check_syntax(t_token *head)
 			|| head->type == TOKEN_REDIR_OUT)
 		{
 			if (head->next && head->next->type != TOKEN_NAME)
-				return (return_error("Syntax error2\n"));
+				return (return_error("Syntax error\n"));
 		}
 		head = head->next;
 	}
 	if (!cmd && head)
-		return (return_error("Syntax error3\n"));
+		return (return_error("Syntax error\n"));
 	return (0);
 }
 
@@ -164,6 +147,5 @@ int	parse(t_script *script, char **line_buf)
 	parse_commands(head, script->commands, 0, 0);
 	free_tokens(head);
 	free(*line_buf);
-	// system("leaks minishell");
 	return (0);
 }

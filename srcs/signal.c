@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 18:56:59 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/04 15:26:49 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:38:33 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	sig_handler(int signum)
 	{
 		write(1, "Quit: 3\n", 8);
 		rl_on_new_line();
-		tputs(carriage_return, 1, ft_putchar);
+		write(1, "\r", 1);
 	}
 	else if (signum == SIGINT)
 	{
@@ -35,7 +35,7 @@ void	sig_handler_fork(int signum)
 	{
 		write(1, "Quit: 3\n", 8);
 		rl_on_new_line();
-		tputs(carriage_return, 1, ft_putchar);
+		write(1, "\r", 1);
 	}
 	else if (signum == SIGINT)
 	{
