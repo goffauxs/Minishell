@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 13:48:41 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:49:38 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	builtin_export(t_script *script, t_command cmd)
 		{
 			if (ft_isdigit(cmd.argv[var][0]) || !checkvalid(cmd.argv[var])
 				|| !ft_strncmp(cmd.argv[var], "=", 1))
-				printf("export: '%s': not a valid identifier\n", cmd.argv[var]);
+				error_message_export(cmd.argv[var]);
 			else
 				err = 0;
 			var++;

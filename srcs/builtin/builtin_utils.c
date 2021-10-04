@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 13:50:59 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:26:04 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,14 @@ int	export_check(char **str, t_command cmd)
 			return (1);
 		while (str[i])
 		{
-			printf("declare -x %s\n", str[i]);
+			ft_putstr_fd("declare -x ", 2);
+			ft_putendl_fd(str[i], 2);
 			i++;
 		}
 	}
 	else if (cmd.argv[1][0] == '\0')
 	{
-		printf("Syntax error\n");
+		ft_putendl_fd("Syntax error", 2);
 		return (1);
 	}
 	return (0);

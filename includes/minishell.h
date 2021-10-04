@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 13:49:38 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:50:05 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@
 # include "libft.h"
 
 # define MAX_PATH_LEN 4096
-# define HEREDOC_WARNING "Minishell: warning: here-document delimited by end-of-file \
-(wanted '%s')\n"
 
 int	g_exit_status;
 
@@ -139,6 +137,7 @@ int				env_len(char **array);
 char			*copy_no_plus(char *argvar);
 int				checkvalid(char *str);
 int				export_check(char **str, t_command cmd);
+void			error_message_export(char *message);
 
 // Utils
 char			*ft_trim_quotes(char *str);
