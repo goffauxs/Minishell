@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 17:39:44 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 13:41:48 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,19 @@ static int	get_env(char *str, char **envp)
 	return (-1);
 }
 
-static void	replace_env(char *str, char *name, char ***envp)
+static int	replace_env(char *str, char *name, char ***envp)
 {
 	int		idx;
 
 	idx = get_env(name, *envp);
+	if (idx == -1)
+	{
+		free(str);
+		return (1);
+	}
 	free((*envp)[idx]);
 	(*envp)[idx] = ft_strjoin_free(ft_strdup(name), str);
+	return (0);
 }
 
 static int	change_dir(char *path, char ***envp)
@@ -49,7 +55,7 @@ static int	change_dir(char *path, char ***envp)
 	}
 	pwd = NULL;
 	pwd = getcwd(pwd, MAX_PATH_LEN);
-	replace_env(pwd, "PWD=", envp);
+	ret = replace_env(pwd, "PWD=", envp);
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 10:25:41 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 13:48:41 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ int	builtin_export(t_script *script, t_command cmd)
 	int	var;
 	int	err;
 
-	if (!script->envp || !cmd.argv[1])
-		return (export_check(script->envp));
+	if (!script->envp || !cmd.argv[1] || cmd.argv[1][0] == '\0')
+		return (export_check(script->envp, cmd));
 	var = 1;
 	err = 1;
 	while (cmd.argv[var])
