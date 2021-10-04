@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:54:45 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 16:13:10 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,26 +72,16 @@ static void	parse_commands(t_token *head, t_command *commands, int i, int j)
 
 static int	tokenize(char **line, t_token **head, t_script *s)
 {
-	int		i;
-	char	**split;
 	char	*bis;
 
-	split = ft_split(*line, ' ');
-	i = 0;
-	while (split[i])
+	bis = replace_env_var(*line, s->envp);
+	if (!tokenizer(bis, head))
 	{
-		bis = replace_env_var(split[i], s->envp);
-		if (!tokenizer(bis, head))
-		{
-			free_split(split);
-			free_tokens(*head);
-			free(bis);
-			return (return_error("Syntax error\n"));
-		}
+		free_tokens(*head);
 		free(bis);
-		i++;
+		return (return_error("Syntax error\n"));
 	}
-	free_split(split);
+	free(bis);
 	return (0);
 }
 
