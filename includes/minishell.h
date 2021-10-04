@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:52:33 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 17:50:39 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int				builtin_echo(t_command command);
 int				builtin_env(char **envp, t_command command);
 int				builtin_exit(t_command command);
 int				builtin_export(t_script *script, t_command command);
-int				builtin_pwd(t_command command, char **envp);
+int				builtin_pwd(char **envp);
 int				builtin_unset(t_script *script, t_command command);
 void			error_message_export(char *message);
 int				copy_env(char **array1, char **array2);
@@ -115,6 +115,7 @@ int				check_builtin(char *cmd);
 int				handle_builtin(int ret, t_script *script, int i);
 void			heredoc(t_script *script, int i, char **path_env);
 char			**split_paths(char **env);
+int				check_syntax(t_token *head);
 
 // parsing
 char			*ft_trim_quotes(char *str);

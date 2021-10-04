@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 16:47:30 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 17:50:21 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,38 +85,6 @@ static int	tokenize(char **line, t_token **head, t_script *s)
 	return (0);
 }
 
-static int	check_syntax(t_token *head)
-{
-	int		cmd;
-	t_token	*tmp;
-
-	tmp = head;
-	cmd = (head && head->type == TOKEN_NAME);
-	if (head && head->type == TOKEN_PIPE)
-		return (return_error("Syntax error\n"));
-	while (head)
-	{
-		if (!head->next && head->type == TOKEN_PIPE)
-			return (return_error("Syntax error\n"));
-		if (head->next && head->next->type == TOKEN_NAME
-			&& (head->type != TOKEN_REDIR_IN
-				&& head->type != TOKEN_REDIR_OUT))
-			cmd = 1;
-		if (head->type == TOKEN_PIPE && head->next
-			&& head->next->type == TOKEN_PIPE)
-			return (return_error("Syntax error\n"));
-		if (head->type == TOKEN_REDIR_OUT || head->type == TOKEN_REDIR_IN)
-		{
-			if (head->next && head->next->type != TOKEN_NAME)
-				return (return_error("Syntax error\n"));
-		}
-		head = head->next;
-	}
-	if (!cmd && tmp)
-		return (return_error("Syntax error\n"));
-	return (0);
-}
-
 int	parse(t_script *script, char **line_buf)
 {
 	t_token	*head;
@@ -128,13 +96,6 @@ int	parse(t_script *script, char **line_buf)
 	add_history(*line_buf);
 	if (tokenize(line_buf, &head, script))
 		return (1);
-	t_token *tmp = head;
-	while (tmp)
-	{
-		printf("[%s]", tmp->content);
-		tmp = tmp->next;
-	}
-	printf("\n");
 	if (check_syntax(head))
 	{
 		free_tokens(head);

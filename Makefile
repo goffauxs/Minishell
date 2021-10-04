@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
+#    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/10/04 16:35:30 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/10/04 17:49:38 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRCS		=	main.c \
 				$(PARSING_DIR)/replace_env.c \
 				$(PARSING_DIR)/tokenizer_utils.c \
 				$(PARSING_DIR)/tokenizer.c \
+				$(PARSING_DIR)/syntax.c \
 				srcs/free.c \
 				srcs/signal.c \
 				srcs/utils.c \

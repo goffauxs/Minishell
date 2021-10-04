@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 16:24:01 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 17:01:56 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	handle_builtin(int ret, t_script *script, int i)
 	if (ret == 2)
 		g_exit_status = builtin_cd(script->commands[i], script->envp);
 	if (ret == 3)
-		g_exit_status = builtin_pwd(script->commands[i], script->envp);
+		g_exit_status = builtin_pwd(script->envp);
 	if (ret == 4)
 		g_exit_status = builtin_export(script, script->commands[i]);
 	if (ret == 5)
