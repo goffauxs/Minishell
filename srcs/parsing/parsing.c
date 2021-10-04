@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 13:53:26 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:00:01 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static int	tokenize(char **line, t_token **head, t_script *s)
 	return (0);
 }
 
-int	check_syntax(t_token *head)
+static int	check_syntax(t_token *head)
 {
 	int	cmd;
 

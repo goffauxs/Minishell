@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:57 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 15:57:54 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:59:17 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	check_path_line(char **env)
 	return (i);
 }
 
-char	**path_fill(char **env, int p_line)
+static char	**path_fill(char **env, int p_line)
 {
 	char	**path;
 	char	*tmp;
