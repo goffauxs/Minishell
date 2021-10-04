@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 14:45:05 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:55:30 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	error_message_heredoc(char *content)
 {
 	ft_putstr_fd("Minishell: warning: here-document delimited", 2);
-	ft_putstr_fd("by end-of-file (wanted '", 2);
+	ft_putstr_fd(" by end-of-file (wanted '", 2);
 	ft_putstr_fd(content, 2);
 	ft_putendl_fd("\')", 2);
 }
