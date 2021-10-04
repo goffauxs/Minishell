@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 13:49:13 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 13:53:26 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,5 +164,6 @@ int	parse(t_script *script, char **line_buf)
 	parse_commands(head, script->commands, 0, 0);
 	free_tokens(head);
 	free(*line_buf);
+	// system("leaks minishell");
 	return (0);
 }

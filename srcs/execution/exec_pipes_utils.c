@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:30 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 16:38:58 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:08:04 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 	{
 		tmp = script->commands[i].argv[0];
 		exec_cmd(path_env, script->commands[i].argv, script->envp);
-		printf("Minishell: %s: command not found\n", tmp);
+		ft_putstr_fd("Minishell: ", 2);
+		ft_putstr_fd(tmp, 2);
+		ft_putendl_fd(": command not found", 2);
 		free_cmds_path(script, path_env);
 		exit(127);
 	}
