@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:26:48 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:52:33 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ char			**split_paths(char **env);
 
 // parsing
 char			*ft_trim_quotes(char *str);
-int				get_cmd_count(char *line_buf);
+int				get_cmd_count(t_token *head);
 int				return_error(const char *msg);
 void			get_num_args(t_token *head, t_script *script);
 void			set_filenames_null(t_command *commands, int max, t_token *head);

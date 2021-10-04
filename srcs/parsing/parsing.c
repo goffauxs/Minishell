@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:40:07 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:54:45 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ static int	check_syntax(t_token *head)
 			&& (head->type != TOKEN_REDIR_IN
 				&& head->type != TOKEN_REDIR_OUT))
 			cmd = 1;
-		if (head->type == TOKEN_PIPE && head->next && head->next->type == TOKEN_PIPE)
+		if (head->type == TOKEN_PIPE && head->next
+			&& head->next->type == TOKEN_PIPE)
 			return (return_error("Syntax error\n"));
 		if (head->type == TOKEN_REDIR_OUT || head->type == TOKEN_REDIR_IN)
 		{
@@ -139,7 +140,7 @@ int	parse(t_script *script, char **line_buf)
 		free(*line_buf);
 		return (1);
 	}
-	script->cmd_count = get_cmd_count(*line_buf);
+	script->cmd_count = get_cmd_count(head);
 	script->commands = malloc(sizeof(t_command) * script->cmd_count);
 	if (!script->commands || script->cmd_count <= 0)
 		return (1);

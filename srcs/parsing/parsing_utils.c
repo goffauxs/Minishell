@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:29 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 14:59:50 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:53:25 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,40 +49,19 @@ char	*ft_trim_quotes(char *str)
 	return (ret);
 }
 
-static int	check_spaces(char *str)
+int	get_cmd_count(t_token *head)
 {
-	int	i;
+	int	count;
 
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isspace(str[i]))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	get_cmd_count(char *line_buf)
-{
-	int		i;
-	int		count;
-	char	**split_str;
-
-	if (!line_buf)
-		return (0);
 	count = 0;
-	split_str = ft_split(line_buf, '|');
-	i = 0;
-	while (split_str[i])
+	while (head)
 	{
-		if (check_spaces(split_str[i]))
-			count++;
-		i++;
+		if (!count)
+			count = 1;
+		if (head->type == TOKEN_PIPE)
+			count ++;
+		head = head->next;
 	}
-	while (i-- > 0)
-		free(split_str[i]);
-	free(split_str);
 	return (count);
 }
 
