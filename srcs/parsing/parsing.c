@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 13:53:26 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:35:51 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	check_syntax(t_token *head)
 
 	cmd = (head && head->type == TOKEN_NAME);
 	if (head && head->type == TOKEN_PIPE)
-		return (return_error("Syntax error\n"));
+		return (return_error("Syntax error1\n"));
 	while (head)
 	{
 		if (head->next && head->next->type == TOKEN_NAME
@@ -129,12 +129,12 @@ int	check_syntax(t_token *head)
 			|| head->type == TOKEN_REDIR_OUT)
 		{
 			if (head->next && head->next->type != TOKEN_NAME)
-				return (return_error("Syntax error\n"));
+				return (return_error("Syntax error2\n"));
 		}
 		head = head->next;
 	}
-	if (!cmd)
-		return (return_error("Syntax error\n"));
+	if (!cmd && head)
+		return (return_error("Syntax error3\n"));
 	return (0);
 }
 

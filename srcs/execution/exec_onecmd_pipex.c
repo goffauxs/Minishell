@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 11:26:16 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:30:03 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static int	one_cmd_exec(t_script *script, char **path_env)
 	return (0);
 }
 
-// before : if (ret > 0)
 int	one_cmd(t_script *script, char **path_env)
 {
 	int	ret;
@@ -67,6 +66,7 @@ int	pipex(t_script *script, char **path_env)
 	int	check;
 
 	check = 0;
+	signal(SIGINT, sig_handler_fork);
 	if (first_cmd(script, path_env, pipe1) == 1)
 		return (1);
 	check = mid_loop(script, path_env, pipe1, pipe2);
