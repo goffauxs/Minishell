@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:30 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 14:53:10 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 18:04:51 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	out_redir(t_script *s, int i, char **path_env)
 	fdout = open(s->commands[i].out.name, s->commands[i].out.flag, 0644);
 	if (fdout == -1)
 	{
-		ft_putstr_fd(s->commands[i].in.name, 2);
+		ft_putstr_fd(s->commands[i].out.name, 2);
 		ft_putendl_fd(": No such file or directory", 2);
 		free_cmds_path(s, path_env);
 		exit(1);
