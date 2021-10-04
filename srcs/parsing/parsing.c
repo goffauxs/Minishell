@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:29:07 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:38:36 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,9 @@ static int	check_syntax(t_token *head)
 			&& (head->type != TOKEN_REDIR_IN
 				&& head->type != TOKEN_REDIR_OUT))
 			cmd = 1;
-		if (head->type == TOKEN_PIPE || head->type == TOKEN_REDIR_IN
-			|| head->type == TOKEN_REDIR_OUT)
+		if (head->type == TOKEN_PIPE && head->next && head->next->type == TOKEN_PIPE)
+			return (return_error("Syntax error\n"));
+		if (head->type == TOKEN_REDIR_OUT || head->type == TOKEN_REDIR_IN)
 		{
 			if (head->next && head->next->type != TOKEN_NAME)
 				return (return_error("Syntax error\n"));
