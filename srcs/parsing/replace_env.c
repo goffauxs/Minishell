@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 10:44:51 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 16:41:28 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	**init_split_before(char *line_buf, char **before, int *i, int *j)
 	*i = 0;
 	*j = 0;
 	split = ft_split(line_buf, '$');
-	if (line_buf[0] != '$')
+	if (line_buf[0] && line_buf[0] != '$')
 	{
 		*before = ft_strdup(split[0]);
 		(*i)++;

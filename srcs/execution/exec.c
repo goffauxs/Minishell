@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 18:23:19 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 16:24:01 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ int	handle_cmd(t_script *script)
 
 int	check_builtin(char *cmd)
 {
-	if (ft_strncmp(cmd, "echo", 4))
-		if (ft_strncmp(cmd, "cd", 2))
-			if (ft_strncmp(cmd, "pwd", 3))
-				if (ft_strncmp(cmd, "export", 6))
-					if (ft_strncmp(cmd, "unset", 5))
-						if (ft_strncmp(cmd, "env", 3))
-							if (ft_strncmp(cmd, "exit", 4))
+	if (ft_strncmp(cmd, "echo", 5))
+		if (ft_strncmp(cmd, "cd", 3))
+			if (ft_strncmp(cmd, "pwd", 4))
+				if (ft_strncmp(cmd, "export", 7))
+					if (ft_strncmp(cmd, "unset", 6))
+						if (ft_strncmp(cmd, "env", 4))
+							if (ft_strncmp(cmd, "exit", 5))
 								return (0);
 	else
 		return (7);

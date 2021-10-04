@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 16:13:10 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 16:47:30 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,17 @@ static int	tokenize(char **line, t_token **head, t_script *s)
 
 static int	check_syntax(t_token *head)
 {
-	int	cmd;
+	int		cmd;
+	t_token	*tmp;
 
+	tmp = head;
 	cmd = (head && head->type == TOKEN_NAME);
 	if (head && head->type == TOKEN_PIPE)
 		return (return_error("Syntax error\n"));
 	while (head)
 	{
+		if (!head->next && head->type == TOKEN_PIPE)
+			return (return_error("Syntax error\n"));
 		if (head->next && head->next->type == TOKEN_NAME
 			&& (head->type != TOKEN_REDIR_IN
 				&& head->type != TOKEN_REDIR_OUT))
@@ -108,7 +112,7 @@ static int	check_syntax(t_token *head)
 		}
 		head = head->next;
 	}
-	if (!cmd && head)
+	if (!cmd && tmp)
 		return (return_error("Syntax error\n"));
 	return (0);
 }
@@ -124,6 +128,13 @@ int	parse(t_script *script, char **line_buf)
 	add_history(*line_buf);
 	if (tokenize(line_buf, &head, script))
 		return (1);
+	t_token *tmp = head;
+	while (tmp)
+	{
+		printf("[%s]", tmp->content);
+		tmp = tmp->next;
+	}
+	printf("\n");
 	if (check_syntax(head))
 	{
 		free_tokens(head);
