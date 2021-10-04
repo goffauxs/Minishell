@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:52 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 14:01:57 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 12:12:01 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	builtin_echo(t_command command)
 {
 	int		i;
 	int		flag;
-
+ 
 	i = 1;
 	flag = 0;
 	if (!command.argv[1])
