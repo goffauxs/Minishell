@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 10:09:46 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 13:50:59 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,25 @@ int	checkvalid(char *str)
 	return (1);
 }
 
-int	export_check(char **str)
+int	export_check(char **str, t_command cmd)
 {
 	int	i;
 
-	i = 0;
-	if (!str)
-		return (1);
-	while (str[i])
+	if (!cmd.argv[1])
 	{
-		printf("declare -x %s\n", str[i]);
-		i++;
+		i = 0;
+		if (!str)
+			return (1);
+		while (str[i])
+		{
+			printf("declare -x %s\n", str[i]);
+			i++;
+		}
+	}
+	else if (cmd.argv[1][0] == '\0')
+	{
+		printf("Syntax error\n");
+		return (1);
 	}
 	return (0);
 }
