@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 19:18:17 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 19:36:04 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,11 @@ int	builtin_export(t_script *script, t_command cmd)
 	while (cmd.argv[var])
 	{
 		if (ft_isdigit(cmd.argv[var][0]) || !ft_strchr(cmd.argv[var], '=')
-			|| !ft_strncmp(cmd.argv[var], "=", 1) || !checkvalid(cmd.argv[var]))
+			|| !ft_strncmp(cmd.argv[var], "=", 1) || !checkvalid(cmd.argv[var])
+			|| check_space_export(cmd.argv[var]))
 		{
 			if (ft_isdigit(cmd.argv[var][0]) || !checkvalid(cmd.argv[var])
+				|| check_space_export(cmd.argv[var])
 				|| !ft_strncmp(cmd.argv[var], "=", 1))
 				error_message_export(cmd.argv[var]);
 			else
