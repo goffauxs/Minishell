@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:52 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 12:12:01 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 13:27:17 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	builtin_echo(t_command command)
 {
 	int		i;
 	int		flag;
- 
+
 	i = 1;
 	flag = 0;
 	if (!command.argv[1])
@@ -51,11 +51,14 @@ int	builtin_echo(t_command command)
 		write(1, "\n", 1);
 		return (0);
 	}
-	while (command.argv[i][0] == '-' && command.argv[i][1] == 'n')
+	while (command.argv[i] && command.argv[i][0] == '-'
+		&& command.argv[i][1] == 'n')
 	{
 		if (!flag_handling(command, &flag, &i))
 			break ;
 	}
+	if (!command.argv[i])
+		return (0);
 	while (command.argv[i])
 		i = echo_print(command, i);
 	if (flag == 0)

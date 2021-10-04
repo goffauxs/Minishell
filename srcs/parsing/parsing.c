@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 12:14:01 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 13:20:51 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	open_redirs(t_token *head, t_redirection *redir)
 {
-	int		fd;
 	t_list	*tmp;
 
 	if (redir->name)
@@ -39,8 +38,7 @@ static void	open_redirs(t_token *head, t_redirection *redir)
 		redir->flag = (O_CREAT | O_TRUNC | O_RDWR);
 	else if (!ft_strncmp(head->content, "<", 1))
 		redir->flag = O_RDONLY;
-	fd = open(redir->name, redir->flag, 0644);
-	close(fd);
+	close(open(redir->name, redir->flag, 0644));
 }
 
 static void	parse_commands(t_token *head, t_command *commands, int i, int j)
@@ -114,6 +112,32 @@ static int	tokenize(char **line, t_token **head, t_script *s)
 	return (0);
 }
 
+int	check_syntax(t_token *head)
+{
+	int	cmd;
+
+	cmd = (head && head->type == TOKEN_NAME);
+	if (head && head->type == TOKEN_PIPE)
+		return (return_error("Syntax error\n"));
+	while (head)
+	{
+		if (head->next && head->next->type == TOKEN_NAME
+			&& (head->type != TOKEN_REDIR_IN
+				&& head->type != TOKEN_REDIR_OUT))
+			cmd = 1;
+		if (head->type == TOKEN_PIPE || head->type == TOKEN_REDIR_IN
+			|| head->type == TOKEN_REDIR_OUT)
+		{
+			if (head->next && head->next->type != TOKEN_NAME)
+				return (return_error("Syntax error\n"));
+		}
+		head = head->next;
+	}
+	if (!cmd)
+		return (return_error("Syntax error\n"));
+	return (0);
+}
+
 int	parse(t_script *script, char **line_buf)
 {
 	t_token	*head;
@@ -125,18 +149,8 @@ int	parse(t_script *script, char **line_buf)
 	add_history(*line_buf);
 	if (tokenize(line_buf, &head, script))
 		return (1);
-	t_token *tmp = head;
-	if (tmp->type == TOKEN_PIPE)
-		return (return_error("Syntax error\n"));
-	while (tmp)
-	{
-		if (tmp->type == TOKEN_PIPE || tmp->type == TOKEN_REDIR_IN || tmp->type == TOKEN_REDIR_OUT)
-		{
-			if (tmp->next && tmp->next->type != TOKEN_NAME)
-				return (return_error("Syntax error\n"));
-		}
-		tmp = tmp->next;
-	}
+	if (check_syntax(head))
+		return (1);
 	script->cmd_count = get_cmd_count(*line_buf);
 	script->commands = malloc(sizeof(t_command) * script->cmd_count);
 	if (!script->commands || script->cmd_count <= 0)
