@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 10:13:55 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 10:33:34 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	main_loop(t_script *script, char **line_buf)
 				break ;
 		}
 		free_commands(script);
-		system("leaks minishell");
 	}
 	if (script->cmd_count > 0)
 		free_commands(script);
@@ -74,6 +73,5 @@ int	main(int argc, char **argv, char **envp)
 	termios(&script);
 	main_loop(&script, &line_buf);
 	free_path_env(script.envp);
-	system("leaks minishell");
 	return (g_exit_status);
 }

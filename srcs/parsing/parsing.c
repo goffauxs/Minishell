@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 10:24:04 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 11:25:50 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,45 +81,52 @@ static void	set_filenames_null(t_command *commands, int max)
 	}
 }
 
-static int	tokenize(char **split_b, char **line_b, t_token **head, t_script *s)
+static void	remove_quotes_tokens(t_token *head)
+{
+	while (head)
+	{
+		head->content = remove_quotes(head->content);
+		head = head->next;
+	}
+}
+
+static int	tokenize(char **line, t_token **head, t_script *s)
 {
 	int		i;
-	t_token	*tmp;
+	char	**split;
+	char	*bis;
 
-	split_b = ft_split(*line_b, ' ');
+	split = ft_split(*line, ' ');
 	i = 0;
-	while (split_b[i])
+	while (split[i])
 	{
-		if (!tokenizer(replace_env_var(split_b[i], s->envp), head))
+		bis = replace_env_var(split[i], s->envp);
+		if (!tokenizer(bis, head))
 		{
 			return_error("Syntax error\n");
-			free_split(split_b);
+			free_split(split);
 			free_tokens(*head);
+			free(bis);
 			return (1);
 		}
+		free(bis);
 		i++;
 	}
-	tmp = *head;
-	while (tmp)
-	{
-		tmp->content = remove_quotes(tmp->content);
-		tmp = tmp->next;
-	}
+	remove_quotes_tokens(*head);
+	free_split(split);
 	return (0);
 }
 
 int	parse(t_script *script, char **line_buf)
 {
 	t_token	*head;
-	char	**split_buf;
 
 	head = NULL;
 	*line_buf = readline("\033[0;32mMinishell > \033[0m");
 	if (!*line_buf)
 		return (2);
 	add_history(*line_buf);
-	split_buf = NULL;
-	if (tokenize(split_buf, line_buf, &head, script))
+	if (tokenize(line_buf, &head, script))
 		return (1);
 	script->cmd_count = get_cmd_count(*line_buf);
 	script->commands = malloc(sizeof(t_command) * script->cmd_count);

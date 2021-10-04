@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_onecmd_pipex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 14:35:09 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 11:26:16 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static int	one_cmd_exec(t_script *script, char **path_env)
 	return (0);
 }
 
+// before : if (ret > 0)
 int	one_cmd(t_script *script, char **path_env)
 {
 	int	ret;
@@ -37,7 +38,8 @@ int	one_cmd(t_script *script, char **path_env)
 	ret = 0;
 	if (script->commands[0].argv[0])
 		ret = check_builtin(script->commands[0].argv[0]);
-	if (ret > 0)
+	if (ret == 2 || ret == 5
+		|| (ret == 4 && script->commands[0].argv[1]) || ret == 7)
 	{
 		if (handle_builtin(ret, script, 0))
 		{
@@ -48,7 +50,10 @@ int	one_cmd(t_script *script, char **path_env)
 	else
 	{
 		if (one_cmd_exec(script, path_env))
+		{
+			free_path_env(path_env);
 			return (1);
+		}
 	}
 	free_path_env(path_env);
 	return (0);
