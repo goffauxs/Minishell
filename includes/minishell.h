@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 18:13:05 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 19:16:26 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_script
 int				builtin_cd(t_command command, char **envp);
 int				builtin_echo(t_command command);
 int				builtin_env(char **envp, t_command command);
-int				builtin_exit(t_command command);
+int				builtin_exit(t_command command, int cmd_count);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_pwd(char **envp);
 int				builtin_unset(t_script *script, t_command command);

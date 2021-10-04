@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 18:13:07 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 19:15:55 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,6 @@ int	handle_builtin(int ret, t_script *script, int i)
 	if (ret == 6)
 		g_exit_status = builtin_env(script->envp, script->commands[i]);
 	if (ret == 7)
-		return (builtin_exit(script->commands[i]));
+		return (builtin_exit(script->commands[i], script->cmd_count));
 	return (0);
 }

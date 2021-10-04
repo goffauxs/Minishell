@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 18:33:33 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 19:18:17 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ static int	check_exisiting_export(char **envp, char *str)
 	prep_bis(tmp, bis);
 	// if (bis)
 	// {
-		while (envp[i])
+	while (envp[i])
+	{
+		if (!ft_strncmp(tmp, envp[i], ft_strlen(tmp)))
 		{
-			if (!ft_strncmp(tmp, envp[i], ft_strlen(tmp)))
-			{
-				free(tmp);
-				return (i);
-			}
-			i++;
+			free(tmp);
+			return (i);
 		}
+		i++;
+	}
 	// }
 	free(tmp);
 	return (0);
