@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 18:56:59 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/04 15:12:41 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:23:36 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	ft_putchar(int c)
-{
-	return (write(1, &c, 1));
-}
 
 void	sig_handler(int signum)
 {
@@ -23,7 +18,7 @@ void	sig_handler(int signum)
 	{
 		write(1, "Quit: 3\n", 8);
 		rl_on_new_line();
-		tputs(carriage_return, 1, ft_putchar);
+		write(1, "\r", 1);
 	}
 	else if (signum == SIGINT)
 	{
@@ -40,7 +35,7 @@ void	sig_handler_fork(int signum)
 	{
 		write(1, "Quit: 3\n", 8);
 		rl_on_new_line();
-		tputs(carriage_return, 1, ft_putchar);
+		write(1, "\r", 1);
 	}
 	else if (signum == SIGINT)
 	{
