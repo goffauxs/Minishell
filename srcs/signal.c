@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 18:56:59 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/09/30 10:10:31 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:12:41 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	ft_putchar(int c)
+{
+	return (write(1, &c, 1));
+}
 
 void	sig_handler(int signum)
 {

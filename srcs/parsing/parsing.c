@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:00:01 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:03:42 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,23 +67,6 @@ static void	parse_commands(t_token *head, t_command *commands, int i, int j)
 			head = head->next;
 		commands[i].argv[j] = NULL;
 		i++;
-	}
-}
-
-static void	set_filenames_null(t_command *commands, int max, t_token *head)
-{
-	int	i;
-
-	i = -1;
-	while (++i < max)
-	{
-		commands[i].in.name = NULL;
-		commands[i].out.name = NULL;
-	}
-	while (head)
-	{
-		head->content = remove_quotes(head->content);
-		head = head->next;
 	}
 }
 
@@ -164,6 +147,5 @@ int	parse(t_script *script, char **line_buf)
 	parse_commands(head, script->commands, 0, 0);
 	free_tokens(head);
 	free(*line_buf);
-	// system("leaks minishell");
 	return (0);
 }

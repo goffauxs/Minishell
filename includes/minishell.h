@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:01:48 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:15:48 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@
 # include "libft.h"
 
 # define MAX_PATH_LEN 4096
-# define HEREDOC_WARNING "Minishell: warning: here-document delimited by end-of-file \
-(wanted '%s')\n"
 
 int	g_exit_status;
 
@@ -90,6 +88,7 @@ int				builtin_exit(t_command command);
 int				builtin_export(t_script *script, t_command command);
 int				builtin_pwd(t_command command, char **envp);
 int				builtin_unset(t_script *script, t_command command);
+void			error_message_export(char *message);
 int				copy_env(char **array1, char **array2);
 int				env_len(char **array);
 char			*copy_no_plus(char *argvar);
@@ -120,6 +119,11 @@ void			heredoc(t_script *script, int i, char **path_env);
 char			**split_paths(char **env);
 
 // parsing
+char			*ft_trim_quotes(char *str);
+int				get_cmd_count(char *line_buf);
+int				return_error(const char *msg);
+void			get_num_args(t_token *head, t_script *script);
+void			set_filenames_null(t_command *commands, int max, t_token *head);
 int				parse(t_script *script, char **line_buf);
 int				odd_before(char **str, int i, char c);
 int				odd_after(char **str, int i, char c);
@@ -131,38 +135,18 @@ void			add_token(t_token **head, t_token *new_token);
 t_operations	search_token_type(const char *s);
 int				get_double_quote_count(char *str);
 void			copy_in_dquotes(char *start, char *end, char **str, int *i);
-
-int				tokenizer(char *str, t_token **head);
-void			free_split(char **split);
 char			*remove_quotes(char *str);
+int				tokenizer(char *str, t_token **head);
 
-// Tokenizer utils
-
-// Replace_env utils
-
-// Exec
-
-// Signals
-void			sig_handler(int signum);
-void			sig_handler_fork(int signum);
-void			sig_handler_heredoc(int signum);
-
-// Builtins
-
-
-// Utils
-char			*ft_trim_quotes(char *str);
-int				get_cmd_count(char *line_buf);
-int				return_error(const char *msg);
-void			get_num_args(t_token *head, t_script *script);
-int				ft_putchar(int c);
-void			termios(t_script *script);
-
-// Free
-void			free_tokens(t_token *head);
+// srcs
 void			free_commands(t_script *script);
+void			free_tokens(t_token *head);
 void			free_path_env(char **path_env);
 void			free_cmds_path(t_script *script, char **path_env);
 void			close_free_exit(t_script *s, char **path_env, int *p1, int *p2);
+void			sig_handler(int signum);
+void			sig_handler_fork(int signum);
+void			sig_handler_heredoc(int signum);
+void			termios(t_script *script);
 
 #endif

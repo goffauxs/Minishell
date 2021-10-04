@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:35 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:02:07 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:04:46 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,32 +23,6 @@ static int	treat_quotes(char **str)
 	if (!**str || (**str != open_quote))
 		return (0);
 	return (1);
-}
-
-static char	*remove_double_quotes(char *str)
-{
-	int		i;
-	int		j;
-	char	*ret;
-
-	i = get_double_quote_count(str);
-	if (i == 0)
-		return (ft_strdup(str));
-	ret = malloc(sizeof(char) * (ft_strlen(str) - (i * 2) + 1));
-	if (!ret)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (*str && str[i])
-	{
-		if (str[i] == '\"' && str[i + 1] == '\"')
-			i++;
-		else
-			ret[j++] = str[i];
-		i++;
-	}
-	ret[j] = '\0';
-	return (ret);
 }
 
 static char	*end_remove_quotes(char *tmp, char *copy, int i)

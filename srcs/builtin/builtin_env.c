@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 11:50:42 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/30 11:50:59 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:15:34 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	builtin_env(char **envp, t_command command)
 
 	if (command.argv[1])
 	{
-		printf("env: too many arguments\n");
+		ft_putendl_fd("env: too many arguments", 2);
 		return (1);
 	}
 	if (!envp)

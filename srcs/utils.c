@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   termios.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/28 12:01:52 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/28 12:02:24 by mdeclerf         ###   ########.fr       */
+/*   Created: 2021/10/04 14:58:48 by sgoffaux          #+#    #+#             */
+/*   Updated: 2021/10/04 15:13:08 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_putchar(int c)
+int	return_error(const char *msg)
 {
-	return (write(1, &c, 1));
+	write(2, msg, ft_strlen(msg));
+	return (1);
 }
 
 void	termios(t_script *script)

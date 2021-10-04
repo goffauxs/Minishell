@@ -6,7 +6,7 @@
 #    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/10/04 13:37:10 by rvan-aud         ###   ########.fr        #
+#    Updated: 2021/10/04 15:16:05 by rvan-aud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRCS		=	main.c \
 				$(PARSING_DIR)/replace_env_utils.c \
 				$(PARSING_DIR)/tokenizer.c \
 				$(PARSING_DIR)/tokenizer_utils.c \
-				$(PARSING_DIR)/utils.c \
+				$(PARSING_DIR)/parsing_utils.c \
 				$(EXEC_DIR)/exec_errors.c \
 				$(EXEC_DIR)/exec_pipes_forks.c \
 				$(EXEC_DIR)/exec_pipes_utils.c \
@@ -48,9 +48,10 @@ SRCS		=	main.c \
 				$(BUILTIN_DIR)/builtin_export.c \
 				$(BUILTIN_DIR)/builtin_unset.c \
 				$(BUILTIN_DIR)/builtin_utils.c \
+				$(BUILTIN_DIR)/builtin_utils_2.c \
 				srcs/free.c \
 				srcs/signal.c \
-				srcs/termios.c \
+				srcs/utils.c \
 
 OBJS		=	$(SRCS:%.c=%.o)
 
