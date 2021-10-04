@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 18:29:18 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 10:09:46 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,19 @@ int	checkvalid(char *str)
 		i++;
 	}
 	return (1);
+}
+
+int	export_check(char **str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (1);
+	while (str[i])
+	{
+		printf("declare -x %s\n", str[i]);
+		i++;
+	}
+	return (0);
 }

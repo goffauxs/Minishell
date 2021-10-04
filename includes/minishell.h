@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/01 17:59:11 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 10:08:08 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int				copy_env(char **array1, char **array2);
 int				env_len(char **array);
 char			*copy_no_plus(char *argvar);
 int				checkvalid(char *str);
+int				export_check(char **str);
 
 // Utils
 char			*ft_trim_quotes(char *str);

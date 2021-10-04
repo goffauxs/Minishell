@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/01 18:52:00 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 10:24:04 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	open_redirs(t_token *head, t_redirection *redir)
 
 	if (redir->name)
 		free(redir->name);
-	redir->name = head->next->content;
+	redir->name = ft_strdup(head->next->content);
 	if (!ft_strncmp(head->content, ">>", 2))
 		redir->flag = (O_CREAT | O_APPEND | O_RDWR);
 	else if (!ft_strncmp(head->content, "<<", 2))
