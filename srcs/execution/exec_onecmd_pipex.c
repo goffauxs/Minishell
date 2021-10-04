@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_onecmd_pipex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 15:05:12 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/04 15:33:33 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	pipex(t_script *script, char **path_env)
 	int	check;
 
 	check = 0;
+	signal(SIGINT, sig_handler_fork);
 	if (first_cmd(script, path_env, pipe1) == 1)
 		return (1);
 	check = mid_loop(script, path_env, pipe1, pipe2);
