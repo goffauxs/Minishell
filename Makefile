@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
+#    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/13 14:58:45 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/10/04 14:50:25 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/10/04 15:00:21 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRCS		=	main.c \
 				$(PARSING_DIR)/replace_env_utils.c \
 				$(PARSING_DIR)/tokenizer.c \
 				$(PARSING_DIR)/tokenizer_utils.c \
-				$(PARSING_DIR)/utils.c \
+				$(PARSING_DIR)/parsing_utils.c \
 				$(EXEC_DIR)/exec_errors.c \
 				$(EXEC_DIR)/exec_pipes_forks.c \
 				$(EXEC_DIR)/exec_pipes_utils.c \
@@ -52,6 +52,7 @@ SRCS		=	main.c \
 				srcs/free.c \
 				srcs/signal.c \
 				srcs/termios.c \
+				srcs/utils.c \
 
 OBJS		=	$(SRCS:%.c=%.o)
 

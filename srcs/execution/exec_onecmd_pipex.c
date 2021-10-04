@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_onecmd_pipex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 11:26:16 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/04 14:37:54 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static int	one_cmd_exec(t_script *script, char **path_env)
 	return (0);
 }
 
-// before : if (ret > 0)
 int	one_cmd(t_script *script, char **path_env)
 {
 	int	ret;
