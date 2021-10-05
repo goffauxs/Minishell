@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 13:20:40 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 16:11:51 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,19 +64,18 @@ char	*copy_no_plus(char *argvar)
 
 int	checkvalid(char *str)
 {
-	int	i;
+	const char	*end = ft_strrchr(str, '=');
 
-	i = 0;
-	while (str[i])
+	while (str && *str && str != end)
 	{
-		if (str[i] == '-' || str[i] == '.' || str[i] == '{' || str[i] == '}'
-			|| str[i] == '*' || str[i] == '#' || str[i] == '@' || str[i] == '!'
-			|| str[i] == '^' || str[i] == '~' || str[i] == '\"'
-			|| str[i] == '\'')
+		if (*str == '-' || *str == '.' || *str == '{' || *str == '}'
+			|| *str == '*' || *str == '#' || *str == '@' || *str == '!'
+			|| *str == '^' || *str == '~' || *str == '\"'
+			|| *str == '\'')
 			return (0);
-		if (str[i] == '+' && str[i + 1] != '=')
+		if (*str == '+' && *(str + 1) != '=')
 			return (0);
-		i++;
+		str++;
 	}
 	return (1);
 }
