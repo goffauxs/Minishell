@@ -6,11 +6,23 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 16:41:28 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/05 14:14:13 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	first_quote(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && !(str[i] == '\'' || str[i] == '\"'))
+		i++;
+	if (str[i] == '\'')
+		return (1);
+	return (0);
+}
 
 static char	*replace_loop(char *str, char **envp, int *i)
 {
@@ -25,6 +37,8 @@ static char	*replace_loop(char *str, char **envp, int *i)
 		else
 			return (ft_itoa(g_exit_status));
 	}
+	if (ft_isspace(str[0]))
+		return (ft_strdup("$"));
 	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 		(*i)++;
 	c = str[*i];
@@ -34,12 +48,10 @@ static char	*replace_loop(char *str, char **envp, int *i)
 	return (tmp);
 }
 
-static char	**init_split_before(char *line_buf, char **before, int *i, int *j)
+static char	**init_split_before(char *line_buf, char **before, int *i)
 {
 	char	**split;
 
-	*i = 0;
-	*j = 0;
 	split = ft_split(line_buf, '$');
 	if (line_buf[0] && line_buf[0] != '$')
 	{
@@ -51,28 +63,31 @@ static char	**init_split_before(char *line_buf, char **before, int *i, int *j)
 	return (split);
 }
 
-char	*replace_env_var(char *line_buf, char **envp)
+char	*replace_env_var(char *line_buf, char **envp, int i, int j)
 {
 	char	**split;
-	int		i;
-	int		j;
+	int		quotes;
+	int		dquotes;
 	char	*before;
 	char	*tmp;
+	int		first;
 
 	before = NULL;
-	split = init_split_before(line_buf, &before, &i, &j);
+	first = first_quote(line_buf);	
+	split = init_split_before(line_buf, &before, &i);
 	while (split[i])
 	{
-		if ((!odd_before(split, i, '\'') && !odd_after(split, i, '\''))
-			|| (odd_before(split, i, '\"') && odd_after(split, i, '\"')))
+		quotes = (odd_before(split, i, '\'') && odd_after(split, i, '\''));
+		dquotes = (odd_before(split, i, '\"') && odd_after(split, i, '\"'));
+		if (quotes && (first || !dquotes))
+			before = ft_strjoin_free(before, ft_strjoin("$", split[i]));
+		else
 		{
 			j = 0;
 			tmp = ft_strjoin_free(before, replace_loop(split[i], envp, &j));
 			before = ft_strjoin(tmp, split[i] + j);
 			free(tmp);
 		}
-		else
-			before = ft_strjoin_free(before, ft_strjoin("$", split[i]));
 		i++;
 	}
 	free_split(split);

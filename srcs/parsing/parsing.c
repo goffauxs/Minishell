@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 10:22:50 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:21:57 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	tokenize(char **line, t_token **head, t_script *s)
 {
 	char	*bis;
 
-	bis = replace_env_var(*line, s->envp);
+	bis = replace_env_var(*line, s->envp, 0, 0);
 	if (!tokenizer(bis, head))
 	{
 		free_tokens(*head);

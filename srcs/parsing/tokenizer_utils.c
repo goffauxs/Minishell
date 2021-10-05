@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:12:47 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/01 17:59:03 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:06:09 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,4 @@ int	get_double_quote_count(char *str)
 		}
 	}
 	return (i);
-}
-
-void	copy_in_dquotes(char *start, char *end, char **str, int *i)
-{
-	while (start != end)
-	{
-		(*str)[*i] = *start;
-		start++;
-		(*i)++;
-	}
 }

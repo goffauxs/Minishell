@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:35 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 10:11:06 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:07:45 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	copy_in_dquotes(char *start, char *end, char **str, int *i)
+{
+	while (start != end)
+	{
+		(*str)[*i] = *start;
+		start++;
+		(*i)++;
+	}
+}
 
 static int	treat_quotes(char **str)
 {
@@ -39,7 +49,6 @@ static char	*end_remove_quotes(char *tmp, char *copy, int i)
 char	*remove_quotes(char *str)
 {
 	char	*tmp;
-	char	*ret;
 	char	*copy;
 	char	*start;
 	int		i;
@@ -57,12 +66,11 @@ char	*remove_quotes(char *str)
 			treat_quotes(&str);
 			copy_in_dquotes(start, str, &tmp, &i);
 		}
-		else if (*str != '\'')
+		else
 			tmp[i++] = *str;
 		str++;
 	}
-	ret = end_remove_quotes(tmp, copy, i);
-	return (ret);
+	return (end_remove_quotes(tmp, copy, i));
 }
 
 int	tokenizer(char *str, t_token **head)

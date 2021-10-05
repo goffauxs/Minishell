@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 19:32:47 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:27:14 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,12 @@ int				parse(t_script *script, char **line_buf);
 int				odd_before(char **str, int i, char c);
 int				odd_after(char **str, int i, char c);
 void			free_split(char **split);
-char			*replace_env_var(char *line_buf, char **envp);
+char			*replace_env_var(char *line_buf, char **envp, int i, int j);
 char			*get_env_content(char *str, char **envp);
 t_token			*create_token(const char *string, int size, t_token_type type);
 void			add_token(t_token **head, t_token *new_token);
 t_operations	search_token_type(const char *s);
 int				get_double_quote_count(char *str);
-void			copy_in_dquotes(char *start, char *end, char **str, int *i);
 char			*remove_quotes(char *str);
 int				tokenizer(char *str, t_token **head);
 
