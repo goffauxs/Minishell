@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 15:32:21 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:44:32 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,6 @@ int	handle_builtin(int ret, t_script *script, int i)
 		g_exit_status = builtin_env(script->envp, script->commands[i]);
 	if (ret == 7)
 		return (builtin_exit(script->commands[i], script->cmd_count,
-			script->commands[i].argv[1]));
+				script->commands[i].argv[1]));
 	return (0);
 }

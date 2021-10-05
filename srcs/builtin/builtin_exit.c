@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:00 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 15:40:03 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:46:14 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <string.h>
 
 static int	exit_numeric_arg(t_command command, int cmd_count)
 {
@@ -40,10 +39,8 @@ int	builtin_exit(t_command command, int cmd_count, char *str)
 	long long		ret;
 
 	if (str)
-	{
 		if (!ft_islong(str))
 			return (exit_numeric_arg(command, cmd_count));
-	}
 	if (command.argc > 2)
 		return (exit_too_many_arg(cmd_count));
 	else
@@ -52,8 +49,8 @@ int	builtin_exit(t_command command, int cmd_count, char *str)
 		{
 			ret = ft_atol(str);
 			if ((ret == -1 && ft_strncmp(str, "-1", 2))
-				|| (ret == 0 && !(!ft_strncmp(str, "0", 1) 
-				|| !ft_strncmp(str, "-0", 2))))
+				|| (ret == 0 && !(!ft_strncmp(str, "0", 1)
+						|| !ft_strncmp(str, "-0", 2))))
 				return (exit_numeric_arg(command, cmd_count));
 			g_exit_status = (int)(ft_atol(str) & 0xFF);
 		}
