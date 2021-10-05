@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 19:15:55 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 14:35:17 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ void	exec_cmd( char **path, char **cmd, char **env)
 
 	tmp = ft_strdup(*cmd);
 	i = 0;
-	if (execve(*cmd, cmd, env) != -1)
+	if (tmp[0] == '.' || tmp[0] == '/')
 	{
+		execve(*cmd, cmd, env);
 		free(tmp);
 		return ;
 	}
