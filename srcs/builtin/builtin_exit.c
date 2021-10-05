@@ -6,11 +6,12 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:00 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 13:20:07 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:29:31 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <string.h>
 
 static int	exit_numeric_arg(t_command command, int cmd_count)
 {
@@ -34,28 +35,14 @@ static int	exit_too_many_arg(int cmd_count)
 	return (0);
 }
 
-static int	exit_num_arg(t_command command, int cmd_count)
-{
-	int	j;
-
-	j = 0;
-	while (command.argv[1][j])
-	{
-		if (command.argv[1][j] == '-')
-			j++;
-		if (!ft_isdigit(command.argv[1][j]))
-			return (exit_numeric_arg(command, cmd_count));
-		j++;
-	}
-	return (0);
-}
-
 int	builtin_exit(t_command command, int cmd_count)
 {
+	int		ret;
+
 	if (command.argv[1])
 	{
-		if (exit_num_arg(command, cmd_count))
-			return (1);
+		if (!ft_islong(command.argv[1]))
+			return (exit_numeric_arg(command, cmd_count));
 	}
 	if (command.argc > 2)
 		return (exit_too_many_arg(cmd_count));
@@ -63,10 +50,10 @@ int	builtin_exit(t_command command, int cmd_count)
 	{
 		if (command.argv[1])
 		{
-			if ((ft_atoi(command.argv[1]) == -1
-					&& ft_strncmp(command.argv[1], "-1", 2))
-				|| (ft_atoi(command.argv[1]) == 0
-					&& ft_strncmp(command.argv[1], "0", 1)))
+			ret = ft_atoi(command.argv[1]);
+			if ((ret == -1 && ft_strncmp(command.argv[1], "-1", 2))
+				|| (ret == 0 && !(!ft_strncmp(command.argv[1], "0", 1)
+						|| !ft_strncmp(command.argv[1], "-0", 2))))
 				return (exit_numeric_arg(command, cmd_count));
 			g_exit_status = ft_atoi(command.argv[1]) & 0xFF;
 		}

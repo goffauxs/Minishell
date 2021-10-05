@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 09:22:04 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/09/30 15:06:45 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:25:18 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int				ft_isdigit(int c);
 int				ft_isascii(int c);
 int				ft_isprint(int c);
 int				ft_isint(const char *nptr);
+int				ft_islong(const char *nptr);
 int				ft_isspace(const char c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);

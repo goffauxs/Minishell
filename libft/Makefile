@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+         #
+#    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 12:04:24 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/09/30 15:06:54 by rvan-aud         ###   ########.fr        #
+#    Updated: 2021/10/05 15:25:32 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRCS	=	ft_isascii.c \
 			ft_putendl_fd.c \
 			ft_putnbr_fd.c \
 			ft_isint.c \
+			ft_islong.c \
 			ft_isspace.c \
 			ft_atoi_base.c \
 

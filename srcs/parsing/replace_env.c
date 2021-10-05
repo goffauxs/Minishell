@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 14:22:35 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:28:49 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,14 @@ char	*replace_env_var(char *line_buf, char **envp, int i, int j)
 	int		dquotes;
 	char	*before;
 	char	*tmp;
-	int		first;
 
 	before = NULL;
-	first = first_quote(line_buf);	
 	split = init_split_before(line_buf, &before, &i);
 	while (split[i])
 	{
 		quotes = (odd_before(split, i, '\'') && odd_after(split, i, '\''));
 		dquotes = (odd_before(split, i, '\"') && odd_after(split, i, '\"'));
-		if (quotes && (first || !dquotes))
+		if (quotes && (first_quote(line_buf) || !dquotes))
 			before = ft_strjoin_free(before, ft_strjoin("$", split[i]));
 		else
 		{
