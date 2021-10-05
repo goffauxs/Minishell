@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:00 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 10:31:33 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:20:07 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	exit_numeric_arg(t_command command, int cmd_count)
 {
 	if (cmd_count == 1)
 		ft_putstr_fd("exit\n", 2);
-	ft_putstr_fd("exit: ", 2);
+	ft_putstr_fd("Minishell: exit: ", 2);
 	ft_putstr_fd(command.argv[1], 2);
 	ft_putendl_fd(": numeric argument required", 2);
 	rl_on_new_line();
@@ -28,7 +28,7 @@ static int	exit_too_many_arg(int cmd_count)
 {
 	if (cmd_count == 1)
 		ft_putstr_fd("exit\n", 2);
-	ft_putendl_fd("exit: too many arguments", 2);
+	ft_putendl_fd("Minishell: exit: too many arguments", 2);
 	g_exit_status = 1;
 	rl_on_new_line();
 	return (0);

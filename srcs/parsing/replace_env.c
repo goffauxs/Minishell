@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 16:41:28 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/05 11:43:00 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static char	*replace_loop(char *str, char **envp, int *i)
 		else
 			return (ft_itoa(g_exit_status));
 	}
+	if (ft_isspace(str[0]) || str[0] == '\'' || str[0] == '\"')
+		return (ft_strdup("$"));
 	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 		(*i)++;
 	c = str[*i];
@@ -75,6 +77,8 @@ char	*replace_env_var(char *line_buf, char **envp)
 			before = ft_strjoin_free(before, ft_strjoin("$", split[i]));
 		i++;
 	}
+	if (line_buf[ft_strlen(line_buf) - 1] == '$' || !split[0])
+		before = ft_strjoin_free(before, ft_strdup("$"));
 	free_split(split);
 	return (before);
 }

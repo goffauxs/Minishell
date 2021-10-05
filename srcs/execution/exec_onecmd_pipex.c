@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 15:38:27 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 11:01:07 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static int	one_cmd_exec(t_script *script, char **path_env)
 	if (pid == 0)
 		first_child(script, path_env, NULL);
 	wait(&g_exit_status);
+	if (WIFSIGNALED(g_exit_status))
+		g_exit_status = 128 + WTERMSIG(g_exit_status);
 	return (0);
 }
 
@@ -65,7 +67,6 @@ int	pipex(t_script *script, char **path_env)
 	int	pipe2[2];
 	int	check;
 
-	check = 0;
 	signal(SIGINT, sig_handler_fork);
 	if (first_cmd(script, path_env, pipe1) == 1)
 		return (1);
@@ -83,5 +84,7 @@ int	pipex(t_script *script, char **path_env)
 	while (check-- > 0)
 		wait(&g_exit_status);
 	wait(&g_exit_status);
+	if (WIFSIGNALED(g_exit_status))
+		g_exit_status = 128 + WTERMSIG(g_exit_status);
 	return (0);
 }
