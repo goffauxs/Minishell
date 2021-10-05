@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 19:36:04 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 10:21:38 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ static int	check_exisiting_export(char **envp, char *str)
 	tmp = ft_strdup(str);
 	bis = ft_strnstr(tmp, "+=", ft_strlen(tmp));
 	prep_bis(tmp, bis);
-	// if (bis)
-	// {
 	while (envp[i])
 	{
 		if (!ft_strncmp(tmp, envp[i], ft_strlen(tmp)))
@@ -48,7 +46,6 @@ static int	check_exisiting_export(char **envp, char *str)
 		}
 		i++;
 	}
-	// }
 	free(tmp);
 	return (0);
 }
@@ -108,12 +105,10 @@ int	builtin_export(t_script *script, t_command cmd)
 			|| !ft_strncmp(cmd.argv[var], "=", 1) || !checkvalid(cmd.argv[var])
 			|| check_space_export(cmd.argv[var]))
 		{
-			if (ft_isdigit(cmd.argv[var][0]) || !checkvalid(cmd.argv[var])
-				|| check_space_export(cmd.argv[var])
-				|| !ft_strncmp(cmd.argv[var], "=", 1))
-				error_message_export(cmd.argv[var]);
-			else
+			if (!ft_strchr(cmd.argv[var], '='))
 				err = 0;
+			else
+				error_message_export(cmd.argv[var]);
 			var++;
 			continue ;
 		}

@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 14:26:04 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 10:26:18 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ int	checkvalid(char *str)
 	{
 		if (str[i] == '-' || str[i] == '.' || str[i] == '{' || str[i] == '}'
 			|| str[i] == '*' || str[i] == '#' || str[i] == '@' || str[i] == '!'
-			|| str[i] == '^' || str[i] == '~')
+			|| str[i] == '^' || str[i] == '~' || str[i] == '\"'
+			|| str[i] == '\'')
 			return (0);
 		if (str[i] == '+' && str[i + 1] != '=')
 			return (0);

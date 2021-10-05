@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:35 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:04:46 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/05 10:11:06 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*remove_quotes(char *str)
 		return (NULL);
 	while (str && *str)
 	{
-		if (*str == '\"')
+		if (*str == '\"' || *str == '\'')
 		{
 			start = str + 1;
 			treat_quotes(&str);
