@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 14:14:13 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/05 14:22:35 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*replace_loop(char *str, char **envp, int *i)
 		else
 			return (ft_itoa(g_exit_status));
 	}
-	if (ft_isspace(str[0]))
+	if (ft_isspace(str[0]) || str[0] == '\'' || str[0] == '\"')
 		return (ft_strdup("$"));
 	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 		(*i)++;
@@ -90,6 +90,8 @@ char	*replace_env_var(char *line_buf, char **envp, int i, int j)
 		}
 		i++;
 	}
+	if (line_buf[ft_strlen(line_buf) - 1] == '$' || !split[0])
+		before = ft_strjoin_free(before, ft_strdup("$"));
 	free_split(split);
 	return (before);
 }

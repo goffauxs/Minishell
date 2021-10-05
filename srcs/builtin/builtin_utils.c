@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 10:26:18 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:20:40 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	export_check(char **str, t_command cmd)
 	}
 	else if (cmd.argv[1][0] == '\0')
 	{
-		ft_putendl_fd("Syntax error", 2);
+		ft_putendl_fd("Minishell: Syntax error", 2);
 		return (1);
 	}
 	return (0);

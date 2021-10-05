@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 14:14:53 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:22:31 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,8 @@ static int	change_dir(char *path, char ***envp)
 	ret = chdir(path);
 	if (ret == -1)
 	{
-		ft_putstr_fd("cd: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putendl_fd(": no such file or directory", 2);
+		ft_putstr_fd("Minishell: cd: ", 2);
+		perror(path);
 		return (1);
 	}
 	pwd = NULL;
@@ -75,7 +74,7 @@ int	builtin_cd(t_command command, char **envp)
 	}
 	if (command.argv[2])
 	{
-		ft_putendl_fd("cd: too many arguments", 2);
+		ft_putendl_fd("Minishell: cd: too many arguments", 2);
 		return (1);
 	}
 	return (change_dir(command.argv[1], &envp));

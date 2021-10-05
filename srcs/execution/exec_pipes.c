@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/09/30 14:38:42 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:02:49 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ void	last_cmd(t_script *s, char **path_env, int *pipein, int pid)
 	i = s->cmd_count - 1;
 	if (pid == 0)
 		last_child(s, path_env, pipein, i);
+	close_pipes(pipein, NULL);
 	free_path_env(path_env);
 }

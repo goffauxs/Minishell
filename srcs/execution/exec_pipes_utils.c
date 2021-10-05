@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:30 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 18:04:51 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:20:54 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	in_redir(t_script *s, int i, char **path_env)
 		fdin = open(s->commands[i].in.name, s->commands[i].in.flag);
 		if (fdin == -1)
 		{
-			ft_putstr_fd(s->commands[i].in.name, 2);
-			ft_putendl_fd(": No such file or directory", 2);
+			perror(s->commands[i].in.name);
 			free_cmds_path(s, path_env);
 			exit(1);
 		}
@@ -30,7 +29,7 @@ void	in_redir(t_script *s, int i, char **path_env)
 		{
 			if (dup2(fdin, STDIN_FILENO) == -1)
 			{
-				ft_putendl_fd("Error: dup2 failed", 2);
+				ft_putendl_fd("Minishell: Error: dup2 failed", 2);
 				close(fdin);
 				free_cmds_path(s, path_env);
 				exit(1);
@@ -48,8 +47,7 @@ void	out_redir(t_script *s, int i, char **path_env)
 	fdout = open(s->commands[i].out.name, s->commands[i].out.flag, 0644);
 	if (fdout == -1)
 	{
-		ft_putstr_fd(s->commands[i].out.name, 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		perror(s->commands[i].out.name);
 		free_cmds_path(s, path_env);
 		exit(1);
 	}
@@ -57,7 +55,7 @@ void	out_redir(t_script *s, int i, char **path_env)
 	{
 		if (dup2(fdout, STDOUT_FILENO) == -1)
 		{
-			ft_putendl_fd("Error: dup2 failed", 2);
+			ft_putendl_fd("Minishell: Error: dup2 failed", 2);
 			close(fdout);
 			free_cmds_path(s, path_env);
 			exit(1);
@@ -83,7 +81,7 @@ int	pipe_dup(int *pipe, int mod, int std)
 	{
 		if (dup2(pipe[mod], std) == -1)
 		{
-			write(2, "Error: dup2 failed\n", 19);
+			write(2, "Minishell: Error: dup2 failed\n", 19);
 			return (1);
 		}
 	}
