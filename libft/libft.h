@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 09:22:04 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 15:25:18 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:35:19 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ void			ft_lstclear(t_list **lst, void (*del)(void *));
 void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
+long long int	ft_atol(const char *nptr);
 
 #endif

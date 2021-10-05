@@ -6,7 +6,7 @@
 #    By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 12:04:24 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/10/05 15:25:32 by mdeclerf         ###   ########.fr        #
+#    Updated: 2021/10/05 15:35:29 by mdeclerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRCS	=	ft_isascii.c \
 			ft_islong.c \
 			ft_isspace.c \
 			ft_atoi_base.c \
+			ft_atol.c \
 
 BONUS	=	ft_lstnew.c \
 			ft_lstadd_front.c \

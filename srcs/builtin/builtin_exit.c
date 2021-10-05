@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:00 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 15:29:31 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:40:03 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,30 @@ static int	exit_too_many_arg(int cmd_count)
 	return (0);
 }
 
-int	builtin_exit(t_command command, int cmd_count)
+int	builtin_exit(t_command command, int cmd_count, char *str)
 {
-	int		ret;
+	long long		ret;
 
-	if (command.argv[1])
+	if (str)
 	{
-		if (!ft_islong(command.argv[1]))
+		if (!ft_islong(str))
 			return (exit_numeric_arg(command, cmd_count));
 	}
 	if (command.argc > 2)
 		return (exit_too_many_arg(cmd_count));
 	else
 	{
-		if (command.argv[1])
+		if (str)
 		{
-			ret = ft_atoi(command.argv[1]);
-			if ((ret == -1 && ft_strncmp(command.argv[1], "-1", 2))
-				|| (ret == 0 && !(!ft_strncmp(command.argv[1], "0", 1)
-						|| !ft_strncmp(command.argv[1], "-0", 2))))
+			ret = ft_atol(str);
+			if ((ret == -1 && ft_strncmp(str, "-1", 2))
+				|| (ret == 0 && !(!ft_strncmp(str, "0", 1) 
+				|| !ft_strncmp(str, "-0", 2))))
 				return (exit_numeric_arg(command, cmd_count));
-			g_exit_status = ft_atoi(command.argv[1]) & 0xFF;
+			g_exit_status = (int)(ft_atol(str) & 0xFF);
 		}
 		else
 			g_exit_status = 0;
-		rl_on_new_line();
 		if (cmd_count == 1)
 			write(1, "exit\n", 5);
 	}

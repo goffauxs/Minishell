@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 14:35:17 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:32:21 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int	handle_builtin(int ret, t_script *script, int i)
 	if (ret == 6)
 		g_exit_status = builtin_env(script->envp, script->commands[i]);
 	if (ret == 7)
-		return (builtin_exit(script->commands[i], script->cmd_count));
+		return (builtin_exit(script->commands[i], script->cmd_count,
+			script->commands[i].argv[1]));
 	return (0);
 }
