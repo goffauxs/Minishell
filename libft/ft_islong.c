@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_islong.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:23:12 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 15:27:21 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/05 15:59:35 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ int	ft_islong(const char *nptr)
 	int		i;
 	int		neg;
 	long	value;
+	int		ret;
 
 	i = 0;
 	value = 0;
 	neg = 0;
+	ret = 0;
 	while ((nptr[i] == ' ' || (nptr[i] >= 9 && nptr[i] <= 13)))
 		i++;
 	if (nptr[i] == '-')
@@ -34,6 +36,7 @@ int	ft_islong(const char *nptr)
 			return (0);
 		else
 			value = (value * 10) + nptr[i++] - '0';
+		ret = 1;
 	}
-	return (1);
+	return (ret);
 }
