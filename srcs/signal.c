@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 18:56:59 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/06 11:17:51 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 11:27:48 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	sig_handler(int signum)
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
+		g_exit_status = 1;
 	}
 }
 

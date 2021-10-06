@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/06 11:18:48 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 11:23:39 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,16 @@ static void	exec_cmd( char **path, char **cmd, char **env)
 
 void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 {
-	char	*tmp;
-
+	char		*tmp;
+	struct stat	buf;
+	
 	if (!ret)
 	{
 		tmp = script->commands[i].argv[0];
 		exec_cmd(path_env, script->commands[i].argv, script->envp);
+		stat(tmp, &buf);
+		if (S_ISDIR(buf.st_mode))
+			errno = EISDIR;
 		ft_putstr_fd("Minishell: ", 2);
 		perror(tmp);
 		free_cmds_path(script, path_env);
