@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 15:28:49 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 10:20:08 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*replace_env_var(char *line_buf, char **envp, int i, int j)
 		}
 		i++;
 	}
-	if (line_buf[ft_strlen(line_buf) - 1] == '$' || !split[0])
+	if (line_buf[ft_strlen(line_buf) - 1] == '$')
 		before = ft_strjoin_free(before, ft_strdup("$"));
 	free_split(split);
 	return (before);
