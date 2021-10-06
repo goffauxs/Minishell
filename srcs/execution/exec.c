@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/06 11:23:39 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 12:00:28 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	exec_cmd( char **path, char **cmd, char **env)
 {
 	char	*tmp;
 	int		i;
+	int		ret;
 
 	tmp = ft_strdup(*cmd);
 	i = 0;
@@ -25,12 +26,14 @@ static void	exec_cmd( char **path, char **cmd, char **env)
 		free(tmp);
 		return ;
 	}
-	while (execve(tmp, cmd, env) == -1 && path[i])
+	ret = -1;
+	while (ret == -1 && path[i])
 	{
 		free(tmp);
 		tmp = ft_strjoin(path[i], *cmd);
 		if (!tmp)
 			break ;
+		ret = execve(tmp, cmd, env);
 		i++;
 	}
 	if (tmp)
@@ -50,7 +53,13 @@ void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 		if (S_ISDIR(buf.st_mode))
 			errno = EISDIR;
 		ft_putstr_fd("Minishell: ", 2);
-		perror(tmp);
+		if (errno != ENOENT)
+			perror(tmp);
+		else
+		{
+			ft_putstr_fd(tmp, 2);
+			ft_putendl_fd(": command not found", 2);
+		}
 		free_cmds_path(script, path_env);
 		exit(127);
 	}
