@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:00 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 15:46:14 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/06 13:23:25 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ int	builtin_exit(t_command command, int cmd_count, char *str)
 				return (exit_numeric_arg(command, cmd_count));
 			g_exit_status = (int)(ft_atol(str) & 0xFF);
 		}
-		else
-			g_exit_status = 0;
 		if (cmd_count == 1)
 			write(1, "exit\n", 5);
 	}
