@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 13:22:31 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 15:54:30 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int	change_dir(char *path, char ***envp)
 	int		ret;
 	char	*pwd;
 
-	replace_env(get_env_content("PWD", *envp), "OLDPWD=", envp);
 	ret = chdir(path);
 	if (ret == -1)
 	{
@@ -54,6 +53,7 @@ static int	change_dir(char *path, char ***envp)
 		perror(path);
 		return (1);
 	}
+	replace_env(get_env_content("PWD", *envp), "OLDPWD=", envp);
 	pwd = NULL;
 	pwd = getcwd(pwd, MAX_PATH_LEN);
 	ret = replace_env(pwd, "PWD=", envp);
