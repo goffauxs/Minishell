@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:30 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 13:20:54 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 10:48:12 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,22 +86,4 @@ int	pipe_dup(int *pipe, int mod, int std)
 		}
 	}
 	return (0);
-}
-
-void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
-{
-	char	*tmp;
-
-	if (!ret)
-	{
-		tmp = script->commands[i].argv[0];
-		exec_cmd(path_env, script->commands[i].argv, script->envp);
-		ft_putstr_fd("Minishell: ", 2);
-		ft_putstr_fd(tmp, 2);
-		ft_putendl_fd(": command not found", 2);
-		free_cmds_path(script, path_env);
-		exit(127);
-	}
-	else
-		handle_builtin(ret, script, i);
 }

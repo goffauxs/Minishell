@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 15:44:32 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/06 11:18:48 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_cmd( char **path, char **cmd, char **env)
+static void	exec_cmd( char **path, char **cmd, char **env)
 {
 	char	*tmp;
 	int		i;
@@ -35,6 +35,23 @@ void	exec_cmd( char **path, char **cmd, char **env)
 	}
 	if (tmp)
 		free(tmp);
+}
+
+void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
+{
+	char	*tmp;
+
+	if (!ret)
+	{
+		tmp = script->commands[i].argv[0];
+		exec_cmd(path_env, script->commands[i].argv, script->envp);
+		ft_putstr_fd("Minishell: ", 2);
+		perror(tmp);
+		free_cmds_path(script, path_env);
+		exit(127);
+	}
+	else
+		handle_builtin(ret, script, i);
 }
 
 int	handle_cmd(t_script *script)

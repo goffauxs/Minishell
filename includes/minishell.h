@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 15:32:39 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 11:19:00 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ void			cmd_builtin(t_script *script, char **path_env, int ret, int i);
 int				first_cmd(t_script *script, char **path_env, int *pipe1);
 int				mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2);
 void			last_cmd(t_script *s, char **path_env, int *pipein, int pid);
-void			exec_cmd( char **path, char **cmd, char **env);
 int				handle_cmd(t_script *script);
 int				check_builtin(char *cmd);
 int				handle_builtin(int ret, t_script *script, int i);

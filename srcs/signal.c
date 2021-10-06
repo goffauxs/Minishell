@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 18:56:59 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/05 13:24:59 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 11:17:51 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,5 @@ void	sig_handler_fork(int signum)
 void	sig_handler_heredoc(int signum)
 {
 	if (signum == SIGINT)
-	{
-		g_exit_status = 1;
-	}
+		exit(1);
 }
