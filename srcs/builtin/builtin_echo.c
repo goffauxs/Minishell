@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:52 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 14:47:55 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 10:11:31 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static int	flag_handling(t_command command, int *flag, int *i)
 		(*flag)++;
 	}
 	else
-		*flag = 0;
-	return (*flag);
+		return (0);
+	return (1);
 }
 
 static int	echo_print(t_command command, int i)
