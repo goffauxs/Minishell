@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 10:29:21 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 15:28:50 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	main_loop(t_script *script, char **line_buf)
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
 		ret = parse(script, line_buf);
+		free(*line_buf);
 		if (ret == 1)
 			continue ;
 		else if (ret == 2)

@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:08:33 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 14:01:14 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/06 15:21:39 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,18 @@ void	free_commands(t_script *script)
 	free(script->commands);
 }
 
-void	free_tokens(t_token *head)
+int	free_tokens(t_token **head)
 {
 	t_token	*tmp;
 
-	while (head)
+	while (*head)
 	{
-		tmp = head->next;
-		free(head->content);
-		free(head);
-		head = tmp;
+		tmp = (*head)->next;
+		free((*head)->content);
+		free(*head);
+		*head = tmp;
 	}
+	return (1);
 }
 
 void	free_path_env(char **path_env)

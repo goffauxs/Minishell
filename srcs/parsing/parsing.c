@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 14:22:48 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/06 15:28:15 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,19 @@ static void	parse_commands(t_token *head, t_command *commands, int i, int j)
 
 static int	tokenize(char **line, t_token **head, t_script *s)
 {
+	t_token	*tmp;
 	char	*bis;
 
-	bis = replace_env_var(*line, s->envp, 0, 0);
-	if (!tokenizer(bis, head))
+	if (!tokenizer(*line, head))
+		return (return_error("Syntax Error\n"));
+	tmp = *head;
+	while (tmp)
 	{
-		free_tokens(*head);
+		bis = tmp->content;
+		tmp->content = replace_env_var(bis, s->envp, 0, 0);
 		free(bis);
-		return (return_error("Syntax error\n"));
+		tmp = tmp->next;
 	}
-	free(bis);
 	return (0);
 }
 
@@ -95,21 +98,17 @@ int	parse(t_script *script, char **line_buf)
 		return (2);
 	add_history(*line_buf);
 	if (tokenize(line_buf, &head, script))
-		return (1);
+		return (free_tokens(&head));
+	remove_blank_tokens(head);
 	if (check_syntax(head))
-	{
-		free_tokens(head);
-		free(*line_buf);
-		return (1);
-	}
+		return (free_tokens(&head));
 	script->cmd_count = get_cmd_count(head);
 	script->commands = malloc(sizeof(t_command) * script->cmd_count);
 	if (!script->commands || script->cmd_count <= 0)
-		return (1);
-	set_filenames_null(script->commands, script->cmd_count, head);
+		return (free_tokens(&head));
 	get_num_args(head, script);
+	set_filenames_null(script->commands, script->cmd_count, head);
 	parse_commands(head, script->commands, 0, 0);
-	free_tokens(head);
-	free(*line_buf);
+	free_tokens(&head);
 	return (0);
 }

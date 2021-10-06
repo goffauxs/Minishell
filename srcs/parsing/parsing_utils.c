@@ -6,11 +6,29 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:29 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/04 15:53:25 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/06 15:05:50 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	remove_blank_tokens(t_token *head)
+{
+	t_token	*tmp;
+
+	while (head)
+	{
+		if (head->type != TOKEN_PIPE && head->next && !head->next->content[0])
+		{
+			tmp = head->next->next;
+			free(head->next->content);
+			free(head->next);
+			head->next = tmp;
+		}
+		else
+			head = head->next;
+	}
+}
 
 void	set_filenames_null(t_command *commands, int max, t_token *head)
 {

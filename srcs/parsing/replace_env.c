@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/06 11:20:18 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/06 15:28:57 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ static char	**init_split_before(char *line_buf, char **before, int *i)
 char	*replace_env_var(char *line_buf, char **envp, int i, int j)
 {
 	char	**split;
-	int		quotes;
-	int		dquotes;
 	char	*before;
 	char	*tmp;
 
@@ -75,9 +73,9 @@ char	*replace_env_var(char *line_buf, char **envp, int i, int j)
 	split = init_split_before(line_buf, &before, &i);
 	while (split[i])
 	{
-		quotes = (odd_before(split, i, '\'') && odd_after(split, i, '\''));
-		dquotes = (odd_before(split, i, '\"') && odd_after(split, i, '\"'));
-		if (quotes && (first_quote(line_buf) || !dquotes))
+		if ((odd_before(split, i, '\'') && odd_after(split, i, '\''))
+			&& (first_quote(line_buf) || !(odd_before(split, i, '\"')
+					&& odd_after(split, i, '\"'))))
 			before = ft_strjoin_free(before, ft_strjoin("$", split[i]));
 		else
 		{

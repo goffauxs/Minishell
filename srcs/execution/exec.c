@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/06 12:00:28 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/06 14:59:37 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 {
 	char		*tmp;
 	struct stat	buf;
-	
+
 	if (!ret)
 	{
 		tmp = script->commands[i].argv[0];
+		if (!tmp[0])
+			return ;
 		exec_cmd(path_env, script->commands[i].argv, script->envp);
 		stat(tmp, &buf);
 		if (S_ISDIR(buf.st_mode))
