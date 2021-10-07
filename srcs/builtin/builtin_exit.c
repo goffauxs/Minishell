@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:00 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/06 13:23:25 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/07 10:47:34 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ int	builtin_exit(t_command command, int cmd_count, char *str)
 {
 	long long		ret;
 
-	if (str)
-		if (!ft_islong(str))
-			return (exit_numeric_arg(command, cmd_count));
+	if (str && !ft_islong(str))
+		return (exit_numeric_arg(command, cmd_count));
 	if (command.argc > 2)
 		return (exit_too_many_arg(cmd_count));
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/06 14:59:37 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 10:32:25 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 		tmp = script->commands[i].argv[0];
 		if (!tmp[0])
 			return ;
-		exec_cmd(path_env, script->commands[i].argv, script->envp);
 		stat(tmp, &buf);
+		exec_cmd(path_env, script->commands[i].argv, script->envp);
 		if (S_ISDIR(buf.st_mode))
 			errno = EISDIR;
 		ft_putstr_fd("Minishell: ", 2);
@@ -73,8 +73,6 @@ int	handle_cmd(t_script *script)
 {
 	char	**path_env;
 
-	script->termios_p.c_lflag |= ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script->termios_p);
 	path_env = split_paths(script->envp);
 	if (script->cmd_count == 1)
 	{
@@ -84,7 +82,6 @@ int	handle_cmd(t_script *script)
 	else
 		if (pipex(script, path_env))
 			return (1);
-	script->termios_p.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &script->termios_p);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/06 15:28:50 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 10:32:07 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	script.envp = envp_malloc(envp);
 	line_buf = NULL;
-	termios(&script);
+	tcgetattr(STDIN_FILENO, &script.termios_p);
 	main_loop(&script, &line_buf);
 	free_path_env(script.envp);
 	return (g_exit_status);

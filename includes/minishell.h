@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/06 15:21:51 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 10:31:22 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,5 @@ void			close_free_exit(t_script *s, char **path_env, int *p1, int *p2);
 void			sig_handler(int signum);
 void			sig_handler_fork(int signum);
 void			sig_handler_heredoc(int signum);
-void			termios(t_script *script);
 
 #endif
