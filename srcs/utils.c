@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 14:58:48 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 13:29:51 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:34:44 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ get_env_content(char *str, char **envp):
 	or not the given variable (str) is defined and returns the content or 
 	an empty freeable string.
 */
-
 char	*get_env_content(char *str, char **envp)
 {
 	char	*tmp;

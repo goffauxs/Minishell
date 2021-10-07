@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:35 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 15:33:59 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:34:38 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ treat_quotes(char **str):
 	same quotation mark. The function returns 0 if this character is never met, 
 	which would signify an unclosed quotation mark.
 */
-
 static int	treat_quotes(char **str)
 {
 	char	open_quote;
@@ -59,7 +58,6 @@ static char	*end_remove_quotes(char *tmp, char *copy, int i)
 remove_quotes(char *str):
 	This function removes any redundant quotation marks 
 */
-
 char	*remove_quotes(char *str)
 {
 	char	*tmp;
@@ -92,7 +90,6 @@ tokenizer(char *str, t_token **head):
 	This function iterates over the line buffer read by readline and 
 	splits it into tokens based on the operations it encounters.
 */
-
 int	tokenizer(char *str, t_token **head)
 {
 	t_operations	curr;

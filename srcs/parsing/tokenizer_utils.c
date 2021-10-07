@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:12:47 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 13:38:32 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:34:33 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ create_token(const char *string, int size, t_token_type type):
 	This function simply mallocs and creates a token with the given type, size 
 	and content and returns it.
 */
-
 t_token	*create_token(const char *string, int size, t_token_type type)
 {
 	t_token	*token;
@@ -37,7 +36,6 @@ add_token(t_token **head, t_token *new_token):
 	This function takes a token list node (new_token) and adds it to the end 
 	of the linked list pointed to by head.
 */
-
 void	add_token(t_token **head, t_token *new_token)
 {
 	t_token	*tmp;
@@ -61,7 +59,6 @@ search_token_type(const char *s):
 	This function compares the character(s) given to some possible operations and 
 	returns either the given operation if found, or a blank operation.
 */
-
 t_operations	search_token_type(const char *s)
 {
 	const t_operations		ex_ops[12] =
