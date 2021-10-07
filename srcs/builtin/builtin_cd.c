@@ -6,12 +6,17 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 15:17:12 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:27:45 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+get_env(char *str, char **envp) :
+	This function returns the index position (in envp) of the name of the
+	environment variable passed as a parameter.
+*/
 static int	get_env(char *str, char **envp)
 {
 	int		i;
@@ -26,6 +31,11 @@ static int	get_env(char *str, char **envp)
 	return (-1);
 }
 
+/*
+replace_env(char *str, char *name, char ***envp) :
+	This function replaces an environment variable in envp. It is used
+	to set OLDPWD to the correct path.
+*/
 static int	replace_env(char *str, char *name, char ***envp)
 {
 	int		idx;
@@ -41,12 +51,18 @@ static int	replace_env(char *str, char *name, char ***envp)
 	return (0);
 }
 
+/*
+change_dir(char *path, char ***envp) :
+	This function changes the current directory with chdir(path) and
+	replaces the environment variables $PWD and $OLDPWD.
+*/
 static int	change_dir(char *path, char ***envp)
 {
 	int		ret;
 	char	*pwd;
 
 	ret = chdir(path);
+	
 	if (ret == -1)
 	{
 		ft_putstr_fd("Minishell: cd: ", 2);
@@ -60,6 +76,11 @@ static int	change_dir(char *path, char ***envp)
 	return (ret);
 }
 
+/*
+builtin_cd(t_command command, char **envp) :
+	This function handles cd without arguments (leads to home), cd with too
+	many arguments and a properly formated cd. 
+*/
 int	builtin_cd(t_command command, char **envp)
 {
 	char	*home;
@@ -83,5 +104,7 @@ int	builtin_cd(t_command command, char **envp)
 		ft_putendl_fd("Minishell: cd: too many arguments", 2);
 		return (1);
 	}
+	if (command.argv[1][0] == '\0')
+		return (change_dir(".", &envp));
 	return (change_dir(command.argv[1], &envp));
 }
