@@ -6,13 +6,13 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:35 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/05 13:07:45 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:33:59 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	copy_in_dquotes(char *start, char *end, char **str, int *i)
+static void	copy_in_quotes(char *start, char *end, char **str, int *i)
 {
 	while (start != end)
 	{
@@ -21,6 +21,15 @@ static void	copy_in_dquotes(char *start, char *end, char **str, int *i)
 		(*i)++;
 	}
 }
+
+/*
+treat_quotes(char **str):
+	This function advances the given pointer to the next character that it is on.
+	For example, if the function is called with the pointer pointing at a quotation 
+	mark, it will advance the pointer in the string to the next occurence of that 
+	same quotation mark. The function returns 0 if this character is never met, 
+	which would signify an unclosed quotation mark.
+*/
 
 static int	treat_quotes(char **str)
 {
@@ -46,6 +55,11 @@ static char	*end_remove_quotes(char *tmp, char *copy, int i)
 	return (ret);
 }
 
+/*
+remove_quotes(char *str):
+	This function removes any redundant quotation marks 
+*/
+
 char	*remove_quotes(char *str)
 {
 	char	*tmp;
@@ -64,7 +78,7 @@ char	*remove_quotes(char *str)
 		{
 			start = str + 1;
 			treat_quotes(&str);
-			copy_in_dquotes(start, str, &tmp, &i);
+			copy_in_quotes(start, str, &tmp, &i);
 		}
 		else
 			tmp[i++] = *str;
@@ -72,6 +86,12 @@ char	*remove_quotes(char *str)
 	}
 	return (end_remove_quotes(tmp, copy, i));
 }
+
+/*
+tokenizer(char *str, t_token **head):
+	This function iterates over the line buffer read by readline and 
+	splits it into tokens based on the operations it encounters.
+*/
 
 int	tokenizer(char *str, t_token **head)
 {

@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 17:52:21 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/01 17:52:40 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/07 13:14:01 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+odd_before/odd_after(char **str, int i, char c):
+	These two functions return 1 if the number of the given quotation marks 
+	before or after the index is odd, and returns 0 if even.
+*/
 
 int	odd_before(char **str, int i, char c)
 {
@@ -50,6 +56,11 @@ int	odd_after(char **str, int i, char c)
 	}
 	return (count % 2);
 }
+
+/*
+free_split(char **split):
+	This function simply frees the content of the split string.
+*/
 
 void	free_split(char **split)
 {

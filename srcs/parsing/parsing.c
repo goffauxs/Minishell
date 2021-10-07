@@ -6,11 +6,17 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/06 16:53:34 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:35:20 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+open_redirs:
+	This function sets the open flags and opens the files based on the type of 
+	redirection token it encounters ('<', '<<', '>', '>>').
+*/
 
 static void	open_redirs(t_token *head, t_redirection *redir)
 {
@@ -41,6 +47,12 @@ static void	open_redirs(t_token *head, t_redirection *redir)
 	close(open(redir->name, redir->flag, 0644));
 }
 
+/*
+parse_commands:
+	This function iterates through a linked list of tokens and fills the command 
+	structure based on the type of token it encounters.
+*/
+
 static void	parse_commands(t_token *head, t_command *commands, int i, int j)
 {
 	while (head)
@@ -70,6 +82,13 @@ static void	parse_commands(t_token *head, t_command *commands, int i, int j)
 	}
 }
 
+/*
+tokenize:
+	This function splits the readline buffer into tokens (eg. pipes, command names, 
+	flags, etc.) then goes through each token and replaces any environment 
+	variables that need to be replaced.
+*/
+
 static int	tokenize(char **line, t_token **head, t_script *s)
 {
 	t_token	*tmp;
@@ -88,6 +107,12 @@ static int	tokenize(char **line, t_token **head, t_script *s)
 	return (0);
 }
 
+/*
+trim_spaces:
+	This function simply trims the leading and trailing whitespace that can be 
+	found when replacing an environment variable.
+*/
+
 static void	trim_spaces(t_token *head)
 {
 	char	*tmp;
@@ -100,6 +125,15 @@ static void	trim_spaces(t_token *head)
 		head = head->next;
 	}
 }
+
+/*
+parse:
+	This function calls readline to wait for an input from the user, adds the 
+	command to the history, then goes on to parse the string.
+	The parsing is done in multiple steps, starting with a lexer (tokenizer) 
+	that will split the string into workable tokens that can be parsed into 
+	our command structure.
+*/
 
 int	parse(t_script *script, char **line_buf)
 {

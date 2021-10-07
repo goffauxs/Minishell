@@ -6,11 +6,17 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/06 15:28:57 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:37:08 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+first_quote(char *str):
+	This function returns 1 if the outer quotation marks around a point in a 
+	string are single quotes and returns 0 otherwise.
+*/
 
 static int	first_quote(char *str)
 {
@@ -23,6 +29,12 @@ static int	first_quote(char *str)
 		return (1);
 	return (0);
 }
+
+/*
+replace_loop(char *str, char **envp, int *i):
+	This function gets the environment variable name after a $ and returns its
+	corresponding value in the environment.
+*/
 
 static char	*replace_loop(char *str, char **envp, int *i)
 {
@@ -48,6 +60,12 @@ static char	*replace_loop(char *str, char **envp, int *i)
 	return (tmp);
 }
 
+/*
+init_split_before(char *line_buf, char **before, int *i):
+	This function splits our given line buffer on '$' and accounts for the 
+	possibility that the string may begin with a '$'.
+*/
+
 static char	**init_split_before(char *line_buf, char **before, int *i)
 {
 	char	**split;
@@ -62,6 +80,14 @@ static char	**init_split_before(char *line_buf, char **before, int *i)
 		*before = ft_strdup("");
 	return (split);
 }
+
+/*
+replace_env_var(char *line_buf, char **envp, int i, int j):
+	This function splits our given line buffer into one or more environment 
+	variables, determines whether or not they need to be replaced based on 
+	the quotation marks that surround each one, and rebuilds the line buffer 
+	with these replacements and returns the new string.
+*/
 
 char	*replace_env_var(char *line_buf, char **envp, int i, int j)
 {
@@ -90,32 +116,4 @@ char	*replace_env_var(char *line_buf, char **envp, int i, int j)
 		before = ft_strjoin_free(before, ft_strdup("$"));
 	free_split(split);
 	return (before);
-}
-
-char	*get_env_content(char *str, char **envp)
-{
-	char	*tmp;
-	char	*ret;
-	int		len;
-
-	tmp = ft_strjoin(str, "=");
-	len = ft_strlen(tmp);
-	ret = NULL;
-	while (*envp)
-	{
-		if (!ft_strncmp(tmp, *envp, len))
-		{
-			ret = ft_strdup(*envp + len);
-			break ;
-		}
-		envp++;
-	}
-	free(tmp);
-	if (!ret)
-	{
-		ret = ft_strdup("");
-		if (!ret)
-			return (NULL);
-	}
-	return (ret);
 }
