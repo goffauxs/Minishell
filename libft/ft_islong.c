@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 15:23:12 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 16:17:33 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 11:05:25 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ int	ft_islong(const char *nptr)
 		if (value > 922337203685477580 || (value == 922337203685477580
 				&& ((!neg && nptr[i] - '0' > 7) || (neg && nptr[i] - '0' > 8))))
 			return (0);
-		else
-			value = (value * 10) + nptr[i++] - '0';
+		value = (value * 10) + nptr[i++] - '0';
 	}
-	return (1);
+	while (ft_isspace(nptr[i]))
+		i++;
+	return (nptr[i] == '\0');
 }

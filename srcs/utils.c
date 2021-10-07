@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 14:58:48 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 10:31:35 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 11:04:56 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,4 +17,3 @@ int	return_error(const char *msg)
 	write(2, msg, ft_strlen(msg));
 	return (1);
 }
-
