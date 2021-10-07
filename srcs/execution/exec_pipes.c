@@ -6,12 +6,18 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:36 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 13:02:49 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:19:03 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+first_cmd(t_script *script, char **path_env, int *pipe1) :
+	This function initializes pipe1 needed to redirect the output of
+	the first cmd into the second one. It then forks and enters the first
+	child function.
+*/
 int	first_cmd(t_script *script, char **path_env, int *pipe1)
 {
 	int	pid;
@@ -27,6 +33,12 @@ int	first_cmd(t_script *script, char **path_env, int *pipe1)
 	return (0);
 }
 
+/*
+middle_cmds(t_script *script, char **path_env, int **pipes, int i) :
+	This function forks and calls middle_child (exec_pipes_forks.c), sending
+	it the pipes needed to redirect the input and output of the cmd (prepared
+	in middle_loop).
+*/
 static int	middle_cmds(t_script *script, char **path_env, int **pipes, int i)
 {
 	int	pid;
@@ -63,6 +75,11 @@ static int	**pipe_init(char **path_env, int *pipe1, int *pipe2)
 	return (pipes);
 }
 
+/*
+mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2) :
+	This function is a loop that initializes one pipe or the other.
+	It uses two pipes to alternatively use one or the other as the input.
+*/
 int	mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2)
 {
 	int	i;
@@ -90,6 +107,11 @@ int	mid_loop(t_script *s, char **path_env, int *pipe1, int *pipe2)
 	return (check);
 }
 
+/*
+last_cmd(t_script *s, char **path_env, int *pipein, int pid) :
+	This function calls the last child function, needed for the last cmd.
+	It then frees the paths before going back to handle_cmd (exec.c).
+*/
 void	last_cmd(t_script *s, char **path_env, int *pipein, int pid)
 {
 	int	i;

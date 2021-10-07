@@ -3,15 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   exec_onecmd_pipex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/05 13:24:54 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:25:20 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+one_cmd_exec(t_script *script, char **path_env) :
+	This function is called by one_cmd if the cmd is not a builtin.
+	It forks and calls first_child which will execute normally like if
+	there multiple cmds, but we send it NULL meaning it won't have
+	to redirect the output to a pipe.
+*/
 static int	one_cmd_exec(t_script *script, char **path_env)
 {
 	int	pid;
@@ -32,6 +39,11 @@ static int	one_cmd_exec(t_script *script, char **path_env)
 	return (0);
 }
 
+/*
+one_cmd(t_script *script, char **path_env) :
+	This function is called if there is only one command to execute
+	and differentiates the cmd between a builtin or another cmd.
+*/
 int	one_cmd(t_script *script, char **path_env)
 {
 	int	ret;
@@ -60,6 +72,13 @@ int	one_cmd(t_script *script, char **path_env)
 	return (0);
 }
 
+/*
+pipex(t_script *script, char **path_env) :
+	This function is called if there are more than one command.
+	It's the parent function for every fork and child that will be
+	created in order for every command to be executed. It also waits for
+	every fork process.
+*/
 int	pipex(t_script *script, char **path_env)
 {
 	int	pid;

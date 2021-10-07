@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 10:36:16 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:35:29 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ static void	error_message_heredoc(char *content)
 	ft_putendl_fd("\')", 2);
 }
 
+/*
+loop_heredoc(t_script *script, int pipe, int i) :
+	This function reads the user's input until it finds the delimiters 
+	set in heredoc linked list. It stores the input only for the last delimiter
+	and places it in the pipe for later use as the input redirection.
+*/
 static void	loop_heredoc(t_script *script, int pipe, int i)
 {
 	char	*tmp;
@@ -48,6 +54,11 @@ static void	loop_heredoc(t_script *script, int pipe, int i)
 	write(pipe, bis, ft_strlen(bis));
 }
 
+/*
+heredoc(t_script *script, int i, char **path_env) :
+	This function first initializes a pipe in which we can write the content
+	that we'll read from the user.
+*/
 void	heredoc(t_script *script, int i, char **path_env)
 {
 	int		pipe_tmp[2];

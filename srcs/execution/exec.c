@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:45 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 10:32:25 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:31:19 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+exec_cmd( char **path, char **cmd, char **env) :
+	This function first tries to execute the cmd using the absolute path then
+	loops through the PATH until execve succeeds.
+*/
 static void	exec_cmd( char **path, char **cmd, char **env)
 {
 	char	*tmp;
@@ -40,6 +45,11 @@ static void	exec_cmd( char **path, char **cmd, char **env)
 		free(tmp);
 }
 
+/*
+cmd_builtin(t_script *script, char **path_env, int ret, int i) :
+	This function is called in every child function. It differentiates between
+	a builtin and another cmd and then executes it.
+*/
 void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 {
 	char		*tmp;
@@ -69,6 +79,11 @@ void	cmd_builtin(t_script *script, char **path_env, int ret, int i)
 		handle_builtin(ret, script, i);
 }
 
+/*
+handle_cmd(t_script *script) :
+	This is the very first function that will be called every time
+	we have a command, builtin or not. 
+*/
 int	handle_cmd(t_script *script)
 {
 	char	**path_env;

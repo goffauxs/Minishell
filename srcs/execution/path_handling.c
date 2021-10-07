@@ -6,7 +6,7 @@
 /*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:57 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/04 14:59:17 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:02:02 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,11 @@ static char	**path_fill(char **env, int p_line)
 	return (path);
 }
 
+/*
+split_paths(char **env) :
+	This function creates a char ** with every possible path listed
+	in the PATH var in envp.
+*/
 char	**split_paths(char **env)
 {
 	char	**path;

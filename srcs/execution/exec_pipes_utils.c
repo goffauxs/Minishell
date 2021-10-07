@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:30 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 16:40:59 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:25:02 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+in_redir(t_script *s, int i, char **path_env) :
+	This function is called in every child function in case we have to 
+	redirect the input.
+	It also calls heredoc (heredoc.c) in case the input comes from a heredoc.
+*/
 void	in_redir(t_script *s, int i, char **path_env)
 {
 	int	fdin;
@@ -40,6 +46,11 @@ void	in_redir(t_script *s, int i, char **path_env)
 		heredoc(s, i, path_env);
 }
 
+/*
+out_redir(t_script *s, int i, char **path_env) :
+	This function is called in every child function in case we have to 
+	redirect the output.
+*/
 void	out_redir(t_script *s, int i, char **path_env)
 {
 	int	fdout;
@@ -75,6 +86,12 @@ void	close_pipes(int *pipe1, int *pipe2)
 	}
 }
 
+/*
+pipe_dup(int *pipe, int mod, int std) :
+	This function is called every time we have to dup. It takes the pipe,
+	the extremity we have to dup and the STDIN/STDOUT we have to
+	replace as parameters.
+*/
 int	pipe_dup(int *pipe, int mod, int std)
 {
 	if (pipe[mod] != std)
