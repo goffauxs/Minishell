@@ -6,45 +6,52 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 15:35:20 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:19:02 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-open_redirs:
+redir:
 	This function sets the open flags and opens the files based on the type of 
 	redirection token it encounters ('<', '<<', '>', '>>').
 */
-
-static void	open_redirs(t_token *head, t_redirection *redir)
+static int	redir(t_token *head, t_redirection *file)
 {
 	t_list	*tmp;
+	int		ret;
 
-	if (redir->name)
-		free(redir->name);
+	if (file->name)
+		free(file->name);
 	if (!head->next || head->next->type != TOKEN_NAME)
-		return ;
-	redir->name = ft_strdup(head->next->content);
+		return (0);
+	file->name = ft_strdup(head->next->content);
 	if (!ft_strncmp(head->content, ">>", 2))
-		redir->flag = (O_CREAT | O_APPEND | O_RDWR);
+		file->flag = (O_CREAT | O_APPEND | O_RDWR);
 	else if (!ft_strncmp(head->content, "<<", 2))
 	{
-		tmp = ft_lstnew(ft_strdup(redir->name));
-		if (!tmp)
-			return ;
-		if (redir->heredoc == NULL)
-			redir->heredoc = tmp;
+		tmp = ft_lstnew(ft_strdup(file->name));
+		if (file->heredoc == NULL)
+			file->heredoc = tmp;
 		else
-			ft_lstadd_back(&redir->heredoc, tmp);
-		redir->flag = -1;
+			ft_lstadd_back(&file->heredoc, tmp);
+		file->flag = -1;
 	}
 	else if (!ft_strncmp(head->content, ">", 1))
-		redir->flag = (O_CREAT | O_TRUNC | O_RDWR);
+		file->flag = (O_CREAT | O_TRUNC | O_RDWR);
 	else if (!ft_strncmp(head->content, "<", 1))
-		redir->flag = O_RDONLY;
-	close(open(redir->name, redir->flag, 0644));
+		file->flag = O_RDONLY;
+	ret = open(file->name, file->flag, 0644);
+	if (ret == -1)
+	{
+		ft_putstr_fd("Minishell: ", 2);
+		perror(file->name);
+		free(file->name);
+		return (1);
+	}
+	close(ret);
+	return (0);
 }
 
 /*
@@ -52,24 +59,22 @@ parse_commands:
 	This function iterates through a linked list of tokens and fills the command 
 	structure based on the type of token it encounters.
 */
-
-static void	parse_commands(t_token *head, t_command *commands, int i, int j)
+static int	parse_commands(t_token *head, t_command *cmd, int i, int j)
 {
 	while (head)
 	{
-		commands[i].argv = malloc(sizeof(char *) * (commands[i].argc + 1));
-		if (!commands[i].argv)
-			return ;
-		commands[i].in.heredoc = NULL;
+		cmd[i].argv = malloc(sizeof(char *) * (cmd[i].argc + 1));
+		if (!cmd[i].argv)
+			return (1);
 		j = 0;
 		while (head && head->type != TOKEN_PIPE)
 		{
 			if (head->type == TOKEN_NAME)
-				commands[i].argv[j++] = ft_strdup(head->content);
-			else if (head->type == TOKEN_REDIR_IN)
-				open_redirs(head, &commands[i].in);
-			else if (head->type == TOKEN_REDIR_OUT)
-				open_redirs(head, &commands[i].out);
+				cmd[i].argv[j++] = ft_strdup(head->content);
+			else if (head->type == TOKEN_REDIR_IN && redir(head, &cmd[i].in))
+				return (1);
+			else if (head->type == TOKEN_REDIR_OUT && redir(head, &cmd[i].out))
+				return (1);
 			if (head->type == TOKEN_REDIR_IN || head->type == TOKEN_REDIR_OUT)
 				head = head->next;
 			if (head)
@@ -77,9 +82,10 @@ static void	parse_commands(t_token *head, t_command *commands, int i, int j)
 		}
 		if (head)
 			head = head->next;
-		commands[i].argv[j] = NULL;
+		cmd[i].argv[j] = NULL;
 		i++;
 	}
+	return (0);
 }
 
 /*
@@ -88,7 +94,6 @@ tokenize:
 	flags, etc.) then goes through each token and replaces any environment 
 	variables that need to be replaced.
 */
-
 static int	tokenize(char **line, t_token **head, t_script *s)
 {
 	t_token	*tmp;
@@ -112,7 +117,6 @@ trim_spaces:
 	This function simply trims the leading and trailing whitespace that can be 
 	found when replacing an environment variable.
 */
-
 static void	trim_spaces(t_token *head)
 {
 	char	*tmp;
@@ -134,7 +138,6 @@ parse:
 	that will split the string into workable tokens that can be parsed into 
 	our command structure.
 */
-
 int	parse(t_script *script, char **line_buf)
 {
 	t_token	*head;
@@ -156,7 +159,8 @@ int	parse(t_script *script, char **line_buf)
 	trim_spaces(head);
 	get_num_args(head, script);
 	set_filenames_null(script->commands, script->cmd_count, head);
-	parse_commands(head, script->commands, 0, 0);
+	if (parse_commands(head, script->commands, 0, 0))
+		return (1);
 	free_tokens(&head);
 	return (0);
 }

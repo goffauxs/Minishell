@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 15:27:45 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:10:48 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static int	change_dir(char *path, char ***envp)
 	char	*pwd;
 
 	ret = chdir(path);
-	
 	if (ret == -1)
 	{
 		ft_putstr_fd("Minishell: cd: ", 2);

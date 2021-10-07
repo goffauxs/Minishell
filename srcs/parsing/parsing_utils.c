@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:29 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 15:36:15 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:57:55 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ remove_blank_tokens(t_token *head):
 	This function is here to treat off cases where a $ expansion would lead to 
 	empty name tokens with the exception for an empty token after a pipe.
 */
-
 void	remove_blank_tokens(t_token *head)
 {
 	t_token	*tmp;
@@ -44,7 +43,6 @@ set_filenames_null(t_command *commands, int max, t_token *head):
 	2. Iterates over our linked list of tokens and removes the outer 
 		quotation marks.
 */
-
 void	set_filenames_null(t_command *commands, int max, t_token *head)
 {
 	int	i;
@@ -68,7 +66,6 @@ get_cmd_count(t_token *head):
 	This function simply counts the number of pipes in our linked list of 
 	tokens to determine the number of chained commands are in the line buffer.
 */
-
 int	get_cmd_count(t_token *head)
 {
 	int	count;
@@ -90,7 +87,6 @@ get_num_args(t_token *head, t_script *script):
 	This function determines the amount of arguments each command has so the 
 	argv can be malloced to the right size in the following steps.
 */
-
 void	get_num_args(t_token *head, t_script *script)
 {
 	t_token	*tmp;
@@ -120,7 +116,6 @@ check_syntax(t_token *head):
 	This function checks whether the given linked list of tokens is a valid 
 	command syntaxically.
 */
-
 int	check_syntax(t_token *head)
 {
 	t_token	*tmp;
