@@ -6,12 +6,16 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/06 10:04:10 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:56:37 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+prep_bis(char *tmp, char *bis) : 
+	Prepares bis to be compared with the env var names. 
+*/
 static void	prep_bis(char *tmp, char *bis)
 {
 	if (bis)
@@ -27,6 +31,11 @@ static void	prep_bis(char *tmp, char *bis)
 	}
 }
 
+/*
+check_exisiting_export(char **envp, char *str) : 
+	Checks if the export arg already exists within the envp list. The
+	char *bis is the export arg shortened until the = or +=.
+*/
 static int	check_exisiting_export(char **envp, char *str)
 {
 	int		i;
@@ -50,6 +59,14 @@ static int	check_exisiting_export(char **envp, char *str)
 	return (0);
 }
 
+/*
+prep_tmp_exist(char *argvar, char **tmp, const int ch, int i) : 
+	This function is called in loopexport if the variable to export
+	already exists. If the value to be exported has a += (means it has to
+	be appended to the already existing var) we set everything after the += 
+	to the end of the env var. Else the already existing var is freed and 
+	replaced.
+*/
 static void	prep_tmp_exist(char *argvar, char **tmp, const int ch, int i)
 {
 	if (ft_strnstr(argvar, "+=", ft_strlen(argvar)))
@@ -90,6 +107,13 @@ static void	loopexport(t_script *script, char **argv, int var, int len)
 	script->envp = tmp;
 }
 
+/*
+builtin_export(t_script *script, t_command cmd) : 
+	This function iterates through the args given to export, 
+	check their validity and either adds or replace them in/to env.
+	The variable err is used for cases like "export test" where
+	nothing should be done but no error should be printed.
+*/
 int	builtin_export(t_script *script, t_command cmd)
 {
 	int	var;

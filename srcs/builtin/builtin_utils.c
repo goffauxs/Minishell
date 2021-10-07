@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/06 10:39:26 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:58:02 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ int	env_len(char **array)
 	return (i);
 }
 
+/*
+copy_no_plus(char *argvar) : 
+	This function is called in loopexport (builtin_export.c) if the variable to
+	export doesn't exist yet in the envp list. It creates the new envp var (with or 
+	witout the +).
+*/
 char	*copy_no_plus(char *argvar)
 {
 	int		i;
@@ -62,6 +68,11 @@ char	*copy_no_plus(char *argvar)
 	return (tmp);
 }
 
+/*
+checkvalid(char *str) : 
+	This function is called in builtin_export. It contains a list of char that would
+	make an export name invalid.
+*/
 int	checkvalid(char *str)
 {
 	const char	*end = ft_strrchr(str, '=');
@@ -81,6 +92,12 @@ int	checkvalid(char *str)
 	return (1);
 }
 
+/*
+checkvalid(char *str) : 
+	This function is called in builtin_export. It is called if export is called 
+	without arguments or if the first argument is an empty string it prints a 
+	syntax error.
+*/
 int	export_check(char **str, t_command cmd)
 {
 	int	i;

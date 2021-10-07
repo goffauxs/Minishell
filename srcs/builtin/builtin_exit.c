@@ -6,12 +6,18 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:00 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 10:47:34 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:24:40 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+exit_numeric_arg(t_command command, int cmd_count) :
+	This function outputs on STDERR an "exit" followed by an error message. In
+	case of a "numeric argument required" the shell should exit, hence the return
+	value set to 1.
+*/
 static int	exit_numeric_arg(t_command command, int cmd_count)
 {
 	if (cmd_count == 1)
@@ -24,6 +30,12 @@ static int	exit_numeric_arg(t_command command, int cmd_count)
 	return (1);
 }
 
+/*
+exit_too_many_arg(int cmd_count) :
+	This function outputs on STDERR an "exit" followed by an error message. In
+	case of a "numeric argument required" the shell should not exit, hence 
+	the return value set to 0.
+*/
 static int	exit_too_many_arg(int cmd_count)
 {
 	if (cmd_count == 1)
@@ -34,6 +46,12 @@ static int	exit_too_many_arg(int cmd_count)
 	return (0);
 }
 
+/*
+builtin_exit(t_command command, int cmd_count, char *str) :
+	The builtin exit uses atol to set the exit status correctly. The & 0xFF
+	allows to only keep the last 8 bits of the long long (casted in int)
+	returned by atol.
+*/
 int	builtin_exit(t_command command, int cmd_count, char *str)
 {
 	long long		ret;
