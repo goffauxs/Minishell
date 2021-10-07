@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:54:29 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 15:57:55 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:39:33 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,19 +122,19 @@ int	check_syntax(t_token *head)
 
 	tmp = head;
 	if (head && head->type == TOKEN_PIPE)
-		return (return_error("Syntax error\n"));
+		return (return_error("Syntax error", 0));
 	while (head)
 	{
 		if (!head->next && (head->type == TOKEN_PIPE
 				|| head->type == TOKEN_REDIR_IN
 				|| head->type == TOKEN_REDIR_OUT))
-			return (return_error("Syntax error\n"));
+			return (return_error("Syntax error", 0));
 		if (head->type == TOKEN_PIPE && head->next
 			&& head->next->type == TOKEN_PIPE)
-			return (return_error("Syntax error\n"));
+			return (return_error("Syntax error", 0));
 		if ((head->type == TOKEN_REDIR_OUT || head->type == TOKEN_REDIR_IN)
 			&& (head->next && head->next->type != TOKEN_NAME))
-			return (return_error("Syntax error\n"));
+			return (return_error("Syntax error", 0));
 		head = head->next;
 	}
 	return (0);

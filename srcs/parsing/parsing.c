@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 16:19:02 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:49:14 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ redir:
 */
 static int	redir(t_token *head, t_redirection *file)
 {
-	t_list	*tmp;
 	int		ret;
 
 	if (file->name)
@@ -30,26 +29,16 @@ static int	redir(t_token *head, t_redirection *file)
 	if (!ft_strncmp(head->content, ">>", 2))
 		file->flag = (O_CREAT | O_APPEND | O_RDWR);
 	else if (!ft_strncmp(head->content, "<<", 2))
-	{
-		tmp = ft_lstnew(ft_strdup(file->name));
-		if (file->heredoc == NULL)
-			file->heredoc = tmp;
-		else
-			ft_lstadd_back(&file->heredoc, tmp);
-		file->flag = -1;
-	}
+		fill_heredoc(file);
 	else if (!ft_strncmp(head->content, ">", 1))
 		file->flag = (O_CREAT | O_TRUNC | O_RDWR);
 	else if (!ft_strncmp(head->content, "<", 1))
 		file->flag = O_RDONLY;
+	if (file->flag == -1)
+		return (0);
 	ret = open(file->name, file->flag, 0644);
 	if (ret == -1)
-	{
-		ft_putstr_fd("Minishell: ", 2);
-		perror(file->name);
-		free(file->name);
-		return (1);
-	}
+		return (return_error(file->name, 1));
 	close(ret);
 	return (0);
 }
@@ -100,7 +89,7 @@ static int	tokenize(char **line, t_token **head, t_script *s)
 	char	*bis;
 
 	if (!tokenizer(*line, head))
-		return (return_error("Syntax Error\n"));
+		return (return_error("Syntax Error", 0));
 	tmp = *head;
 	while (tmp)
 	{

@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 16:10:48 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:40:11 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,7 @@ static int	change_dir(char *path, char ***envp)
 
 	ret = chdir(path);
 	if (ret == -1)
-	{
-		ft_putstr_fd("Minishell: cd: ", 2);
-		perror(path);
-		return (1);
-	}
+		return (return_error(path, 1));
 	replace_env(get_env_content("PWD", *envp), "OLDPWD=", envp);
 	pwd = NULL;
 	pwd = getcwd(pwd, MAX_PATH_LEN);
