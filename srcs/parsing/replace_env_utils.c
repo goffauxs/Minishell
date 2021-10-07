@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 17:52:21 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/07 13:14:01 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:34:20 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ odd_before/odd_after(char **str, int i, char c):
 	These two functions return 1 if the number of the given quotation marks 
 	before or after the index is odd, and returns 0 if even.
 */
-
 int	odd_before(char **str, int i, char c)
 {
 	int	count;
@@ -61,7 +60,6 @@ int	odd_after(char **str, int i, char c)
 free_split(char **split):
 	This function simply frees the content of the split string.
 */
-
 void	free_split(char **split)
 {
 	int	i;

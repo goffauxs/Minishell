@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:30 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/06 10:48:12 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:40:59 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	in_redir(t_script *s, int i, char **path_env)
 		fdin = open(s->commands[i].in.name, s->commands[i].in.flag);
 		if (fdin == -1)
 		{
-			perror(s->commands[i].in.name);
+			return_error(s->commands[i].in.name, 1);
 			free_cmds_path(s, path_env);
 			exit(1);
 		}
@@ -47,7 +47,7 @@ void	out_redir(t_script *s, int i, char **path_env)
 	fdout = open(s->commands[i].out.name, s->commands[i].out.flag, 0644);
 	if (fdout == -1)
 	{
-		perror(s->commands[i].out.name);
+		return_error(s->commands[i].out.name, 1);
 		free_cmds_path(s, path_env);
 		exit(1);
 	}

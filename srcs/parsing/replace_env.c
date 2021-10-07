@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:15:17 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 15:37:08 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:34:28 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ first_quote(char *str):
 	This function returns 1 if the outer quotation marks around a point in a 
 	string are single quotes and returns 0 otherwise.
 */
-
 static int	first_quote(char *str)
 {
 	int	i;
@@ -35,7 +34,6 @@ replace_loop(char *str, char **envp, int *i):
 	This function gets the environment variable name after a $ and returns its
 	corresponding value in the environment.
 */
-
 static char	*replace_loop(char *str, char **envp, int *i)
 {
 	char	*tmp;
@@ -65,7 +63,6 @@ init_split_before(char *line_buf, char **before, int *i):
 	This function splits our given line buffer on '$' and accounts for the 
 	possibility that the string may begin with a '$'.
 */
-
 static char	**init_split_before(char *line_buf, char **before, int *i)
 {
 	char	**split;
@@ -88,7 +85,6 @@ replace_env_var(char *line_buf, char **envp, int i, int j):
 	the quotation marks that surround each one, and rebuilds the line buffer 
 	with these replacements and returns the new string.
 */
-
 char	*replace_env_var(char *line_buf, char **envp, int i, int j)
 {
 	char	**split;

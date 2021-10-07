@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 15:37:50 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:54:27 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_script
 	char			**envp;
 	struct termios	termios_p;
 }				t_script;
+
 // builtin
 int				builtin_cd(t_command command, char **envp);
 int				builtin_echo(t_command command);
@@ -119,7 +120,7 @@ int				check_syntax(t_token *head);
 
 // parsing
 int				get_cmd_count(t_token *head);
-int				return_error(const char *msg);
+int				return_error(const char *msg, int system);
 void			get_num_args(t_token *head, t_script *script);
 void			set_filenames_null(t_command *commands, int max, t_token *head);
 int				parse(t_script *script, char **line_buf);
