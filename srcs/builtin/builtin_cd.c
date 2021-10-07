@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:56:14 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/06 15:54:30 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 15:17:12 by rvan-aud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ int	builtin_cd(t_command command, char **envp)
 	if (!command.argv[1])
 	{
 		home = get_env_content("HOME", envp);
+		if (!home[0])
+		{
+			ft_putendl_fd("Minishell: cd: HOME not set", 2);
+			free(home);
+			return (1);
+		}
 		ret = change_dir(home, &envp);
 		free(home);
 		return (ret);
