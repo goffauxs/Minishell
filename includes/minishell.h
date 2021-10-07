@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 16:33:50 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:54:27 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_script
 	char			**envp;
 	struct termios	termios_p;
 }				t_script;
+
 // builtin
 int				builtin_cd(t_command command, char **envp);
 int				builtin_echo(t_command command);
