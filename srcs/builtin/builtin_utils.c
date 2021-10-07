@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 17:17:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 16:58:02 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:17:34 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ int	copy_env(char **array1, char **array2)
 	return (i);
 }
 
+/*
+env_len(char **array) : 
+	Returns the number of char * in char **envp
+*/
 int	env_len(char **array)
 {
 	int	i;

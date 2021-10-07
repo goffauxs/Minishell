@@ -6,7 +6,7 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 14:55:39 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 16:56:37 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:12:29 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ static void	prep_bis(char *tmp, char *bis)
 }
 
 /*
-check_exisiting_export(char **envp, char *str) : 
+check_existing_export(char **envp, char *str) : 
 	Checks if the export arg already exists within the envp list. The
 	char *bis is the export arg shortened until the = or +=.
 */
-static int	check_exisiting_export(char **envp, char *str)
+static int	check_existing_export(char **envp, char *str)
 {
 	int		i;
 	char	*tmp;
@@ -85,7 +85,7 @@ static void	loopexport(t_script *script, char **argv, int var, int len)
 	int			exist;
 	int			i;
 	char		**tmp;
-	const int	ch = check_exisiting_export(script->envp, argv[var]);
+	const int	ch = check_existing_export(script->envp, argv[var]);
 
 	exist = 0;
 	if (ch)

@@ -6,12 +6,16 @@
 /*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 18:56:59 by rvan-aud          #+#    #+#             */
-/*   Updated: 2021/10/07 11:18:33 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:18:29 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+SIGINT : ctrl c
+SIGQUIT : ctrl \
+*/
 void	sig_handler(int signum)
 {
 	if (signum == SIGQUIT)

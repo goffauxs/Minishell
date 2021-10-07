@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 14:58:48 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 16:54:15 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/07 17:09:14 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	return_error(const char *msg, int system)
 get_env_content(char *str, char **envp):
 	This function iterates over the environment variables to find whether 
 	or not the given variable (str) is defined and returns the content or 
-	an empty freeable string.
+	an empty freeable string. This function is also called in the builtin
+	pwd to set the env var PWD to the current directory.
 */
 char	*get_env_content(char *str, char **envp)
 {
