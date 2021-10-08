@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 14:37:46 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:56:56 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static int	parse_commands(t_token *head, t_command *cmd, int i, int j)
 			if (head->type == TOKEN_NAME)
 				cmd[i].argv[j++] = ft_strdup(head->content);
 			else if (head->type == TOKEN_REDIR_IN && redir(head, &cmd[i].in))
-				return (free_commands(cmd, i));
+				return (free_commands(cmd, i + 1));
 			else if (head->type == TOKEN_REDIR_OUT && redir(head, &cmd[i].out))
-				return (free_commands(cmd, i));
+				return (free_commands(cmd, i + 1));
 			if (head->type == TOKEN_REDIR_IN || head->type == TOKEN_REDIR_OUT)
 				head = head->next;
 			if (head)

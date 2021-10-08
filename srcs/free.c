@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:08:33 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 14:43:06 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:56:50 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	free_commands(t_command *cmd, int cmd_idx)
 	int	j;
 
 	i = -1;
-	while (++i < cmd_idx + 1)
+	while (++i < cmd_idx)
 	{
 		j = -1;
 		while (++j < cmd[i].argc)
