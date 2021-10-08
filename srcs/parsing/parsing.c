@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 11:41:12 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 13:24:20 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,15 +127,12 @@ parse:
 	that will split the string into workable tokens that can be parsed into 
 	our command structure.
 */
-
-#define GRN "\x1B[32m"
-#define RST "\x1B[0m"
 int	parse(t_script *script, char **line_buf)
 {
 	t_token	*head;
 
 	head = NULL;
-	*line_buf = readline(GRN "Minishell > " RST);
+	*line_buf = readline("Minishell > ");
 	if (!*line_buf)
 		return (2);
 	add_history(*line_buf);

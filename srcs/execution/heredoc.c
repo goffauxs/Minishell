@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvan-aud <rvan-aud@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/07 17:35:29 by rvan-aud         ###   ########.fr       */
+/*   Updated: 2021/10/08 13:24:53 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	loop_heredoc(t_script *script, int pipe, int i)
 	heredoc_tmp = script->commands[i].in.heredoc;
 	while (heredoc_tmp)
 	{
-		tmp = readline("\033[0;32m> \033[0m");
+		tmp = readline("> ");
 		if (!tmp || !ft_strncmp(tmp, heredoc_tmp->content,
 				ft_strlen(heredoc_tmp->content) + 1))
 		{
