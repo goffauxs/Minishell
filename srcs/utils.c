@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 14:58:48 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 17:09:14 by mdeclerf         ###   ########.fr       */
+/*   Updated: 2021/10/08 11:31:29 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*replace_multiple_space(char *str)
+{
+	int 	i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	tmp = malloc(sizeof(char) * ft_strlen(str));
+	if (!tmp)
+		return (str);
+	while (str[i])
+	{
+		if (ft_isspace(str[i]))
+			tmp[j] = ' ';
+		else
+			tmp[j] = str[i];
+		while (ft_isspace(str[i]) && str[i + 1] && ft_isspace(str[i + 1]))
+			i++;
+		i++;
+		j++;
+	}
+	free(str);
+	str = ft_strdup(tmp);
+	free(tmp);
+	return (str);
+}
 
 /*
 fill_heredoc(t_redirection *file):
@@ -75,5 +103,5 @@ char	*get_env_content(char *str, char **envp)
 		if (!ret)
 			return (NULL);
 	}
-	return (ret);
+	return (replace_multiple_space(ret));
 }

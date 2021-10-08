@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 16:49:14 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 10:50:25 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	parse(t_script *script, char **line_buf)
 	t_token	*head;
 
 	head = NULL;
-	*line_buf = readline("\033[0;32mMinishell > \033[0m");
+	*line_buf = readline("Minishell > ");
 	if (!*line_buf)
 		return (2);
 	add_history(*line_buf);
