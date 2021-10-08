@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 14:58:48 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 11:34:23 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 11:35:57 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*replace_multiple_space(char *str)
 {
-	int 	i;
+	int		i;
 	int		j;
 	char	*tmp;
 
