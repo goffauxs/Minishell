@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 13:26:41 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 10:40:33 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:43:28 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	main_loop(t_script *script, char **line_buf)
 			continue ;
 		else if (ret == 2)
 		{
-			ft_putendl_fd("exit", 1);
+			ft_putendl_fd("exit", 2);
 			break ;
 		}
 		if (script->cmd_count > 0)
@@ -56,10 +56,10 @@ static void	main_loop(t_script *script, char **line_buf)
 			if (handle_cmd(script))
 				break ;
 		}
-		free_commands(script);
+		free_commands(script->commands, script->cmd_count);
 	}
 	if (script->cmd_count > 0)
-		free_commands(script);
+		free_commands(script->commands, script->cmd_count);
 }
 
 int	main(int argc, char **argv, char **envp)

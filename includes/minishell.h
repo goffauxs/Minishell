@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 11:34:25 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:36:38 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void			remove_blank_tokens(t_token *head);
 void			fill_heredoc(t_redirection *file);
 
 // srcs
-void			free_commands(t_script *script);
+int				free_commands(t_command *cmd, int cmd_idx);
 int				free_tokens(t_token **head);
 void			free_path_env(char **path_env);
 void			free_cmds_path(t_script *script, char **path_env);

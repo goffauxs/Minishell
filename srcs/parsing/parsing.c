@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 14:38:46 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 13:24:20 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:37:46 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static int	parse_commands(t_token *head, t_command *cmd, int i, int j)
 			if (head->type == TOKEN_NAME)
 				cmd[i].argv[j++] = ft_strdup(head->content);
 			else if (head->type == TOKEN_REDIR_IN && redir(head, &cmd[i].in))
-				return (1);
+				return (free_commands(cmd, i));
 			else if (head->type == TOKEN_REDIR_OUT && redir(head, &cmd[i].out))
-				return (1);
+				return (free_commands(cmd, i));
 			if (head->type == TOKEN_REDIR_IN || head->type == TOKEN_REDIR_OUT)
 				head = head->next;
 			if (head)
@@ -149,7 +149,7 @@ int	parse(t_script *script, char **line_buf)
 	get_num_args(head, script);
 	set_filenames_null(script->commands, script->cmd_count, head);
 	if (parse_commands(head, script->commands, 0, 0))
-		return (1);
+		return (free_tokens(&head));
 	free_tokens(&head);
 	return (0);
 }

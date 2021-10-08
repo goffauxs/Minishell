@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 16:28:51 by mdeclerf          #+#    #+#             */
-/*   Updated: 2021/10/08 13:24:53 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:44:24 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,33 @@ loop_heredoc(t_script *script, int pipe, int i) :
 	set in heredoc linked list. It stores the input only for the last delimiter
 	and places it in the pipe for later use as the input redirection.
 */
-static void	loop_heredoc(t_script *script, int pipe, int i)
+static void	loop_heredoc(t_list *h, int pipe)
 {
 	char	*tmp;
 	char	*bis;
-	t_list	*heredoc_tmp;
 
-	bis = "";
-	heredoc_tmp = script->commands[i].in.heredoc;
-	while (heredoc_tmp)
+	bis = ft_strdup("");
+	while (h)
 	{
 		tmp = readline("> ");
-		if (!tmp || !ft_strncmp(tmp, heredoc_tmp->content,
-				ft_strlen(heredoc_tmp->content) + 1))
+		if (!tmp || !ft_strncmp(tmp, h->content, ft_strlen(h->content) + 1))
 		{
 			if (!tmp)
-				error_message_heredoc(heredoc_tmp->content);
-			heredoc_tmp = heredoc_tmp->next;
+				error_message_heredoc(h->content);
+			h = h->next;
+			free(tmp);
 			continue ;
 		}
-		if (!heredoc_tmp->next)
+		if (!h->next)
 		{
-			tmp = ft_strjoin(tmp, "\n");
-			bis = ft_strjoin(bis, tmp);
+			tmp = ft_strjoin_free(tmp, ft_strdup("\n"));
+			bis = ft_strjoin_free(bis, tmp);
 		}
+		else
+			free(tmp);
 	}	
 	write(pipe, bis, ft_strlen(bis));
+	free(bis);
 }
 
 /*
@@ -71,7 +72,7 @@ void	heredoc(t_script *script, int i, char **path_env)
 	}
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sig_handler_heredoc);
-	loop_heredoc(script, pipe_tmp[1], i);
+	loop_heredoc(script->commands[i].in.heredoc, pipe_tmp[1]);
 	if (pipe_tmp[0] != STDIN_FILENO)
 	{
 		if (dup2(pipe_tmp[0], STDIN_FILENO) == -1)

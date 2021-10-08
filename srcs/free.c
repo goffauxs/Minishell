@@ -6,32 +6,34 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 16:08:33 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/06 15:21:39 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 14:43:06 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_commands(t_script *script)
+int	free_commands(t_command *cmd, int cmd_idx)
 {
 	int	i;
 	int	j;
 
 	i = -1;
-	while (++i < script->cmd_count)
+	while (++i < cmd_idx + 1)
 	{
 		j = -1;
-		while (++j < script->commands[i].argc)
-			free(script->commands[i].argv[j]);
-		if (script->commands[i].in.name)
-			free(script->commands[i].in.name);
-		if (script->commands[i].out.name)
-			free(script->commands[i].out.name);
-		free(script->commands[i].argv);
-		if (script->commands[i].in.heredoc)
-			ft_lstclear(&script->commands[i].in.heredoc, free);
+		while (++j < cmd[i].argc)
+			if (cmd[i].argv[j])
+				free(cmd[i].argv[j]);
+		if (cmd[i].in.name)
+			free(cmd[i].in.name);
+		if (cmd[i].out.name)
+			free(cmd[i].out.name);
+		if (cmd[i].in.heredoc)
+			ft_lstclear(&cmd[i].in.heredoc, free);
+		free(cmd[i].argv);
 	}
-	free(script->commands);
+	free(cmd);
+	return (1);
 }
 
 int	free_tokens(t_token **head)
@@ -63,7 +65,7 @@ void	free_path_env(char **path_env)
 
 void	free_cmds_path(t_script *script, char **path_env)
 {
-	free_commands(script);
+	free_commands(script->commands, script->cmd_count);
 	free_path_env(path_env);
 }
 
