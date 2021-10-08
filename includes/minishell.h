@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 11:04:53 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/07 16:54:27 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 10:14:00 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ t_operations	search_token_type(const char *s);
 char			*remove_quotes(char *str);
 int				tokenizer(char *str, t_token **head);
 void			remove_blank_tokens(t_token *head);
+void			fill_heredoc(t_redirection *file);
 
 // srcs
 void			free_commands(t_script *script);
