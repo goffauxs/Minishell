@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 09:22:04 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 11:14:33 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 12:11:16 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
 long long int	ft_atol(const char *nptr);
+char			**ft_split_charset(char *str, char *charset);
 
 #endif

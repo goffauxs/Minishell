@@ -6,7 +6,7 @@
 #    By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 12:04:24 by sgoffaux          #+#    #+#              #
-#    Updated: 2021/10/08 11:14:36 by sgoffaux         ###   ########.fr        #
+#    Updated: 2021/10/08 12:11:23 by sgoffaux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS	=	ft_isascii.c \
 			ft_isspace.c \
 			ft_atoi_base.c \
 			ft_atol.c \
+			ft_split_charset.c \
 
 BONUS	=	ft_lstnew.c \
 			ft_lstadd_front.c \

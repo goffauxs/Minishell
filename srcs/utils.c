@@ -6,7 +6,7 @@
 /*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 14:58:48 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 11:35:57 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 12:15:22 by sgoffaux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,24 @@
 
 static char	*replace_multiple_space(char *str)
 {
-	int		i;
-	int		j;
+	char	**split;
 	char	*tmp;
+	int		i;
 
 	i = 0;
-	j = 0;
+	split = ft_split_charset(str, " \t\v\r\f\n");
 	tmp = malloc(sizeof(char) * ft_strlen(str));
 	if (!tmp)
 		return (str);
-	while (str[i])
+	while (split[i])
 	{
-		if (ft_isspace(str[i]))
-			tmp[j] = ' ';
-		else
-			tmp[j] = str[i];
-		while (ft_isspace(str[i]) && str[i + 1] && ft_isspace(str[i + 1]))
-			i++;
+		tmp = ft_strjoin_free(tmp, ft_strdup(" "));
+		tmp = ft_strjoin_free(tmp, split[i]);
 		i++;
-		j++;
 	}
+	free(split);
 	free(str);
-	str = ft_strdup(tmp);
-	free(tmp);
-	return (str);
+	return (tmp);
 }
 
 /*
