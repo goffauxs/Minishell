@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sgoffaux <sgoffaux@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mdeclerf <mdeclerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 14:58:48 by sgoffaux          #+#    #+#             */
-/*   Updated: 2021/10/08 12:15:22 by sgoffaux         ###   ########.fr       */
+/*   Updated: 2021/10/08 13:09:07 by mdeclerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static char	*replace_multiple_space(char *str)
 		return (str);
 	while (split[i])
 	{
-		tmp = ft_strjoin_free(tmp, ft_strdup(" "));
+		if (i > 0)
+			tmp = ft_strjoin_free(tmp, ft_strdup(" "));
 		tmp = ft_strjoin_free(tmp, split[i]);
 		i++;
 	}
