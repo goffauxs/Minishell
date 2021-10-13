@@ -27,7 +27,7 @@ int	ft_isint(const char *nptr)
 		neg = 1;
 	if (nptr[i] == '-' || nptr[i] == '+')
 		i++;
-	if (!ft_isdigit(nptr[i])
+	if (!ft_isdigit(nptr[i]))
 	    return (0);
 	while (nptr[i] != '\0' && ft_isdigit(nptr[i]))
 	{
